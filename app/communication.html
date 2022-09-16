@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+
+        <!-- Styles -->
+        <link id="theme" rel="stylesheet" type="text/css" href="dist/theme-light.css">
+        <link rel="stylesheet" type="text/css" href="dist/style.css">
+
+        <!-- Scripts -->
+        <script src=dist/data.js"></script>
+        <script src="dist/app.js"></script>
+
+        <!-- Init -->
+        <script>getCurrentTheme();</script>
+        <!-- Google Analytics -->
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-TG3808C32Z"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-TG3808C32Z');
+        </script>
+
+        <title>Общение</title>
+    </head>
+
+    <body>
+        <header>
+            <div class="page-header" id="page-header--container--communication">
+                <div class="uix-toolbar-main" id="">
+                    <div class="uix-button--circle uix-button--back headline-6 uix-card--link--overall" id="button--back" onclick="adjustBackButton();">‹</div>
+                </div>
+                <br>
+                <span class="body-1"><a class="uix-link--header" href="index.html">Санкт-Петербург</a></span>
+                <span class="headline-4">Общение</span>
+        </header>
+
+        <main>
+            <div class="uix-layout--grid--wrapped">
+                <div class="uix-card--communication">
+                    <span class="caption typography-uppercase">Канал • Telegram</span>
+                    <span class="headline-6">SPB Surfclub News</span>
+                    <span class="body-1"><a href="https://t.me/spbsurfclub">@SPBSURFCLUB</a></span>
+                    <span class="body-1">
+                        Частота публикаций - от нуля до 5-6 в день прогноза. Основные темы:
+                        прогнозы, каталки в С-Пб, фото и видео, главные серфновости по миру.
+                        Канал дублируется в Whatsapp.
+                    </span>
+                </div>
+                <!--<div class="uix-card--communication">
+                    <span class="caption typography-uppercase">Чат</span>
+                    <span class="headline-6">SPB Surfclub</span>
+                    <span class="body-1"><a href="https://t.me/spbsurfclub_chat">@SPBSURFCLUB</a></span>
+                    <span class="body-1">
+                        Здесь можно общаться и задавать вопросы. 
+                        Основные темы для обсуждения: споты, каталки Петербурга, Бали, Шри-Ланки и др., доски и гидрокостюмы.
+                    </span>
+                </div>-->
+                <div class="uix-card--communication">
+                    <span class="caption typography-uppercase">Канал • Telegram</span>
+                    <span class="headline-6">Сёрфинг</span>
+                    <span class="body-1"><a href="https://t.me/surfing_ru">@surfing_ru</a></span>
+                    <span class="body-1">
+                        Что происходит с сёрфингом в России и в мире. 
+                        Автор: участник расширенного состава сборной России Игорь Вечканов.
+                    </span>
+                </div>
+                <div class="uix-card--communication">
+                    <span class="caption typography-uppercase">Чат • Telegram</span>
+                    <span class="headline-6">Чат русского сёрфинга</span>
+                    <span class="body-1"><a href="https://t.me/surfing_chat">@surfing_chat</a></span>
+                    <span class="body-1">
+                        Прикреплен к каналу "Сёрфинг".
+                    </span>
+                </div>
+                <div class="uix-card--communication">
+                    <span class="caption typography-uppercase">Чат • Telegram</span>
+                    <span class="headline-6">Поиск попутчиков на спот</span>
+                    <span class="body-1"><a href="https://t.me/naspot">@naspot</a></span>
+                    <span class="body-1">
+                        Можно найти компанию в поездку, новые знакомства и т.д. 
+                        Не забывайте, что владельцу транспорта важно, если вы добавите ему денег на бензин.
+                    </span>
+                </div>
+                <div class="uix-card--communication">
+                    <span class="caption typography-uppercase">Чат • Telegram</span>
+                    <span class="headline-6">Серффото и видео</span>
+                    <span class="body-1"><a href="https://t.me/+gtS2XgOkFJYzNzcy">Ссылка</a></span>
+                    <span class="body-1">
+                        Фото и видео с каталок, спотов, уроков и пр. 
+                    </span>
+                </div>
+                <div class="uix-card--communication">
+                    <span class="caption typography-uppercase">Чат • VK</span>
+                    <span class="headline-6">Серфшкола OnegoSurf</span>
+                    <span class="body-1"><a href="https://vk.me/join//zLUyVD5q9IAxCfu0ULZHrWTj1RnGKLAdwg=">Ссылка</a></span>
+                    <span class="body-1">
+                        Чат с прогнозами, новостями, анонсами для тех, кому удобнее пользоваться ВКонтакте.
+                    </span>
+                </div>
+            </div>
+            
+        </main>
+
+        <footer>
+            <component-footer></component-footer>
+        </footer>
+    </body>
+
+</html>

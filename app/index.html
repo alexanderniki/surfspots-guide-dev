@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+    
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+
+        <!-- Meta for search -->
+        <meta name="keywords" content="санкт-петербург, питер, спб, серф, серфинг, серф-спот, спот" />
+        <meta name="description" content="Серф-споты в Санкт-Петербурге" />
+        <meta name="author" content="Alexander Niki" />
+        <meta http-equiv="content-language" content="ru" />
+
+        <!-- Styles -->
+        <link id="theme" rel="stylesheet" type="text/css" href="dist/theme-light.css">
+        <link rel="stylesheet" type="text/css" href="dist/style.css">
+
+        <!-- Scripts -->
+        <!--<script src="https://telegram.org/js/telegram-web-app.js"></script>-->
+        <script src="dist/data.js"></script>
+        <script src="dist/app.js"></script>
+
+        <!-- Init -->
+        <script>main();</script>
+        <!-- Google Analytics -->
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-TG3808C32Z"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-TG3808C32Z');
+        </script>
+
+        <title>Серфинг с Санкт-Петербурге</title>
+    </head>
+
+    <body>
+
+        <header>
+            <div class="uix-toolbar-main" id="">
+                <span class="headline-6">Surfplaces <sub>.guide</sub></span>
+            </div>
+            <div class="page-header" id="page-header--container--main">
+                <span class="body-1">Серфинг</span>
+                <span class="headline-4">Россия, Санкт-Петербург</span>
+            </div>
+        </header>
+
+        <main>
+            <section class="uix-layout--vbox" id="main-spots">
+                <span class="headline-6 typography-bold">Споты</span>
+                <span class="title">Популярные</span>
+                <div class="uix-layout--grid--wrapped" id="spots-popular">
+                    <a href="spot-atlantis.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-atlantis.html'">
+                        <span class="headline-6 typography-bold">Атлантис</span>
+                        <span>Финский залив</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-battery.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-battery.html'">
+                        <span class="headline-6 typography-bold">Бухта Батарейная</span>
+                        <span>Финский залив</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-lighthouse.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-lighthouse.html'">
+                        <span class="headline-6 typography-bold">Маяк</span>
+                        <span>Ладожское озеро</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                </div>
+                <script>getPopularSpots();</script>
+                <span class="title">Финский залив</span>
+                <div class="uix-layout--grid--wrapped">
+                    <a href="spot-atlantis.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-atlantis.html'">
+                        <span class="headline-6 typography-bold">Атлантис</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-battery.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-battery.html'">
+                        <span class="headline-6 typography-bold">Бухта Батарейная</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-bigsands.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-bigsands.html'">
+                        <span class="headline-6 typography-bold">Большие пески</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-yellowbay.html"><div class="uix-card--spot--minimal" onclick="location.href='spot-yellowbay.html'">
+                        <span class="headline-6 typography-bold">Бухта Желтая</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-flo-west.html"><div class="uix-card--spot--minimal" onclick="location.href='spot-flo-west.html'">
+                        <span class="headline-6 typography-bold">Мыс Флотский - Запад</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-flo-chapa.html"><div class="uix-card--spot--minimal" onclick="location.href='spot-flo-chapa.html'">
+                        <span class="headline-6 typography-bold">Мыс Флотский - Чапин</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-flo-parking.html"><div class="uix-card--spot--minimal" onclick="location.href='spot-flo-parking.html'">
+                        <span class="headline-6 typography-bold">Мыс Флотский - Парковка</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-pinery.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-pinery.html'">
+                        <span class="headline-6 typography-bold">Сосновый Бор</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <div class="uix-card--spot--minimal uix-state--disabled">
+                        <span class="headline-6 typography-bold">Сосновый Бор - Мол</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div>
+                    <a href="spot-lipovo.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-lipovo.html'">
+                        <span class="headline-6 typography-bold">Липово</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-logi.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-logi.html'">
+                        <span class="headline-6 typography-bold">Логи</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-mustovo.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-mustovo.html'">
+                        <span class="headline-6 typography-bold">Мустово</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-dubki.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-dubki.html'">
+                        <span class="headline-6 typography-bold">Дубки</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                </div>
+
+                <span class="title">Ладожское озеро</span>
+                <div class="uix-layout--grid--wrapped">
+                    <a href="spot-lighthouse.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-lighthouse.html'">
+                        <span class="headline-6 typography-bold">Маяк</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                   <a href="spot-osinovets.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-osinovets.html'">
+                        <span class="headline-6 typography-bold">Осиновец</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                    <a href="spot-motor.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-motor.html'">
+                        <span class="headline-6 typography-bold">Бухта Моторная</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                </div>
+                
+                <span class="title">Другие споты</span>
+                <div class="uix-layout--grid--wrapped">
+                    <a href="spot-riverking.html"><div class="uix-card--spot--minimal uix-card--link--overall" onclick="location.href='spot-riverking.html'">
+                        <span class="headline-6 typography-bold">Порог в Кингисеппе</span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                </div>
+            </section>
+
+            <section class="uix-layout--vbox" id="main-rent">
+                <span class="headline-6 typography-bold">Прокаты, школы, инструкторы</span>
+                <div class="uix-layout--grid--wrapped">
+                    <div class="uix-card--rent">
+                        <div class="uix-layout--vbox bottom">
+                            <span class="caption typography-uppercase">Прокат</span>
+                            <span class="headline-6 typography-bold">Onego Surfing</span>
+                            <span class="body-1">Доски (софт, хард), гидрокостюмы, лиши</span>
+                        </div>
+                    </div>
+                    <div class="uix-card--rent">
+                        <div class="uix-layout--vbox bottom">
+                            <span class="caption typography-uppercase">Школа</span>
+                            <span class="headline-6 typography-bold">Onego Surfing</span>
+                            <span class="body-1">Уроки серфинга на флэте и на волнах</span>
+                        </div>
+                    </div>
+                    <div class="uix-card--rent">
+                        <div class="uix-layout--vbox bottom">
+                            <span class="caption typography-uppercase">Школа</span>
+                            <span class="headline-6 typography-bold">WSGS</span>
+                            <span class="body-1">Школа серфинга Максима Фомина</span>
+                        </div>
+                    </div>
+                    <div class="uix-card--rent">
+                        <div class="uix-layout--vbox bottom">
+                            <span class="caption typography-uppercase">Школа</span>
+                            <span class="headline-6 typography-bold">Life Surf Dream</span>
+                            <span class="body-1">Обучение классическому серфингу</span>
+                        </div>
+                    </div>
+                    <div class="uix-card--rent">
+                        <div class="uix-layout--vbox bottom">
+                            <span class="caption typography-uppercase">Прокат</span>
+                            <span class="headline-6 typography-bold">Life Surf Dream</span>
+                            <span class="body-1">Доски, гидрокостюмы</span>
+                        </div>
+                    </div>
+                    <div class="uix-card--rent">
+                        <div class="uix-layout--vbox bottom">
+                            <span class="caption typography-uppercase">Инструктор</span>
+                            <span class="headline-6 typography-bold">Михаил Смолин</span>
+                            <span class="body-1">Обучение классическому серфингу</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="uix-layout--vbox" id="main-other">
+                <span class="headline-6 typography-bold">Другое</span>
+                <div class="uix-layout--grid--wrapped">
+                    <div class="uix-card--other--minimal uix-state--disabled" id="card-equip">
+                        <span class="headline-6 typography-bold">Экипировка</span>
+                        <span class="body-1">
+                            <ul>
+                                <li>Вещи</li>
+                                <li>Советы</li>
+                            </ul>
+                        </span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div>
+                    <a href="communication.html"><div class="uix-card--other--minimal uix-card--link--overall" id="card-communication"  onclick="location.href='communication.html'">
+                        <span class="headline-6 typography-bold">Общение</span>
+                        <span class="body-1">
+                            <ul>
+                                <li>Telegram</li>
+                                <li>WhatsApp</li>
+                                <li>и другие способы общаться</li>
+                            </ul>
+                        </span>
+                        <span class="headline-5 typography-bold" id="uix-card-minimal--align-right">→</span>
+                    </div></a>
+                </div>
+            </section>
+        
+        </main>
+
+        <footer>
+            <component-footer></component-footer>
+        </footer>
+        
+    </body>
+
+</html>
