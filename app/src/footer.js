@@ -28,6 +28,7 @@ class Footer extends HTMLElement {
                     <ul>
                         <li><a href="about.html">О проекте</a></li>
                         <li><a href="contribute.html">Помочь проекту</a></li>
+                        <li><a href="https://t.me/surflbot">Телеграм-бот @surflbot</a></li>
                     </ul>
                 </span>
             </div>
