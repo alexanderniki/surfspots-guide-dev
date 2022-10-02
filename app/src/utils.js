@@ -332,3 +332,49 @@ function getPopularSpots() {
         }
     }
 }
+
+
+function getSessionFlag(flag) {
+    /*
+     * Check if given flag exists and if so, return it value (0 or 1)
+     * flag: String
+     */
+
+    let value = sessionStorage.getItem(flag);
+    return value;
+}
+
+function setSessioFlag(flag, value) {
+    /*
+     * Set a flag to 
+     */
+
+    if (value == 0 || value == 1) {
+        sessionStorage.setItem(flag, value)
+    } else {
+        // do nothing
+    }
+}
+
+
+function setDonationFlag() {
+    setSessioFlag('DonationAlertViewed', 0);
+}
+
+
+function toggleDonationFlag() {
+    let flag = getSessionFlag('DonationAlertViewed');
+    if (flag == 0) {
+        setSessioFlag('DonationAlertViewed', 1);  // Viewed
+    }
+}
+
+
+function toggleDonationAlert() {
+    let flag = getSessionFlag('DonationAlertViewed');
+    let donationAlert = document.getElementById('donation-alert');
+    if (flag == 0) {
+        donationAlert.style.display = "none";  // hide alert
+        toggleDonationFlag();
+    }
+}
