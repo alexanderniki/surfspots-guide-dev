@@ -378,3 +378,24 @@ function toggleDonationAlert() {
         toggleDonationFlag();
     }
 }
+
+function displayNotification() {
+
+    console.log("displayNotification");
+
+    let notifications = data.notifications[0];
+    console.log(notifications);
+
+    let notification = new InlineNotification();
+    console.log(notification);
+    notification.overline = notifications.overline;
+    notification.title = notifications.title;
+    notification.text = notifications.text;
+    console.log(notification);
+    let uinotification = new InlineNotificationView(notification);
+    console.log("uinotification:");
+    console.log(uinotification);
+
+    document.getElementById("inline-notification").appendChild(uinotification);
+    //document.body.appendChild(uinotification);
+}

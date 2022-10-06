@@ -19,6 +19,7 @@
         <!--<script src="https://telegram.org/js/telegram-web-app.js"></script>-->
         <script src="dist/data.js"></script>
         <script src="dist/app.js"></script>
+        <script src="src/inlinenotification.js"></script>
 
         <!-- Init -->
         <script>main();</script>
@@ -57,6 +58,8 @@
                 </div>
                 <a href="#" id="donation-alert--close" onclick="toggleDonationAlert();">✕</a>
             </div>
+            <div id="inline-notification"></div>
+            <script>displayNotification();</script>
             <section class="uix-layout--vbox" id="main-spots">
                 <span class="headline-6 typography-bold">Споты</span>
                 <span class="title">Популярные</span>
