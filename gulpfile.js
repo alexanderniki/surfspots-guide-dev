@@ -25,6 +25,7 @@ const appBundle = async () => {
     src([
         './app/src/footer.js',
         './app/src/spotlist.js',
+        './app/src/inlinenotification.js',
         './app/src/utils.js',
         './app/src/main.js',
         './app/src/dateutils.js',

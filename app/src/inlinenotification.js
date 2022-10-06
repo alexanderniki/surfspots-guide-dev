@@ -3,7 +3,7 @@
  */
 
 
-class InlineNotification {
+class UINotification {
     constructor() {
         this._title = "";     // Title, optional
         this._text = "";      // Text, optional
@@ -59,9 +59,9 @@ class InlineNotification {
 
 
 class InlineNotificationView extends HTMLElement {
-    constructor(inlinenotification) {
+    constructor(uinotification) {
         super();
-        this.inlinenotification = inlinenotification;
+        this.notification = uinotification;
         this.card = "";
     }
 
@@ -86,12 +86,13 @@ class InlineNotificationView extends HTMLElement {
         // Style elements
         this.card.classList.add("uix-layout--hbox");
         this.card.setAttribute("id", "inline-notification-card")
-        link.setAttribute("href", this.inlinenotification.link);
+        link.setAttribute("href", this.notification.link);
         container.classList.add("uix-layout--vbox");
 
-        notificationOverline.innerHTML = this.inlinenotification.overline;
-        notificationTitle.innerHTML = this.inlinenotification.title;
-        notificationText.innerHTML = this.inlinenotification.text;
+        notificationOverline.innerHTML = this.notification.overline;
+        notificationTitle.classList.add("title");
+        notificationTitle.innerHTML = this.notification.title;
+        notificationText.innerHTML = this.notification.text;
 
         btnClose.setAttribute("href", "#");
         btnClose.innerHTML = "✕";
@@ -102,7 +103,8 @@ class InlineNotificationView extends HTMLElement {
         container.appendChild(notificationTitle);
         container.appendChild(notificationText);
 
-        this.card.appendChild(container);
+        link.appendChild(container);
+        this.card.appendChild(link);
         this.card.appendChild(btnClose);
 
         this.appendChild(this.card);
@@ -119,24 +121,3 @@ class InlineNotificationView extends HTMLElement {
 }
 
 customElements.define("inline-notification", InlineNotificationView);
-
-/* function displayNotification() {
-
-    console.log("displayNotification");
-
-    let data = data.notifications;
-    console.log(data);
-
-    let notification = new InlineNotification();
-    console.log(notification);
-    notification.overline = data.overline;
-    notification.title = data.title;
-    notification.text = data.text;
-    console.log(notification);
-    let uinotification = new InlineNotificationView(notification);
-    console.log("uinotification:");
-    console.log(uinotification);
-
-    document.getElementById("inline-notification").appendChild(uinotification);
-    //document.body.appendChild(uinotification);
-}*/

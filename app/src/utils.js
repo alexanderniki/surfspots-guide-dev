@@ -386,11 +386,12 @@ function displayNotification() {
     let notifications = data.notifications[0];
     console.log(notifications);
 
-    let notification = new InlineNotification();
+    let notification = new UINotification();
     console.log(notification);
     notification.overline = notifications.overline;
     notification.title = notifications.title;
     notification.text = notifications.text;
+    notification.link = notifications.link
     console.log(notification);
     let uinotification = new InlineNotificationView(notification);
     console.log("uinotification:");
