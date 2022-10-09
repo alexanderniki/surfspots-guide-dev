@@ -63,6 +63,10 @@
 
 /* CARD: Spot minimal */
 
+.uix-card--secondary-text {
+    color: var(--color-on-surface);
+}
+
 .uix-card--spot--minimal {
     display: flex;
     flex: 1 1 100px;
