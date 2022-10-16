@@ -31,6 +31,7 @@ const appBundle = async () => {
         './app/src/dateutils.js',
         './app/src/weatherutils.js',
         './app/src/weatherprovider.js',
+        './app/src/spotforecast.js',
     ])
     .pipe(concat('app.js'))
     .pipe(dest('./app/dist'));
