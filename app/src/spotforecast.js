@@ -6,7 +6,7 @@
 class SpotForecast {
     constructor() {
         this.weatherProvider = new WeatherProvider("ruspb");
-        this.windspeedThreshold = 20;
+        this.windspeedThreshold = 29;  // Windspeed 29 km/h
         this.workingSpots = [];
     }
 
