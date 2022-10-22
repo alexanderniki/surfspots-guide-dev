@@ -5,13 +5,16 @@
 
 class Spotlist extends HTMLElement {
 
+
     constructor() {
         super();
     }
 
+
     connectedCallback() {
         this.render();
     }
+
 
     buildList() {
         let spots = data.spots;
@@ -34,10 +37,13 @@ class Spotlist extends HTMLElement {
         return list;
     }
 
+
     render() {
         this.appendChild(this.buildList());
     }
 
+
 }
+
 
 customElements.define("spotlist-component", Spotlist);

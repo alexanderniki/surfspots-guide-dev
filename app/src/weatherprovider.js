@@ -5,6 +5,7 @@
 
 class WeatherProvider {
 
+
     constructor(placecode) {
         this.placeCode = placecode;
         this.baseURL = "https://api.open-meteo.com/v1/forecast";
@@ -17,6 +18,7 @@ class WeatherProvider {
         
         this.fetchWeather();
     }
+
 
     buildRequest() {
         let request = this.baseURL;
@@ -35,29 +37,6 @@ class WeatherProvider {
         return request;
     }
 
-    /*fetchWeather() {
-        let xmlHttp = new XMLHttpRequest();
-        xmlHttp.open("GET", this.buildRequest(), false); // false for synchronous request
-        xmlHttp.send(null);
-        let result = JSON.parse(xmlHttp.responseText);
-        console.log(result.daily.time);
-        return result;
-    }
-
-    fetchWeatherAsync() {
-        console.log("fetchweather2: init");
-        let xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                let result = JSON.parse(xhr.responseText);
-                console.log("fetchWeather() async:");
-                console.log(result.daily.time);
-            }
-        }
-        xhr.open('GET', this.buildRequest(), true);
-        xhr.send();
-        return;
-    }*/
 
     async fetchWeather() {
         let response = await fetch(this.buildRequest());
@@ -67,6 +46,7 @@ class WeatherProvider {
         console.log(json.daily.time);
         return json;
     }
+
 
     getPlaceGeo() {
         // get place coordinates to build correct request
@@ -95,5 +75,6 @@ class WeatherProvider {
         }
         return coordinates;
     }
+    
 
 }

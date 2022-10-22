@@ -4,8 +4,9 @@
  */
 
 
-class UixLabel extends HTMLElement {
+class UILabel extends HTMLElement {
     
+
     constructor() {
         super();
         let shadow = elementRef.attachShadow(
@@ -15,9 +16,11 @@ class UixLabel extends HTMLElement {
         );
     }
 
+
     connectedCallback() {
         this.render();
     }
+
 
     render() {
         let label = document.createElement("span");
@@ -28,7 +31,9 @@ class UixLabel extends HTMLElement {
 
         console.log(this.innerHTML);
     }
+
+    
 }
 
 
-customElements.define("uix-label", UixLabel);
+customElements.define("ui-label", UILabel);
