@@ -5,9 +5,11 @@
 
  class WeatherUtils {
 
+
     constructor () {
         // do nothing
     }
+
 
     static windDirection(degrees) {
         let direction = "";
@@ -38,10 +40,12 @@
         return direction;
     }
 
+    
     static avgTemp(bottom, top) {
         let avg = (bottom + top) / 2;
         return avg
     }
+
 
     static temperatureSign(temperature) {
         let sign = "";
@@ -54,4 +58,6 @@
         }
         return sign;
     }
+
+
 }

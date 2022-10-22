@@ -200,13 +200,18 @@ function getSpotLabels(instanceState) {
     try {
         let items = currentSpot.metadata.labels;
         for (let i = 0; i < items.length; i++) {
-            label = document.createElement('span');
-            label.innerHTML = items[i];
+            //label = document.createElement('span');
+            //label.innerHTML = items[i];
             // label.classList.add('uix-label--simple');
-            label.className += "uix-label--simple";
-            label.className += " body-2";
-            label.className += " typography-uppercase";
+            //label.className += "uix-label--simple";
+            //label.className += " body-2";
+            //label.className += " typography-uppercase";
+            //output.appendChild(label);
+
+            label = document.createElement('ui-label');
+            label.setAttribute("ui-text", items[i]);
             output.appendChild(label);
+
         }
     }
     catch(error) {

@@ -40,8 +40,6 @@ class WeatherProvider {
 
     async fetchWeather() {
         let response = await fetch(this.buildRequest());
-        console.log("WEATHER WITH FETCH:")
-        console.log(response);
         let json = await response.json();
         console.log(json.daily.time);
         return json;
@@ -71,7 +69,6 @@ class WeatherProvider {
         }
         catch (error) {
             console.log(error);
-            console.log("no data");
         }
         return coordinates;
     }

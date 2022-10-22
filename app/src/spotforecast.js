@@ -3,12 +3,16 @@
  * Predict working spot by wind direction
  */
 
+
 class SpotForecast {
+
+
     constructor() {
         this.weatherProvider = new WeatherProvider("ruspb");
         this.windspeedThreshold = 29;  // Windspeed 29 km/h
         this.workingSpots = [];
     }
+
 
     async forecast() {
         let result = await this.weatherProvider.fetchWeather();
@@ -36,8 +40,8 @@ class SpotForecast {
         }
     }
 
+
     async getWorkingSpots() {
-        console.log("getWorkingSpot2()");
         let spots = data.spots;
         let currentSpot = '';
 
@@ -76,6 +80,8 @@ class SpotForecast {
             }
         }
     }
+
+
 }
 
 
