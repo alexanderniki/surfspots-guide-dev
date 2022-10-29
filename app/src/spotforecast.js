@@ -11,7 +11,7 @@ class SpotForecast {
         this.days = [];
 
         this.weatherProvider = new WeatherProvider("ruspb");
-        this.windspeedThreshold = 29;  // Windspeed 29 km/h
+        this.windspeedThreshold = 8;  // Windspeed 8 m/s (29 km/h)
         this.workingSpots = [];
     }
 
@@ -77,6 +77,7 @@ class SpotForecast {
                                 workingSpot.strdate = strdate;
                                 workingSpot.name = currentSpot.name;
                                 workingSpot.windspeed = windspeed[wind];
+                                workingSpot.winddirection = bestWind[direction];
                                 this.workingSpots.push(workingSpot);
                             }
                         }
@@ -84,6 +85,7 @@ class SpotForecast {
                 }
             }
         }
+        console.log("WORKING SPOTS: ", this.workingSpots);
         this.prepareForecast();
     }
 
@@ -112,7 +114,7 @@ class SpotForecast {
         let UIForecastView = document.getElementById("spot-forecast");
         spots.forEach((e) => {
             let item = document.createElement("span") 
-            item.innerHTML = `${e.strdate} - ${e.name} - ${Math.round(e.windspeed)} км/ч, ${WeatherUtils.windDirection(e.winddirection)}`;
+            item.innerHTML = `${e.strdate} - ${e.name} - ${Math.round(e.windspeed)} м/с, ${e.winddirection}`;
             UIForecastView.appendChild(item);
         });
 

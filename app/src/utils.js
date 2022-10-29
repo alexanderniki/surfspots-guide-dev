@@ -299,7 +299,7 @@ async function getWeather() {
         let newDate = new Date(parcedDate);
         let weekday = DateUtils.weekday(newDate.getDay());
         let strdate = `${weekday}, ${newDate.getDate()}`;
-        let strwind = `${Math.round(windspeed[i])} км/ч • ${Math.round(winddirection[i])}° • ${WeatherUtils.windDirection(winddirection[i])}`;
+        let strwind = `${Math.round(windspeed[i])} м/с • ${Math.round(winddirection[i])}° • ${WeatherUtils.windDirection(winddirection[i])}`;
         let strtemperarure = `${WeatherUtils.temperatureSign(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} ${Math.round(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} °C`;
 
         // Card

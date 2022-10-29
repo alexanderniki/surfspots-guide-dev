@@ -14,6 +14,7 @@ class WeatherProvider {
             latitude: this.getPlaceGeo()[0],
             longitude: this.getPlaceGeo()[1],
             daily: "temperature_2m_max,temperature_2m_min,windspeed_10m_max,windgusts_10m_max,winddirection_10m_dominant",
+            windspeed_unit: "ms",
             timezone: "Europe/Moscow",
         }
         
@@ -34,7 +35,7 @@ class WeatherProvider {
             }
             paramCounter += 1;
         }
-        //console.log(request);
+        console.log("WATHER API REQUEST: ", request);
         return request;
     }
 
