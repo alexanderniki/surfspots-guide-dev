@@ -66,13 +66,13 @@ class InlineNotificationView extends HTMLElement {
     }
 
     connectedCallback() {
-        console.log("connectedCallback");
+        //console.log("connectedCallback");
         this.render();
     }
 
     createDOM() {
 
-        console.log("createDOM");
+        //console.log("createDOM");
         
         // Create elements
         this.card = document.createElement("div");

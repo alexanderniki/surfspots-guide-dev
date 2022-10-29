@@ -8,6 +8,8 @@ class SpotForecast {
 
 
     constructor() {
+        this.days = [];
+
         this.weatherProvider = new WeatherProvider("ruspb");
         this.windspeedThreshold = 29;  // Windspeed 29 km/h
         this.workingSpots = [];
@@ -35,7 +37,7 @@ class SpotForecast {
                 currentSpot["wind"] = strwind;
                 currentSpot["date"] = strdate;
                 currentSpot["wind_direction"] = WeatherUtils.windDirection(winddirection[i]);
-                this.workingSpots.push(currentSpot);                
+                //this.workingSpots.push(currentSpot);                
             }
         }
     }
@@ -45,48 +47,83 @@ class SpotForecast {
         let spots = data.spots;
         let currentSpot = '';
 
-        let UIForecastView = document.getElementById("spot-forecast");
+        // For each spot
+        for (let spot = 0; spot < spots.length; spot++) {
+            currentSpot = spots[spot];
 
-        for (let i = 0; i < spots.length; i++) {
-            currentSpot = spots[i];
-
+            // Take active spots
             if (currentSpot.is_active == true) {
                 let weather = new WeatherProvider(currentSpot.code);
                 let result = await weather.fetchWeather();
                 
                 let winddirection = result.daily.winddirection_10m_dominant;
                 let windspeed = result.daily.windspeed_10m_max;
-                let time = result.daily.time
+                let time = result.daily.time;
                 
-                for (let j = 0; j < windspeed.length; j++) {
-                    if (windspeed[j] > this.windspeedThreshold) {
+                // Check wind speed
+                for (let wind = 0; wind < windspeed.length; wind++) {
+                    if (windspeed[wind] > this.windspeedThreshold) {
                         // Check wind direction
                         let bestWind = currentSpot.metadata.wind_direction;
-                        for (let m = 0; m < bestWind.length; m++) {
-                            if (bestWind[m] == WeatherUtils.windDirection(winddirection[j])) {
-                                let parcedDate = Date.parse(time[j]);  // Unix time
+                        for (let direction = 0; direction < bestWind.length; direction++) {
+                            if (bestWind[direction] == WeatherUtils.windDirection(winddirection[wind])) {
+                                let parcedDate = Date.parse(time[wind]);  // Unix time
                                 let newDate = new Date(parcedDate);
                                 let weekday = DateUtils.weekday(newDate.getDay());
                                 let strdate = `${weekday}, ${newDate.getDate()}`;
 
-                                let item = document.createElement("span") 
-                                item.innerHTML = `${strdate} - ${currentSpot.name} - ${Math.round(windspeed[j])} км/ч, ${WeatherUtils.windDirection(winddirection[j])}`;
-                                //UIForecastView.innerHTML += `<br>${strdate} - ${currentSpot.name} - ${Math.round(windspeed[j])} км/ч, ${WeatherUtils.windDirection(winddirection[j])}`;
-                                UIForecastView.appendChild(item);
+                                let workingSpot = {};
+                                workingSpot.originalDate = Date.parse(time[wind]);
+                                workingSpot.strdate = strdate;
+                                workingSpot.name = currentSpot.name;
+                                workingSpot.windspeed = windspeed[wind];
+                                this.workingSpots.push(workingSpot);
                             }
                         }
                     }
                 }
             }
         }
+        this.prepareForecast();
     }
 
 
+    async getDays() {
+        let result = await this.weatherProvider.fetchWeather();
+
+        console.log(result.daily.time);
+        for (let i = 0; i < result.daily.time.length; i++) {
+            this.days.push(result.daily.time[i]);
+        }
+        //console.log("DAYS: ", result.daily.time.length, this.days);
+    }
+
+
+    prepareForecast() {
+        
+        let spots = this.workingSpots;
+
+        spots.sort((a, b) => {
+            let da = new Date(a.originalDate),
+                db = new Date(b.originalDate);
+            return da - db;
+        });
+
+        let UIForecastView = document.getElementById("spot-forecast");
+        spots.forEach((e) => {
+            let item = document.createElement("span") 
+            item.innerHTML = `${e.strdate} - ${e.name} - ${Math.round(e.windspeed)} км/ч, ${WeatherUtils.windDirection(e.winddirection)}`;
+            UIForecastView.appendChild(item);
+        });
+
+        
+    }
 }
 
 
 function testCityForecast() {
     let sf = new SpotForecast();
+    sf.getDays();
     sf.forecast();
     sf.getWorkingSpots();
 }

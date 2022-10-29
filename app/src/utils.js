@@ -281,8 +281,8 @@ function getPageSummary(instanceState) {
 async function getWeather() {
     let weatherProvider = new WeatherProvider(instanceState.spotcode)
     let result = await weatherProvider.fetchWeather();
-    console.log("FETCH WEATHER RESULT");
-    console.log(result);
+    //console.log("FETCH WEATHER RESULT");
+    //console.log(result);
 
     let time = result.daily.time;
     let winddirection = result.daily.winddirection_10m_dominant;

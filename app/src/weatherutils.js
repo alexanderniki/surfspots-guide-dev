@@ -1,6 +1,6 @@
 /*
  * weatherutils.js
- * Useful tools for workung with weather forecast.
+ * Useful tools for working with weather forecast.
  */
 
  class WeatherUtils {

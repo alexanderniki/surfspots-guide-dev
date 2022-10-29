@@ -7,6 +7,7 @@ class WeatherProvider {
 
 
     constructor(placecode) {
+
         this.placeCode = placecode;
         this.baseURL = "https://api.open-meteo.com/v1/forecast";
         this.params = {
@@ -16,7 +17,7 @@ class WeatherProvider {
             timezone: "Europe/Moscow",
         }
         
-        this.fetchWeather();
+        //this.fetchWeather();
     }
 
 
@@ -33,7 +34,7 @@ class WeatherProvider {
             }
             paramCounter += 1;
         }
-        console.log(request);
+        //console.log(request);
         return request;
     }
 
@@ -41,7 +42,6 @@ class WeatherProvider {
     async fetchWeather() {
         let response = await fetch(this.buildRequest());
         let json = await response.json();
-        console.log(json.daily.time);
         return json;
     }
 
