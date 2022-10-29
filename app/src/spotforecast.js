@@ -123,7 +123,5 @@ class SpotForecast {
 
 function testCityForecast() {
     let sf = new SpotForecast();
-    sf.getDays();
-    sf.forecast();
     sf.getWorkingSpots();
 }
