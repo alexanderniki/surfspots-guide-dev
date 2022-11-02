@@ -62,7 +62,7 @@ class SpotForecast {
                 
                 // Check wind speed
                 for (let wind = 0; wind < windspeed.length; wind++) {
-                    if (windspeed[wind] > this.windspeedThreshold) {
+                    if (Math.round(windspeed[wind]) > this.windspeedThreshold) {
                         // Check wind direction
                         let bestWind = currentSpot.metadata.wind_direction;
                         for (let direction = 0; direction < bestWind.length; direction++) {
@@ -112,6 +112,8 @@ class SpotForecast {
         });
 
         let UIForecastView = document.getElementById("spot-forecast");
+        let forecastLoader = document.getElementById("forecast-loader");
+        UIForecastView.removeChild(forecastLoader);
         spots.forEach((e) => {
             let item = document.createElement("span") 
             item.innerHTML = `${e.strdate} - ${e.name} - ${Math.round(e.windspeed)} м/с, ${e.winddirection}`;

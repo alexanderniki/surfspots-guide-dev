@@ -87,7 +87,7 @@ class InlineNotificationView extends HTMLElement {
         this.card.classList.add("uix-layout--hbox");
         this.card.setAttribute("id", "inline-notification-card")
         link.setAttribute("href", this.notification.link);
-        container.classList.add("uix-layout--vbox");
+        container.classList.add("uix-layout--vbox-compact");
 
         notificationOverline.innerHTML = this.notification.overline;
         notificationTitle.classList.add("title");

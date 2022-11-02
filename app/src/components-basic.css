@@ -341,3 +341,18 @@
 #inline-notification--close {
     color: var(--color-on-accent);
 }
+
+
+.loader {
+    border: var(--space-50) solid var(--color-helper-2); /* BG */
+    border-top: var(--space-50) solid var(--color-secondary); /* Color */
+    border-radius: 50%;
+    width: var(--space-500);
+    height: var(--space-500);
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

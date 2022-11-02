@@ -304,7 +304,7 @@ async function getWeather() {
 
         // Card
         let forecastCard = document.createElement("div");
-        forecastCard.classList.add("uix-layout--vbox-dense");
+        forecastCard.classList.add("uix-layout--vbox-compact");
         forecastCard.classList.add("uix-card--weather--day");
 
         // Items

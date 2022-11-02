@@ -12,6 +12,11 @@
 
 .uix-tabview--tabbar {
     overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    padding: 0px;
     
     border: 1px solid;
     border-color: var(--color-helper-2);
@@ -19,17 +24,20 @@
     
     background-color: var(--color-surface);
     color: var(--color-surface);
-    
 }
 
 .uix-tabview--tabbar button {
-    background-color: inherit;
-    float: left;
+    background-color: var(--color-surface);
+    /*float: left;*/
     border: none;
     outline: none;
     cursor: pointer;
-    padding: 14px 16px;
-    transition: 0.3s;
+    padding: var(--space-200);
+    /*transition: 0.3s;*/
+
+    font-family: "PT Root UI", sans-serif;
+    line-height: 1.5;
+    font-size: 16px;
 }
 
 .uix-tabview--tabbar button:hover {
