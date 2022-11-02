@@ -1,0 +1,50 @@
+/* 
+ * tabview.css
+ * TabView
+ */
+
+/* Tabbar */
+
+.uix-tabview {
+    display: flex;
+    flex-direction: column;
+}
+
+.uix-tabview--tabbar {
+    overflow: hidden;
+    
+    border: 1px solid;
+    border-color: var(--color-helper-2);
+    border-radius: var(--space-100);
+    
+    background-color: var(--color-surface);
+    color: var(--color-surface);
+    
+}
+
+.uix-tabview--tabbar button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 14px 16px;
+    transition: 0.3s;
+}
+
+.uix-tabview--tabbar button:hover {
+    background-color: var(--color-extra-accent1-variant);
+}
+
+.uix-tabview--tabbar button.active {
+    background-color: var(--color-secondary);
+    color: var(--color-surface);
+}
+
+.uix-tabview--tabcontent {
+    display: none;
+}
+
+.uix-tabview--tabcontent--default {
+    display: flex;
+}

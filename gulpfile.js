@@ -16,6 +16,7 @@ const stylesBundle = async () => {
         './app/src/uix-labels.css',
         './app/src/components-basic.css',
         './app/src/gallery.css',
+        './app/src/uix-tabview.css',
     ])
     .pipe(concat('style.css'))
     .pipe(dest('./app/dist'));
@@ -33,6 +34,7 @@ const appBundle = async () => {
         './app/src/weatherprovider.js',
         './app/src/spotforecast.js',
         './app/src/uix-labels.js',
+        './app/src/uix-tabview.js',
     ])
     .pipe(concat('app.js'))
     .pipe(dest('./app/dist'));
