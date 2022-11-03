@@ -31,30 +31,121 @@ class UILabelSimple extends HTMLElement {
 
 customElements.define("ui-label--simple", UILabelSimple);
 /*
- * dateutils.js
- * Useful tools for working with date and time.
+ * card.js
+ * Generic card component
  */
 
-class DateUtils {
+
+class UICard extends HTMLElement {
+    
     constructor() {
+        super();
+
+        this._primaryText = "";
+        this._secondaryText = "";
+    }
+
+    get primaryText() {
+        return this._primaryText;
+    }
+
+    get secondaryText() {
+        return this._secondaryText;
+    }
+
+    set primaryText(str) {
+        if (str) {
+            this._primaryText = str;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    set secondaryText(str) {
+        if (str) {
+            this._secondaryText = str;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    render() {
         // do nothing
     }
 
-    static weekday(number) {
-        const days = [
-            'Вс',
-            'Пн',
-            'Вт',
-            'Ср',
-            'Чт',
-            'Пт',
-            'Сб',
-        ]
-
-        return days[number];
+    connectedCallback() {
+        this.render();
     }
 }
 
+customElements.define("ui-card", UICard);
+/*
+ * 
+ */
+
+
+class UICardStore extends UICard {
+    
+    constructor() {
+        super();
+
+        this._overline = "";
+        this._openURL = "";
+    }
+
+    get overline() {
+        return this._overline;
+    }
+
+    get openURL() {
+        return this._openURL;
+    }
+
+    set overline(str) {
+        if (str) {
+            this._overline = str;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    set openURL(str) {
+        if (str) {
+            this._openURL = str;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    render() {
+        this.innerHTML = `
+        <div class="uix-card--rent">
+            <div class="uix-layout--vbox-compact bottom">
+                <span class="caption typography-uppercase">${this.overline}</span>
+                <span class="headline-6 typography-bold">${this.primaryText}</span>
+                <span class="body-1">${this.secondaryText}</span>
+            </div>
+        </div>
+        `;
+        this.addEventListener("click", function() {
+            window.open(this.openURL);
+        });
+
+        /*let container = document.createElement("span");
+        container.innerHTML = this.overline + ", " + this.primaryText + ", " + this.secondaryText;
+        this.appendChild(container);*/
+    }
+
+    connectedCallback() {
+        this.render();
+    }
+}
+
+customElements.define("ui-card--store", UICardStore);
 /* 
  * footer.js 
  */
@@ -1021,6 +1112,30 @@ function displayNotification() {
     document.getElementById("inline-notification").appendChild(uinotification);
     //document.body.appendChild(uinotification);
 }
+
+
+function displayShops() {
+    let stores = data.stores;
+    let storesContainer = document.getElementById("collection-stores");
+
+    for (store in stores) {
+        if (stores[store].is_active == true) {
+            console.log("STORES: ", stores[store]);
+            storeName = stores[store].name;
+            storeSummary = stores[store].metadata.summary;
+            storeType = stores[store].metadata.type;
+            storeHomepage = stores[store].metadata.homepage;
+
+            let uicardstore = new UICardStore();
+            uicardstore.overline = storeType;
+            uicardstore.primaryText = storeName;
+            uicardstore.secondaryText = storeSummary;
+            uicardstore.openURL = storeHomepage;
+
+            storesContainer.appendChild(uicardstore);
+        }
+    }
+}
 /*
  * weatherprovider.js
  * Work with weather. 
@@ -1099,6 +1214,31 @@ class WeatherProvider {
     
 
 }
+/*
+ * dateutils.js
+ * Useful tools for working with date and time.
+ */
+
+class DateUtils {
+    constructor() {
+        // do nothing
+    }
+
+    static weekday(number) {
+        const days = [
+            'Вс',
+            'Пн',
+            'Вт',
+            'Ср',
+            'Чт',
+            'Пт',
+            'Сб',
+        ]
+
+        return days[number];
+    }
+}
+
 /*
  * weatherutils.js
  * Useful tools for working with weather forecast.

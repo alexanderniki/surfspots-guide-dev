@@ -407,3 +407,27 @@ function displayNotification() {
     document.getElementById("inline-notification").appendChild(uinotification);
     //document.body.appendChild(uinotification);
 }
+
+
+function displayShops() {
+    let stores = data.stores;
+    let storesContainer = document.getElementById("collection-stores");
+
+    for (store in stores) {
+        if (stores[store].is_active == true) {
+            console.log("STORES: ", stores[store]);
+            storeName = stores[store].name;
+            storeSummary = stores[store].metadata.summary;
+            storeType = stores[store].metadata.type;
+            storeHomepage = stores[store].metadata.homepage;
+
+            let uicardstore = new UICardStore();
+            uicardstore.overline = storeType;
+            uicardstore.primaryText = storeName;
+            uicardstore.secondaryText = storeSummary;
+            uicardstore.openURL = storeHomepage;
+
+            storesContainer.appendChild(uicardstore);
+        }
+    }
+}
