@@ -29,4 +29,4 @@ class UILabelSimple extends HTMLElement {
     }
 }
 
-customElements.define("ui-label--simple", UILabel);
+customElements.define("ui-label--simple", UILabelSimple);

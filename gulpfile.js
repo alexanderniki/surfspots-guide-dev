@@ -5,7 +5,13 @@ const gulp = require('gulp');
 
 
 gulp.task('code', function() {
-    return gulp.src(['./src/app/components/**/*.js', './src/app/*.js']).pipe(concat('app.js')).pipe(dest('./dist/app'));
+    return gulp.src([
+        './src/app/components/**/*.js',
+        './src/app/*.js',
+        './src/app/utils/**/*.js',
+        './src/app/utils/*.js',
+    ])
+    .pipe(concat('app.js')).pipe(dest('./dist/app'));
 });
 
 

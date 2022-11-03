@@ -1,56 +1,4 @@
 /*
- * gallery.js
- * Taken from https://dev.to/wepukhulutimothy/image-gallery-with-vanilla-javascript-518g
- */
-
-
-let current = document.getElementById("current");
-let opacity = 0.6;
-let imgs = document.querySelectorAll(".img");
-
-imgs.forEach(img => {
-  img.addEventListener("click", (e) => {
-    //reset opacity
-    imgs.forEach(img => {img.style.opacity = 1;
-    });
-  current.src = e.target.src;
-  //adding class 
-  //current.classList.add("fade-in");
-  //opacity
-  e.target.style.opacity = opacity; 
-  });
-});
-
-/*
- * Modal fullscreen popup window
- * Taken from: https://www.w3schools.com/howto/howto_css_modal_images.asp
- */
-
-// Get the modal
-var modal = document.getElementById("gallery-modal");
-
-// Get the image and insert it inside the modal - use its "alt" text as a caption
-var img = document.getElementById("current");
-var modalImg = document.getElementById("gallery-image");
-/* Don't need caption right now */
-// var captionText = document.getElementById("caption");
-img.onclick = function(){
-    modal.style.display = "block";
-    modalImg.src = this.src;
-    document.body.style.overflow = "hidden";
-    /* Don't need caption right now */
-    // captionText.innerHTML = this.alt;
-}
-
-// Get the <span> element that closes the modal
-var span = document.getElementsByClassName("uix-button--gallery--close")[0];
-
-// When the user clicks on <span> (x), close the modal
-span.onclick = function() {
-    modal.style.display = "none";
-    document.body.style.overflow = "scroll";
-}
-/*
  * label.js
  * UILabel
  */
@@ -81,168 +29,7 @@ class UILabelSimple extends HTMLElement {
     }
 }
 
-customElements.define("ui-label--simple", UILabel);
-/* 
- * footer.js 
- */
-
-class Footer extends HTMLElement {
-    
-    constructor() {
-        super();
-    }
-
-    connectedCallback() {
-        this.render();
-    }
-
-    render() {
-        this.innerHTML = `
-        <section class="main-footer caption">
-            <p>КОНТАКТЫ:</p>
-            <ul>
-                <li>Telegram/Whatsapp: @alexanderniki</li>
-                <li>Instagram: <a href="https://instagram.com/alexanderniki">@alexanderniki</a></li>
-            </ul>
-            <p><button onclick="toggleTheme()">Тема: день/ночь</button>
-        </section>
-        `;
-    }
-}
-
-customElements.define("footer-component", Footer);
-/* 
- * equiplist.js
- */
-
-
-class Equiplist extends HTMLElement {
-
-    constructor() {
-        super();
-    }
-
-    connectedCallback() {
-        this.render();
-    }
-
-    render() {
-        this.innerHTML = `
-        <ul>
-            <li><a href="equip-board.html">Доска</a></li>
-            <li><a href="equip-apparel.html">Одежда</a></li>
-            <li><a href="equip-accessories.html">Аксесуары</a></li>
-        </ul>
-        `
-    }
-}
-
-customElements.define("equiplist-component", Equiplist);
-/*
- * spotlist.js
- */
-
-
-class Spotlist extends HTMLElement {
-
-    constructor() {
-        super();
-    }
-
-    connectedCallback() {
-        this.render();
-    }
-
-    render() {
-
-        this.innerHTML = `
-        <ul>
-            <li><a href="spot-atlantis.html">Атлантис</a></li>
-            <li><a href="spot-osinovets.html">Осиновец</a></li>
-            <li><a href="spot-lighthouse.html">Маяк</a></li>
-            <li><a href="spot-bigsands.html">Большие пески</a></li>
-            <li><a href="spot-motor.html">Бухта Моторная</a></li>
-            <li><a href="spot-battery.html">Батарейная бухта</a></li>
-            <!--<li>Мыс Флотский</li>
-            <li>Спот "Парковка"</li>
-            <li>Липово</li>
-            <li><a href="">Бухта Желтая</a></li>-->
-        </ul>
-        `
-    }
-
-}
-
-customElements.define("spotlist-component", Spotlist);
-/*
- * utils.js
- * Various useful functions and classed
- */
-
-
-
-/* Toggle CSS style using sessionStorage to store current theme */
-function toggleTheme() {
-    // Obtains an array of all <link>
-    // elements.
-    // Select your element using indexing.
-    var theme = document.getElementsByTagName('link')[0];
-
-    // Change the value of href attribute 
-    // to change the css sheet.
-    if (theme.getAttribute('href') == 'style/theme-light.css') {
-        theme.setAttribute('href', 'style/theme-dark.css');
-        sessionStorage.setItem('theme', "style/theme-dark.css");
-    } else {
-        theme.setAttribute('href', 'style/theme-light.css');
-        sessionStorage.setItem('theme', "style/theme-light.css");
-    }
-}
-
-function setTheme(value) {
-  
-    // Obtain the name of stylesheet 
-    // as a parameter and set it 
-    // using href attribute.
-    // https://www.geeksforgeeks.org/how-to-switch-between-multiple-css-stylesheets-using-javascript/
-
-    var sheets = document.getElementsByTagName('link');
-    sheets[0].href = value;
-}
-
-function getCurrentTheme() {
-
-    // Initialize current theme
-    // @TODO: rename the function
-
-    var theme = sessionStorage.getItem('theme');
-    if (theme != null) {
-        setTheme(theme);
-    }
-    else {
-        theme = 'style/theme-light.css';
-        sessionStorage.setItem('theme', theme);
-        setTheme(theme);
-    }
-    
-}
-
-
-function setBrowserDecodation() {
-    
-    // set Chrome toolbar color
-}
-
-
-function copyToClipboard(element) {
-    let copyText = document.getElementById(element);
-    
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(copyText.innerText).then(() => alert("Координаты скопированы"));
-      } else {
-        console.log("Clipboard is not supported");
-      }
-}
+customElements.define("ui-label--simple", UILabelSimple);
 /*
  * dateutils.js
  * Useful tools for working with date and time.
@@ -942,12 +729,12 @@ function toggleTheme() {
 
     // Change the value of href attribute 
     // to change the css sheet.
-    if (theme.getAttribute('href') == 'dist/theme-light.css') {
-        theme.setAttribute('href', 'dist/theme-dark.css');
-        sessionStorage.setItem('theme', "dist/theme-dark.css");
+    if (theme.getAttribute('href') == 'app/theme-light.css') {
+        theme.setAttribute('href', 'app/theme-dark.css');
+        sessionStorage.setItem('theme', "app/theme-dark.css");
     } else {
-        theme.setAttribute('href', 'dist/theme-light.css');
-        sessionStorage.setItem('theme', "dist/theme-light.css");
+        theme.setAttribute('href', 'app/theme-light.css');
+        sessionStorage.setItem('theme', "app/theme-light.css");
     }
 }
 
@@ -972,7 +759,7 @@ function getCurrentTheme() {
         setTheme(theme);
     }
     else {
-        theme = 'dist/theme-light.css';
+        theme = 'app/theme-light.css';
         sessionStorage.setItem('theme', theme);
         setTheme(theme);
     }

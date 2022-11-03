@@ -115,12 +115,12 @@ function toggleTheme() {
 
     // Change the value of href attribute 
     // to change the css sheet.
-    if (theme.getAttribute('href') == 'dist/theme-light.css') {
-        theme.setAttribute('href', 'dist/theme-dark.css');
-        sessionStorage.setItem('theme', "dist/theme-dark.css");
+    if (theme.getAttribute('href') == 'app/theme-light.css') {
+        theme.setAttribute('href', 'app/theme-dark.css');
+        sessionStorage.setItem('theme', "app/theme-dark.css");
     } else {
-        theme.setAttribute('href', 'dist/theme-light.css');
-        sessionStorage.setItem('theme', "dist/theme-light.css");
+        theme.setAttribute('href', 'app/theme-light.css');
+        sessionStorage.setItem('theme', "app/theme-light.css");
     }
 }
 
@@ -145,7 +145,7 @@ function getCurrentTheme() {
         setTheme(theme);
     }
     else {
-        theme = 'dist/theme-light.css';
+        theme = 'app/theme-light.css';
         sessionStorage.setItem('theme', theme);
         setTheme(theme);
     }
