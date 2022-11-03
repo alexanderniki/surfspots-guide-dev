@@ -1,62 +1,32 @@
 const { src, dest } = require('gulp');
+const { gulpfile } = require('gulp-cli/lib/shared/cli-options');
 const concat = require('gulp-concat');
-
-/*gulp.task('styles', function() {
-    return gulp.src('.src/templates/style/*.css')
-      .pipe(concat('style.css'))
-      .pipe(gulp.dest('./dist/'));
-});*/
-
-const stylesBundle = async () => {
-    src([
-        './app/src/dimens.css',
-        './app/src/layout.css',
-        './app/src/uix-typography.css',
-        './app/src/uix-buttons.css',
-        './app/src/uix-labels.css',
-        './app/src/components-basic.css',
-        './app/src/gallery.css',
-        './app/src/uix-tabview.css',
-    ])
-    .pipe(concat('style.css'))
-    .pipe(dest('./app/dist'));
-}
-
-const appBundle = async () => {
-    src([
-        './app/src/footer.js',
-        './app/src/spotlist.js',
-        './app/src/inlinenotification.js',
-        './app/src/utils.js',
-        './app/src/main.js',
-        './app/src/dateutils.js',
-        './app/src/weatherutils.js',
-        './app/src/weatherprovider.js',
-        './app/src/spotforecast.js',
-        './app/src/uix-labels.js',
-        './app/src/uix-tabview.js',
-    ])
-    .pipe(concat('app.js'))
-    .pipe(dest('./app/dist'));
-}
-
-const dataBundle = async () => {
-    src([
-        './app/src/data.js',
-    ])
-    .pipe(dest('./app/dist'));
-}
+const gulp = require('gulp');
 
 
-const buildApp = async () => {
-    stylesBundle();
-    appBundle();
-    dataBundle();
-}
+gulp.task('code', function() {
+    return gulp.src(['./src/app/components/**/*.js', './src/app/*.js']).pipe(concat('app.js')).pipe(dest('./dist/app'));
+});
 
 
-exports.stylesbundle = stylesBundle;  // gulp stylesbundle
-exports.appbundle = appBundle;  // gulp appbundle
-exports.databundle = dataBundle;  // gulp databundle
+gulp.task('style', function() {
+    return gulp.src(['./src/app/components/**/*.css', './src/app/*.css']).pipe(concat('style.css')).pipe(dest('./dist/app'));
+});
 
-exports.buildapp = buildApp;  // gulp buildapp
+
+gulp.task('page', function() {
+    return gulp.src(['./src/*.html']).pipe(dest('./dist'));
+});
+
+
+gulp.task('data', function() {
+    return gulp.src(['./src/app/data/data.js']).pipe(dest('./dist/app'));
+});
+
+
+gulp.task('media', function() {
+    return gulp.src(['./src/media/*.*']).pipe(dest('./dist/media'));
+});
+
+
+gulp.task('build', ['code', 'style', 'page', 'data', 'media']);

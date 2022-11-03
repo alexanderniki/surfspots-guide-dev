@@ -1,5 +1,5 @@
 /* 
- * tabview.css
+ * uix-tabview.css
  * TabView
  */
 
@@ -12,6 +12,8 @@
 
 .uix-tabview--tabbar {
     overflow: hidden;
+    /*overflow: auto;
+    white-space: nowrap;*/
     display: flex;
     flex-direction: row;
     justify-content: center;

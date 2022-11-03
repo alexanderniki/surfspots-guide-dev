@@ -1,3 +1,9 @@
+/*
+ * label.css
+ * UILabel
+ */
+
+
 .uix-label--simple {
     color: var(--color-on-accent-t75);
     background-color: rgba(255, 255, 255, 0.2);
