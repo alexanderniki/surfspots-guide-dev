@@ -48,10 +48,13 @@ class UICardStore extends UICard {
             </div>
         </div>
         `;
-        this.addEventListener("click", function() {
-            window.open(this.openURL);
-        });
-
+        if (this.openURL && this.openURL != "") {
+            this.addEventListener("click", function() {
+                window.open(this.openURL);
+            });
+            this.style.cursor = "pointer";
+    
+        }
         /*let container = document.createElement("span");
         container.innerHTML = this.overline + ", " + this.primaryText + ", " + this.secondaryText;
         this.appendChild(container);*/

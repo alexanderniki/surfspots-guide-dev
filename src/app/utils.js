@@ -431,3 +431,27 @@ function displayShops() {
         }
     }
 }
+
+/* Get and display Schools, Rents and Instructors */
+function displayOrgs() {
+    let orgs = data.orgs;
+    let storesContainer = document.getElementById("collection-orgs");
+
+    for (org in orgs) {
+        if (orgs[org].is_active == true) {
+            console.log("Orgs: ", orgs[org]);
+            orgName = orgs[org].name;
+            orgSummary = orgs[org].metadata.summary;
+            orgType = orgs[org].metadata.type;
+            orgHomepage = orgs[org].metadata.homepage;
+
+            let uicardorg = new UICardStore();
+            uicardorg.overline = orgType;
+            uicardorg.primaryText = orgName;
+            uicardorg.secondaryText = orgSummary;
+            uicardorg.openURL = orgHomepage;
+
+            storesContainer.appendChild(uicardorg);
+        }
+    }
+}
