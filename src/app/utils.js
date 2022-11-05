@@ -455,3 +455,31 @@ function displayOrgs() {
         }
     }
 }
+
+
+function displayCommunication() {
+    let collection = data.communications;
+    let container = document.getElementById("collection-communication");
+
+    for (item in collection) {
+        if (collection[item].is_active == true) {
+            console.log("Communications: ", collection[item]);
+            commName = collection[item].name;
+            commSummary = collection[item].metadata.summary;
+            commType = collection[item].metadata.type;
+            commChannelType = collection[item].metadata.channel_type;
+            commLink = collection[item].metadata.link;
+            commLinkText = collection[item].metadata.link_text;
+
+            let uicard = new UICardCommunication();
+            uicard.type = commType;
+            uicard.channelType = commChannelType;
+            uicard.primaryText = commName;
+            uicard.secondaryText = commSummary;
+            uicard.link = commLink;
+            uicard.linkText = commLinkText;
+
+            container.appendChild(uicard);
+        }
+    }
+}
