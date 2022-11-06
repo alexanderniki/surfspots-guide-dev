@@ -1303,27 +1303,21 @@ function displayOrgs() {
 
 function displayCommunication() {
     let collection = data.communications;
-    let container = document.getElementById("collection-communication");
+    let uicontainer = document.getElementById("collection-communication");
 
     for (item in collection) {
         if (collection[item].is_active == true) {
-            console.log("Communications: ", collection[item]);
-            commName = collection[item].name;
-            commSummary = collection[item].metadata.summary;
-            commType = collection[item].metadata.type;
-            commChannelType = collection[item].metadata.channel_type;
-            commLink = collection[item].metadata.link;
-            commLinkText = collection[item].metadata.link_text;
 
             let uicard = new UICardCommunication();
-            uicard.type = commType;
-            uicard.channelType = commChannelType;
-            uicard.primaryText = commName;
-            uicard.secondaryText = commSummary;
-            uicard.link = commLink;
-            uicard.linkText = commLinkText;
 
-            container.appendChild(uicard);
+            uicard.type = collection[item].metadata.type;
+            uicard.channelType = collection[item].metadata.channel_type;
+            uicard.primaryText = collection[item].name;
+            uicard.secondaryText = collection[item].metadata.summary;
+            uicard.link = collection[item].metadata.lin;
+            uicard.linkText = collection[item].metadata.link_text;
+
+            uicontainer.appendChild(uicard);
         }
     }
 }
@@ -1331,17 +1325,18 @@ function displayCommunication() {
 
 function displayPopularSpots() {
     let collection = data.spots;
-    let container = document.getElementById("spots-popular");
+    let uicontainer = document.getElementById("spots-popular");
 
     for (item in collection) {
         if (collection[item].is_popular == true) {
 
             let uicard = new UICardSpot();
+            
             uicard.primaryText = collection[item].name;
             uicard.secondaryText = collection[item].metadata.location.water;
             uicard.openURL = collection[item].page_link;
 
-            container.appendChild(uicard);
+            uicontainer.appendChild(uicard);
         }
     }
 }
