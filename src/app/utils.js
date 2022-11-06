@@ -3,6 +3,7 @@
  * Various useful functions and classed
  */
 
+
 class AppInstanceState {
     locale = "";
     city = "";
@@ -44,6 +45,7 @@ class AppInstanceState {
     }
 }
 
+
 let appInstanceState = {
     locale: "",
     city: "",
@@ -51,21 +53,25 @@ let appInstanceState = {
     prevPage: "",
 };
 
+
 function setLocale(locale) {
     sessionStorage.setItem('locale', 'ru_RU');
     appInstanceState.locale = 'ru_RU';
 }
+
 
 function setCity(city) {
     sessionStorage.setItem('city', 'Санкт-Петербург');
     appInstanceState.city = 'Санкт-Петербург';
 }
 
+
 function setPreviousPage(pageLink) {
     console.log("setPreviousPage()");
     sessionStorage.setItem('prevPage', pageLink);
     appInstanceState.prevPage = pageLink;
 }
+
 
 function getPreviousPage() {
 
@@ -80,9 +86,11 @@ function getPreviousPage() {
     return prevPage;
 }
 
+
 function navigateToPage(page) {
     window.location.href = page;
 }
+
 
 function adjustBackButton() {
     let backButton = document.getElementById("button--back");
@@ -124,6 +132,7 @@ function toggleTheme() {
     }
 }
 
+
 function setTheme(value) {
   
     // Obtain the name of stylesheet 
@@ -134,6 +143,7 @@ function setTheme(value) {
     var sheets = document.getElementsByTagName('link');
     sheets[0].href = value;
 }
+
 
 function getCurrentTheme() {
 
@@ -248,6 +258,7 @@ function getPageHeader(instanceState) {
     }
 }
 
+
 function getPageSummary(instanceState) {
     let spots = data.spots;
     let currentSpot = '';
@@ -274,6 +285,7 @@ function getPageSummary(instanceState) {
         console.log("no summary");
     }
 }
+
 
 /*
  * Get weather forecast
@@ -327,20 +339,6 @@ async function getWeather() {
 }
 
 
-function getPopularSpots() {
-    let spots = data.spots;
-
-    for (let i = 0; i < spots.length; i++) {
-        if (data.spots[i].is_popular == true) {
-            // container
-            let container = document.getElementById("spots-popular");
-
-            // create card
-        }
-    }
-}
-
-
 function getSessionFlag(flag) {
     /*
      * Check if given flag exists and if so, return it value (0 or 1)
@@ -350,6 +348,7 @@ function getSessionFlag(flag) {
     let value = sessionStorage.getItem(flag);
     return value;
 }
+
 
 function setSessioFlag(flag, value) {
     /*
@@ -385,6 +384,7 @@ function toggleDonationAlert() {
         toggleDonationFlag();
     }
 }
+
 
 function displayNotification() {
 
@@ -432,6 +432,7 @@ function displayShops() {
     }
 }
 
+
 /* Get and display Schools, Rents and Instructors */
 function displayOrgs() {
     let orgs = data.orgs;
@@ -478,6 +479,24 @@ function displayCommunication() {
             uicard.secondaryText = commSummary;
             uicard.link = commLink;
             uicard.linkText = commLinkText;
+
+            container.appendChild(uicard);
+        }
+    }
+}
+
+
+function displayPopularSpots() {
+    let collection = data.spots;
+    let container = document.getElementById("spots-popular");
+
+    for (item in collection) {
+        if (collection[item].is_popular == true) {
+
+            let uicard = new UICardSpot();
+            uicard.primaryText = collection[item].name;
+            uicard.secondaryText = collection[item].metadata.location.water;
+            uicard.openURL = collection[item].page_link;
 
             container.appendChild(uicard);
         }

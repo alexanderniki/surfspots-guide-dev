@@ -1,5 +1,6 @@
 /*
- * 
+ * storecard.js
+ * UICardStore
  */
 
 
