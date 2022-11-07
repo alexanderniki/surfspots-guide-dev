@@ -410,24 +410,20 @@ function displayNotification() {
 
 
 function displayShops() {
-    let stores = data.stores;
-    let storesContainer = document.getElementById("collection-stores");
+    let collection = data.stores;
+    let uicontainer = document.getElementById("collection-stores");
 
-    for (store in stores) {
-        if (stores[store].is_active == true) {
-            console.log("STORES: ", stores[store]);
-            storeName = stores[store].name;
-            storeSummary = stores[store].metadata.summary;
-            storeType = stores[store].metadata.type;
-            storeHomepage = stores[store].metadata.homepage;
+    for (item in collection) {
+        if (collection[item].is_active == true) {
 
-            let uicardstore = new UICardStore();
-            uicardstore.overline = storeType;
-            uicardstore.primaryText = storeName;
-            uicardstore.secondaryText = storeSummary;
-            uicardstore.openURL = storeHomepage;
+            let uicard = new UICardStore();
 
-            storesContainer.appendChild(uicardstore);
+            uicard.overline = collection[item].metadata.type;
+            uicard.primaryText = collection[item].name;
+            uicard.secondaryText = collection[item].metadata.summary;
+            uicard.openURL = collection[item].metadata.homepage;
+
+            uicontainer.appendChild(uicard);
         }
     }
 }
@@ -435,24 +431,20 @@ function displayShops() {
 
 /* Get and display Schools, Rents and Instructors */
 function displayOrgs() {
-    let orgs = data.orgs;
-    let storesContainer = document.getElementById("collection-orgs");
+    let collection = data.orgs;
+    let uicontainer = document.getElementById("collection-orgs");
 
-    for (org in orgs) {
-        if (orgs[org].is_active == true) {
-            console.log("Orgs: ", orgs[org]);
-            orgName = orgs[org].name;
-            orgSummary = orgs[org].metadata.summary;
-            orgType = orgs[org].metadata.type;
-            orgHomepage = orgs[org].metadata.homepage;
+    for (item in collection) {
+        if (collection[item].is_active == true) {
 
-            let uicardorg = new UICardStore();
-            uicardorg.overline = orgType;
-            uicardorg.primaryText = orgName;
-            uicardorg.secondaryText = orgSummary;
-            uicardorg.openURL = orgHomepage;
+            let uicard = new UICardStore();
 
-            storesContainer.appendChild(uicardorg);
+            uicard.overline = collection[item].metadata.type;
+            uicard.primaryText = collection[item].name;
+            uicard.secondaryText = collection[item].metadata.summary;
+            uicard.openURL = collection[item].metadata.homepage;
+
+            uicontainer.appendChild(uicard);
         }
     }
 }
