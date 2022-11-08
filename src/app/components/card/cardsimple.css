@@ -1,0 +1,45 @@
+/*
+ * cardsimple.css
+ * UICardSimple
+ */
+
+/* BASIC */
+.ui-card--simple {
+    display: flex;
+    flex: 1 1 288px;
+    flex-direction: column;
+    align-items: bottom;
+
+    border: 1px;
+    border-radius: var(--space-100);
+    border-color: var(--color-helper-2);
+    border-style: solid;
+    box-sizing: border-box;
+
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+
+    padding: var(--space-200);
+}
+
+
+/* MOBILE */
+@media (max-width: 576px) {
+    .ui-card--simple {
+        min-height: var(--space-1200);
+    }
+}
+
+/* TABLET */
+@media (min-width: 576px) {
+    .ui-card--simple {
+        min-height: 192px;
+    }
+}
+
+/* DESKTOP */
+@media (min-width: 1200px) {
+    .ui-card--simple {
+        min-height: 192px;
+    }
+}

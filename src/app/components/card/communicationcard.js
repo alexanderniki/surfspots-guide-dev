@@ -69,7 +69,7 @@ class UICardCommunication extends UICard {
 
     render() {
         this.innerHTML = `
-            <div class="uix-card--communication">
+            <div class="ui-card--communication">
                 <span class="caption typography-uppercase">${this.type} • ${this.channelType}</span>
                 <span class="headline-6">${this.primaryText}</span>
                 <span class="body-1"><a href="${this.link}">${this.linkText}</a></span>

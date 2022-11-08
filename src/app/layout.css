@@ -30,6 +30,9 @@
     #main-spots, #main-rent, #main-other {
         gap: var(--space-200);
     }
+    .uix-card--spot--minimal {
+        min-height: 96px;
+    }
 }
 
 /* Tablet */

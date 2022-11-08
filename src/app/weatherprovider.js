@@ -35,7 +35,7 @@ class WeatherProvider {
             }
             paramCounter += 1;
         }
-        console.log("WATHER API REQUEST: ", request);
+        //console.log("WATHER API REQUEST: ", request);
         return request;
     }
 
@@ -58,7 +58,7 @@ class WeatherProvider {
             }
             else {
                 // do nothing
-                console.log("The spot not found");
+                //console.log("The spot not found");
             }
         }
 

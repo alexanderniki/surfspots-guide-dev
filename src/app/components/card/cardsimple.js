@@ -1,16 +1,17 @@
 /*
- * storecard.js
- * UICardStore
+ * cardsimple.js
+ * UICardSimple
  */
 
 
-class UICardStore extends UICard {
+class UICardSimple extends UICard {
     
     constructor() {
         super();
 
         this._overline = "";
         this._openURL = "";
+        this._openNewPage = false;
     }
 
     get overline() {
@@ -19,6 +20,10 @@ class UICardStore extends UICard {
 
     get openURL() {
         return this._openURL;
+    }
+
+    get openNewPage() {
+        return this._openNewPage;
     }
 
     set overline(str) {
@@ -39,9 +44,18 @@ class UICardStore extends UICard {
         }
     }
 
+    set openNewPage(value) {
+        if (value) {
+            this._openNewPage = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
     render() {
         this.innerHTML = `
-        <div class="uix-card--rent">
+        <div class="ui-card--simple">
             <div class="uix-layout--vbox-compact bottom">
                 <span class="caption typography-uppercase">${this.overline}</span>
                 <span class="headline-6 typography-bold">${this.primaryText}</span>
@@ -51,7 +65,15 @@ class UICardStore extends UICard {
         `;
         if (this.openURL && this.openURL != "") {
             this.addEventListener("click", function() {
-                window.open(this.openURL);
+                if (this.openNewPage == true) {
+                    window.open(this.openURL);
+                }
+                else if (this.openNewPage == false){
+                    window.location.href = this.openURL;
+                }
+                else {
+                    // do nothing
+                }
             });
             this.style.cursor = "pointer";
     
@@ -66,4 +88,4 @@ class UICardStore extends UICard {
     }
 }
 
-customElements.define("ui-card--store", UICardStore);
+customElements.define("ui-card--store", UICardSimple);
