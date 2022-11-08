@@ -540,6 +540,7 @@ function displaySpots() {
         container.classList.add("uix-layout--grid--wrapped");
         
         let title = document.createElement("span");
+        title.classList.add("title");
         title.innerText = collection[item].name;
         uicontainer.appendChild(title);
 

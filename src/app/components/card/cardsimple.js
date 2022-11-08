@@ -56,7 +56,7 @@ class UICardSimple extends UICard {
     render() {
         this.innerHTML = `
         <div class="ui-card--simple">
-            <div class="uix-layout--vbox-compact bottom">
+            <div class="uix-layout--vbox-compact ui-card--simple--data bottom">
                 <span class="caption typography-uppercase">${this.overline}</span>
                 <span class="headline-6 typography-bold">${this.primaryText}</span>
                 <span class="body-1">${this.secondaryText}</span>
