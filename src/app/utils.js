@@ -556,3 +556,38 @@ function displaySpots() {
     uicontainer.appendChild(container);
     }
 }
+
+
+function getSpotOrgs(spotcode) {
+    let spots = data.spots;
+    let orgs = data.orgs;
+
+    let uicontainer = document.getElementById("collection-orgs");
+
+    for (spot in spots) {
+        currentSpot = spots[spot];
+        if (currentSpot.code == spotcode) {
+            let orgsArr = currentSpot.metadata.orgs_ids;
+            console.log("ORGS ARR: ", orgsArr);
+
+            for (item in orgsArr) {
+                itemID = orgsArr[item];
+                for (org in orgs) {
+                    currentOrg = orgs[org];
+                    if (currentOrg.id == itemID) {
+                        console.log("MATCH: ", currentOrg.name);
+
+                        let uicard = new UICardSimple();
+                        uicard.overline = currentOrg.metadata.type;
+                        uicard.primaryText = currentOrg.name;
+                        uicard.secondaryText = currentOrg.metadata.summary;
+
+                        uicontainer.appendChild(uicard);
+                    }
+                }
+            }
+        }
+
+    }
+
+}

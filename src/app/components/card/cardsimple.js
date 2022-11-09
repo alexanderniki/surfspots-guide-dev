@@ -1,6 +1,15 @@
 /*
  * cardsimple.js
  * UICardSimple
+ * 
+ * Attributes
+ * 
+ * <ui-card--simple 
+ *     primary-text="Primary text"
+ *     secondary-text="Secondary text"
+ *     overline="Overline"
+ *     open-url="https://www.example.com"
+ * ></ui-card--simple>
  */
 
 
@@ -12,6 +21,15 @@ class UICardSimple extends UICard {
         this._overline = "";
         this._openURL = "";
         this._openNewPage = false;
+
+    }
+
+    getAttributes() {
+        this.primaryText = this.hasAttribute("primary-text") ? this.getAttribute("primary-text"): "";
+        this.secondaryText = this.hasAttribute("secondary-text") ? this.getAttribute("secondary-text"): "";
+        this.overline = this.hasAttribute("overline") ? this.getAttribute("overline"): "";
+        this.openURL = this.hasAttribute("open-url") ? this.getAttribute("open-url"): "";
+        this.openNewPage = this.hasAttribute("open-url-newpage") ? this.getAttribute("open-url-newpage"): false;
     }
 
     get overline() {
@@ -78,14 +96,13 @@ class UICardSimple extends UICard {
             this.style.cursor = "pointer";
     
         }
-        /*let container = document.createElement("span");
-        container.innerHTML = this.overline + ", " + this.primaryText + ", " + this.secondaryText;
-        this.appendChild(container);*/
+
     }
 
     connectedCallback() {
+        this.getAttributes();
         this.render();
     }
 }
 
-customElements.define("ui-card--store", UICardSimple);
+customElements.define("ui-card--simple", UICardSimple);
