@@ -194,7 +194,7 @@ function getHistoryLength() {
  * Labels in the header at a spot page
  * @DEPRECATED: moved to SpotPage
  */
-function getSpotLabels(instanceState) {
+/*function getSpotLabels(instanceState) {
     let spots = data.spots;
     let currentSpot = '';
     for (let i = 0; i < spots.length; i++) {
@@ -229,10 +229,10 @@ function getSpotLabels(instanceState) {
         console.log(error);
         console.log("no labels");
     }
-}
+}*/
 
 /* @DEPRECATED: moved to SpotPage */
-function getPageHeader(instanceState) {
+/*function getPageHeader(instanceState) {
     let spots = data.spots;
     let currentSpot = '';
 
@@ -258,10 +258,10 @@ function getPageHeader(instanceState) {
         // console.log(error);
         console.log("no header");
     }
-}
+}*/
 
 /* @DEPRECATED: moved to SpotPage */
-function getPageSummary(instanceState) {
+/*function getPageSummary(instanceState) {
     let spots = data.spots;
     let currentSpot = '';
 
@@ -286,7 +286,7 @@ function getPageSummary(instanceState) {
         // console.log(error);
         console.log("no summary");
     }
-}
+}*/
 
 
 /*
@@ -412,7 +412,7 @@ function displayNotification() {
 }
 
 /* @DEPRECATED: moved to CommunicationPage */
-function displayCommunication() {
+/*function displayCommunication() {
     let collection = data.communications;
     let uicontainer = document.getElementById("collection-communication");
 
@@ -431,10 +431,10 @@ function displayCommunication() {
             uicontainer.appendChild(uicard);
         }
     }
-}
+}*/
 
 /* @DEPRECATED: moved to SpotPage */
-function getSpotOrgs(spotcode) {
+/*function getSpotOrgs(spotcode) {
     let spots = data.spots;
     let orgs = data.orgs;
 
@@ -466,4 +466,4 @@ function getSpotOrgs(spotcode) {
 
     }
 
-}
+}*/

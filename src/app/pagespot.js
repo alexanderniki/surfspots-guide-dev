@@ -53,15 +53,8 @@ class SpotPage extends Page {
         try {
             let items = currentSpot.metadata.labels;
             for (let i = 0; i < items.length; i++) {
-                //label = document.createElement('span');
-                //label.innerHTML = items[i];
-                // label.classList.add('uix-label--simple');
-                //label.className += "uix-label--simple";
-                //label.className += " body-2";
-                //label.className += " typography-uppercase";
-                //output.appendChild(label);
     
-                label = document.createElement('ui-label');
+                let label = document.createElement('ui-label');
                 label.setAttribute("ui-text", items[i]);
                 output.appendChild(label);
     
@@ -100,7 +93,7 @@ class SpotPage extends Page {
         }
     }
 
-    async weather() {
+    async weather(instanceState) {
         let weatherProvider = new WeatherProvider(instanceState.spotcode)
         let result = await weatherProvider.fetchWeather();
         //console.log("FETCH WEATHER RESULT");
@@ -154,16 +147,16 @@ class SpotPage extends Page {
     
         let uicontainer = document.getElementById("collection-orgs");
     
-        for (spot in spots) {
-            currentSpot = spots[spot];
+        for (let spot in spots) {
+            let currentSpot = spots[spot];
             if (currentSpot.code == spotcode) {
                 let orgsArr = currentSpot.metadata.orgs_ids;
                 console.log("ORGS ARR: ", orgsArr);
     
-                for (item in orgsArr) {
-                    itemID = orgsArr[item];
-                    for (org in orgs) {
-                        currentOrg = orgs[org];
+                for (let item in orgsArr) {
+                    let itemID = orgsArr[item];
+                    for (let org in orgs) {
+                        let currentOrg = orgs[org];
                         if (currentOrg.id == itemID) {
                             console.log("MATCH: ", currentOrg.name);
     
