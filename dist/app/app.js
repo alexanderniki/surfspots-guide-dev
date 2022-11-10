@@ -88,6 +88,38 @@ class Spotlist extends HTMLElement {
 
 customElements.define("spotlist-component", Spotlist);
 /*
+ * label.js
+ * UILabel
+ */
+
+
+class UILabelSimple extends HTMLElement {
+
+    constructor() {
+        super();
+        this._text = "";
+    }
+
+    get text() {
+        return this._text;
+    }
+
+    set text(str) {
+        if (str) {
+            this._text = str;
+        }
+        else {
+            console.log("UILabelSimple: ", "No text given");
+        }
+    }
+
+    render() {
+        
+    }
+}
+
+customElements.define("ui-label--simple", UILabelSimple);
+/*
  * card.js
  * Generic card component
  */
@@ -333,38 +365,6 @@ class UICardCommunication extends UICard {
 
 
 customElements.define("ui-card--communication", UICardCommunication);
-/*
- * label.js
- * UILabel
- */
-
-
-class UILabelSimple extends HTMLElement {
-
-    constructor() {
-        super();
-        this._text = "";
-    }
-
-    get text() {
-        return this._text;
-    }
-
-    set text(str) {
-        if (str) {
-            this._text = str;
-        }
-        else {
-            console.log("UILabelSimple: ", "No text given");
-        }
-    }
-
-    render() {
-        
-    }
-}
-
-customElements.define("ui-label--simple", UILabelSimple);
 /*
  * inlinenotification.js
  */
@@ -1415,162 +1415,6 @@ function getHistoryLength() {
 }
 
 
-/* 
- * Utils for pages
- */
-
-/*
- * Labels in the header at a spot page
- * @DEPRECATED: moved to SpotPage
- */
-/*function getSpotLabels(instanceState) {
-    let spots = data.spots;
-    let currentSpot = '';
-    for (let i = 0; i < spots.length; i++) {
-        if (spots[i].code == instanceState.spotcode) {
-            currentSpot = spots[i];
-        }
-        else {
-            // do nothing
-            console.log("The spot not found");
-        }
-    }
-
-    let output = document.getElementById("labels");
-    try {
-        let items = currentSpot.metadata.labels;
-        for (let i = 0; i < items.length; i++) {
-            //label = document.createElement('span');
-            //label.innerHTML = items[i];
-            // label.classList.add('uix-label--simple');
-            //label.className += "uix-label--simple";
-            //label.className += " body-2";
-            //label.className += " typography-uppercase";
-            //output.appendChild(label);
-
-            label = document.createElement('ui-label');
-            label.setAttribute("ui-text", items[i]);
-            output.appendChild(label);
-
-        }
-    }
-    catch(error) {
-        console.log(error);
-        console.log("no labels");
-    }
-}*/
-
-/* @DEPRECATED: moved to SpotPage */
-/*function getPageHeader(instanceState) {
-    let spots = data.spots;
-    let currentSpot = '';
-
-    for (let i = 0; i < spots.length; i++) {
-
-        if (spots[i].code == instanceState.spotcode) {
-            currentSpot = spots[i];
-            console.log(spots[i]);
-        }
-        else {
-            // do nothing
-            console.log("getPageHeader(): spot not found");
-        }
-    }
-
-    let output = document.getElementById("place-title");
-    try {
-        let item = currentSpot.name;
-        console.log(item);
-        output.innerHTML = item;
-    }
-    catch(error) {
-        // console.log(error);
-        console.log("no header");
-    }
-}*/
-
-/* @DEPRECATED: moved to SpotPage */
-/*function getPageSummary(instanceState) {
-    let spots = data.spots;
-    let currentSpot = '';
-
-    for (let i = 0; i < spots.length; i++) {
-
-        if (spots[i].code == instanceState.spotcode) {
-            currentSpot = spots[i];
-        }
-        else {
-            // do nothing
-            console.log("The spot not found");
-        }
-    }
-
-    let output = document.getElementById("place-summary");
-    try {
-        let item = currentSpot.summary;
-        console.log(item);
-        output.innerHTML = item;
-    }
-    catch(error) {
-        // console.log(error);
-        console.log("no summary");
-    }
-}*/
-
-
-/*
- * Get weather forecast
- */
-/* @DEPRECATED: moved to SpotPage */
-async function getWeather() {
-    let weatherProvider = new WeatherProvider(instanceState.spotcode)
-    let result = await weatherProvider.fetchWeather();
-    //console.log("FETCH WEATHER RESULT");
-    //console.log(result);
-
-    let time = result.daily.time;
-    let winddirection = result.daily.winddirection_10m_dominant;
-    let windspeed = result.daily.windspeed_10m_max;
-    let mintemp = result.daily.temperature_2m_min;
-    let maxtemp = result.daily.temperature_2m_max;
-
-    // Container
-    let weatherForecast = document.getElementById("weather-data");
-
-    for (let i = 0; i < time.length; i++) {
-        // Prepare data
-        let parcedDate = Date.parse(time[i]);  // Unix time
-        let newDate = new Date(parcedDate);
-        let weekday = DateUtils.weekday(newDate.getDay());
-        let strdate = `${weekday}, ${newDate.getDate()}`;
-        let strwind = `${Math.round(windspeed[i])} м/с • ${Math.round(winddirection[i])}° • ${WeatherUtils.windDirection(winddirection[i])}`;
-        let strtemperarure = `${WeatherUtils.temperatureSign(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} ${Math.round(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} °C`;
-
-        // Card
-        let forecastCard = document.createElement("div");
-        forecastCard.classList.add("uix-layout--vbox-compact");
-        forecastCard.classList.add("uix-card--weather--day");
-
-        // Items
-        let dateElement = document.createElement("span");
-        dateElement.innerHTML = strdate;
-
-        let windElement = document.createElement("span");
-        windElement.classList.add("body-2");
-        windElement.innerHTML = strwind;
-
-        let temperatureElement = document.createElement("span");
-        temperatureElement.innerHTML = strtemperarure;
-        
-        // Layout
-        forecastCard.appendChild(dateElement);
-        forecastCard.appendChild(windElement);
-        forecastCard.appendChild(temperatureElement);
-        weatherForecast.appendChild(forecastCard);
-    }
-}
-
-
 function getSessionFlag(flag) {
     /*
      * Check if given flag exists and if so, return it value (0 or 1)
@@ -1639,63 +1483,6 @@ function displayNotification() {
     document.getElementById("inline-notification").appendChild(uinotification);
     //document.body.appendChild(uinotification);
 }
-
-/* @DEPRECATED: moved to CommunicationPage */
-/*function displayCommunication() {
-    let collection = data.communications;
-    let uicontainer = document.getElementById("collection-communication");
-
-    for (item in collection) {
-        if (collection[item].is_active == true) {
-
-            let uicard = new UICardCommunication();
-
-            uicard.type = collection[item].metadata.type;
-            uicard.channelType = collection[item].metadata.channel_type;
-            uicard.primaryText = collection[item].name;
-            uicard.secondaryText = collection[item].metadata.summary;
-            uicard.link = collection[item].metadata.lin;
-            uicard.linkText = collection[item].metadata.link_text;
-
-            uicontainer.appendChild(uicard);
-        }
-    }
-}*/
-
-/* @DEPRECATED: moved to SpotPage */
-/*function getSpotOrgs(spotcode) {
-    let spots = data.spots;
-    let orgs = data.orgs;
-
-    let uicontainer = document.getElementById("collection-orgs");
-
-    for (spot in spots) {
-        currentSpot = spots[spot];
-        if (currentSpot.code == spotcode) {
-            let orgsArr = currentSpot.metadata.orgs_ids;
-            console.log("ORGS ARR: ", orgsArr);
-
-            for (item in orgsArr) {
-                itemID = orgsArr[item];
-                for (org in orgs) {
-                    currentOrg = orgs[org];
-                    if (currentOrg.id == itemID) {
-                        console.log("MATCH: ", currentOrg.name);
-
-                        let uicard = new UICardSimple();
-                        uicard.overline = currentOrg.metadata.type;
-                        uicard.primaryText = currentOrg.name;
-                        uicard.secondaryText = currentOrg.metadata.summary;
-
-                        uicontainer.appendChild(uicard);
-                    }
-                }
-            }
-        }
-
-    }
-
-}*/
 
 /*
  * weatherprovider.js
