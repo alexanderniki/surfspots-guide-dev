@@ -155,9 +155,3 @@ class SpotForecast {
         UIForecastView.removeChild(forecastLoader);
     }
 }
-
-
-function testCityForecast() {
-    let sf = new SpotForecast();
-    sf.getWorkingSpots();
-}
