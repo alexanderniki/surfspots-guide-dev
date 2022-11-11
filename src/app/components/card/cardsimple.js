@@ -76,7 +76,7 @@ class UICardSimple extends UICard {
         <div class="ui-card--simple">
             <div class="uix-layout--vbox-compact ui-card--simple--data bottom">
                 <span class="caption typography-uppercase">${this.overline}</span>
-                <span class="headline-6 typography-bold">${this.primaryText}</span>
+                <span class="caption-accent">${this.primaryText}</span>
                 <span class="body-1">${this.secondaryText}</span>
             </div>
         </div>

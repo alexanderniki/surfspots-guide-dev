@@ -28,7 +28,7 @@
 /* MOBILE */
 @media (max-width: 576px) {
     .ui-card--simple {
-        min-height: var(--space-1200);
+        min-height: var(--space-900);
         padding-bottom: var(--space-200);
     }
     .ui-card--simple--data {

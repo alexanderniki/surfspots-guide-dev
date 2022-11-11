@@ -22,7 +22,7 @@ class IndexPage extends Page {
         let waterTypes = data.water_types;
         let spots = data.spots;
         let groups = [];
-        console.log("WATER TYPES:", waterTypes);
+        //console.log("WATER TYPES:", waterTypes);
     
         // For every water type
         for(let water in waterTypes) {
@@ -48,7 +48,7 @@ class IndexPage extends Page {
                 }
             }
             groups.push(spotGroup);
-            console.log(groups);
+            //console.log(groups);
         }
         return groups;
     }
