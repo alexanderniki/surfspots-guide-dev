@@ -173,5 +173,22 @@ class SpotPage extends Page {
         }
     }
 
-    
+    specification(spotcode) {
+        let collection = data.spots;
+        let uicontainer = document.getElementById("collection-specification");
+
+        for (let item in collection) {
+            if (collection[item].code == spotcode) {
+                let spec = collection[item].metadata.specification;
+                for (let prop in spec) {
+                    let uilistitem = new UIListItem();
+                    uilistitem.primaryText = spec[prop].value;
+                    uilistitem.overline = spec[prop].name;
+
+                    uicontainer.appendChild(uilistitem);
+                }
+            }
+        }
+    }
+
 }
