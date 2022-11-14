@@ -49,10 +49,11 @@
                 // Basic page parameters
                 spotcode: "ruspbatlantis",
             };
+            const page = new SpotPage();
+            page.parseurl();
             getCurrentTheme();
             getHistoryLength();
-
-            const page = new SpotPage();
+            
         </script>
         <!--
             Google Analytics
@@ -75,7 +76,7 @@
                 <div class="uix-button--circle uix-button--back headline-6 uix-card--link--overall" id="button--back" onclick="adjustBackButton();">‹</div>
             </div>
             <div class="page-header" id="page-header--container--spot">
-                <span class="body-1" id="place-breadcrumbs"><a class="uix-link--header" href="index.html">Cанкт-Петербург</a> › Финский залив › Споты</span>
+                <span class="body-1" id="place-breadcrumbs"><script>page.breadcrumbs(instanceState.spotcode)</script></span>
                 <span class="headline-4" id="place-title"></span>
                 <script>page.header(instanceState);</script>
                 <span id="place-summary"><script>page.summary(instanceState);</script></span>
@@ -108,13 +109,11 @@
 
                     <!-- Overview -->
                     <div class="uix-layout--hbox--wrapped">
-
+                    
                     <div class="uix-card--spot--description-item">
                         <span class="headline-6">Описание</span>
-                        <div>
-                            <p>Спот расположен в районе пляжа "Ласковый" в поселке "Солнечное".</p>
-                            <p>Находится на благоустроенном пляже. Имееются туалеты (бесплатные и платные), гриль-зоны, кабинки для переодевания, кафе и рестораны.</p>
-                            <p>Есть канал, который неплохо работает при больших волнах.</p>
+                        <div id="collection-description">
+                            <script>page.description(instanceState.spotcode);</script>
                         </div>
                     </div>
                     
@@ -137,13 +136,13 @@
                         <div class="uix-card--main" id="">
                             <div id="gallery">
                                 <div class="main-img">
-                                    <img src="media/spot-atlantis-photo-1.jpg" id="current">
+                                    <img id="current">
                                 </div>
-                                <div class="images">
-                                    <img src="media/spot-atlantis-photo-1.jpg" class="img">
+                                <div id="gallery--images" class="images">
+                                    <!--<img src="media/spot-atlantis-photo-1.jpg" class="img">
                                     <img src="media/spot-atlantis-photo-2.jpg" class="img">
                                     <img src="media/spot-atlantis-photo-3.jpg" class="img">
-                                    <img src="media/spot-atlantis-photo-4.jpg" class="img">
+                                    <img src="media/spot-atlantis-photo-4.jpg" class="img">-->
                                 </div>
                             </div>
                             <div class="uix-popup" id="gallery-modal">
@@ -151,6 +150,21 @@
                                 <img class="uix-popup--content" id="gallery-image">
                             </div>
                             <script src="app/gallery.js"></script>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="uix-layout--hbox--wrapped">
+                    <div class="uix-card--spot--description-item">
+                        <span class="headline-6">Веб-камеры</span>
+                        <div id="collection-webcams">
+                            <script>page.webcamLinks(instanceState.spotcode);</script>
+                        </div>
+                    </div>
+                    <div class="uix-card--spot--description-item">
+                        <span class="headline-6">Прогноз ветра</span>
+                        <div id="collection-wind">
+                            <script>page.forecastLinks(instanceState.spotcode);</script>
                         </div>
                     </div>
                 </div>
@@ -168,30 +182,18 @@
                                     <img src="https://img.icons8.com/material-outlined/48/000000/copy.png"/>
                                 </button>
                             </div>
-                                Координаты: <span id="spot-location">60.143992, 29.926703</span>
+                                Координаты: <span id="spot-location"><script>page.location(instanceState.spotcode);</script></span>
                             <div class="map-responsive">
-                                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d993.1096381446197!2d29.925735665665847!3d60.143991996474405!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNjDCsDA4JzM4LjQiTiAyOcKwNTUnMzYuMSJF!5e0!3m2!1sen!2sru!4v1624996391245!5m2!1sen!2sru" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                <iframe id="spot-map" src="" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                                <script>page.mapCode(instanceState.spotcode);</script>
                             </div>
                         </div>
                     </div>
                     <div class="uix-layout--hbox--wrapped">
                         <div class="uix-card--spot--description-item">
                             <span class="headline-6">Транспорт</span>
-                            <div>
-                                <ul>
-                                    <li>305 - маршрутка от м. Старая Деревня</li>
-                                    <li>211 - автобус от м. Беговая, м. Черная речка</li>
-                                    <li>400 - маршрутка от м. Финляндский вокзал</li>
-                                    <li>680 - маршрутка от м. Проспект Просвещения</li>
-                                    <li>827 - маршрутка от м. Гражданский проспект</li>
-                                </ul>
-                                Добраться также можно на электричке с Финляндского вокзала.
-                                <p>Если ехать на автомобиле, то важно помнить про парковку.</p>
-                                <p>Парковка. В жаркие дни, особенно в выходные, парковка практически полностью забита уже к 11-12 часам. 
-                                    Время от времени, места все-таки могут появляться. 
-                                    Поэтому, спокойно останавливаемся на паркинге там, где можно приткнуться (обычно, такие места есть) и ждем когда кто-то уедет.
-                                    Примерно с 13:00 люди понемногу начинают разъезжаться (кому-то жарко, у кого-то дети, а кто-то просто уже накупался и назагорался). 
-                                    Примерно с 16:00 становится чуть свободнее и можно находить места без ожидания.</p>
+                            <div id="collection-transport">
+                                <script>page.transport(instanceState.spotcode)</script>
                             </div>
                         </div>
                     </div>
@@ -203,38 +205,16 @@
                     <div class="uix-layout--hbox--wrapped">
                     <div class="uix-card--spot--description-item">
                         <span class="headline-6">Правила поведения</span>
-                        <div>
-                            <p>У опытных серферов, обычно, нет проблем с катанием, техникой безопасности и соблюдением этикета на споте. Проблемы, чаще всего, бывают у новичков и продолжающих. 
-                                Они, зачастую, становятся источником опасности для катающихся, мешают брать волны. 
-                                И - самое главное - есть риск столкновения, травм, поломки досок.</p>
-                            <p>Если вы новичок, плохо знакомы со спотом или только тренируетесь на пене, соблюдайте следующие простые правила:</p>
-                            <ol>
-                                <li>Старайтесь <strong>приезжать пораньше</strong>, когда спот более-менее пуст. Особенно утром, в обед</li>
-                                <li>Если людей у Берёзок много, то идите дальше по пляжу в сторону <strong>волейбольных Сеток</strong> и далее. Там точно такие же волны и можно тренироваться в спокойствии. Если не знаете, что такое Берёзки, тем более следуйте этим рекомендациям</li>
-                                <li>Если сильный прибой и нужно пользоваться каналом, то заходите в канал <strong>напротив второй от инвалидки круглой мусорной урны</strong>. Заплывайте прямо в море <strong>как можно дальше, выше всех</strong> и там течение быстро снесет вас к шикарным и спокойным Сеткам.</li>
-                                <li>Самое главное правило - когда стартуешь, <strong>обязательно смотри вправо и влево</strong>. Если в вашу сторону уже едет другой серфер, значит эта волна <strong>занята</strong>, стартовать не нужно</li>
-                                <li>Второе главное правило - <strong>не сидеть внизу (близко к берегу)</strong> "под" теми серферами которые стартуют выше и могут врезаться в вас. Уплывайте из этой зоны или следуйте правилу - уходить к Сеткам</li>
-                                <li>Если не знаете где канал, не можете самостоятельно его найти, значит вы не опытный серфер. Идите к Сеткам</li>
-                                <li>Те кто не катается на лайнапе, а тренируется пока на пене и небольших волнах - идите к Сеткам</li>
-                            </ol>
-                
-                            <p>Атлантис - большой спот и, при правильном размещении, места на нем хватит всем.</p>
-
+                        <div id="collection-rules">
+                            <script>page.rules(instanceState.spotcode)</script>
                         </div>
                     </div>
                     </div>
                     <div class="uix-layout--hbox--wrapped">
                         <div class="uix-card--spot--description-item">
                             <span class="headline-6">Дополнительно</span>
-                            <div>
-                                <p>Web-камеры:</p>
-                                <ul>
-                                    <li><a href="https://youtu.be/-Aq3KwFvYmg">кайт-станция TakeOff Surf в Дюнах</a></li>
-                                </ul>
-                                <p>Прогноз ветра:</p>
-                                <ul>
-                                    <li><a href="https://www.windguru.cz/235686">Windguru</a></li>
-                                </ul>
+                            <div id="spot-extrainfo">
+                                <script>page.extrainfo(instanceState.spotcode)</script>
                             </div>
                         </div>
                     </div>

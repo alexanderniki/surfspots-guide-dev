@@ -778,7 +778,8 @@ class IndexPage extends Page {
                 
                 uicard.primaryText = collection[item].name;
                 uicard.secondaryText = collection[item].metadata.location.water.name;
-                uicard.openURL = collection[item].page_link;
+                //uicard.openURL = collection[item].page_link;
+                uicard.openURL = "spot.html#" + collection[item].code
     
                 uicontainer.appendChild(uicard);
             }
@@ -981,6 +982,165 @@ class SpotPage extends Page {
                 }
             }
         }
+    }
+
+    rules(spotcode) {
+        let collection = data.spots;
+        let uicontainer = document.getElementById("collection-rules");
+
+        for (let item in collection) {
+            if (collection[item].code == spotcode) {
+                let rules = collection[item].metadata.rules;
+                for (let rule in rules) {
+                    let uiitem = document.createElement("p");
+                    uiitem.innerText = rules[rule];
+                    uicontainer.appendChild(uiitem);
+                }
+            }
+        }
+    }
+
+    transport(spotcode) {
+        let collection = data.spots;
+        let uicontainer = document.getElementById("collection-transport");
+        let uilistcontainer = document.createElement("ul");
+
+        for (let item in collection) {
+            if (collection[item].code == spotcode) {
+                let transport = collection[item].metadata.transport;
+                for (let item in transport) {
+                    let uiitem = document.createElement("li");
+                    uiitem.innerText = transport[item];
+                    uilistcontainer.appendChild(uiitem);
+                }
+            }
+        }
+        uicontainer.appendChild(uilistcontainer);
+    }
+
+    description(spotcode) {
+        let collection = data.spots;
+        let uicontainer = document.getElementById("collection-description");
+
+        for (let item in collection) {
+            if (collection[item].code == spotcode) {
+                let description = collection[item].metadata.description;
+                for (let item in description) {
+                    let uiitem = document.createElement("p");
+                    uiitem.innerText = description[item];
+                    uicontainer.appendChild(uiitem);
+                }
+            }
+        }
+    }
+
+    webcamLinks(spotcode) {
+        let collection = data.spots;
+        let uiwebcams = document.getElementById("collection-webcams");
+        let uilistcontainer = document.createElement("ul");
+
+        for (let item in collection) {
+            if (collection[item].code == spotcode) {
+                let webcams = collection[item].metadata.webcam_links;
+                for (let cam in webcams) {
+                    let uiitem = document.createElement("li");
+                    let webcamLink = document.createElement("a");
+                    webcamLink.setAttribute("href", webcams[cam].link);
+                    webcamLink.innerText = webcams[cam].name;
+
+                    uiitem.appendChild(webcamLink);
+                    uilistcontainer.appendChild(uiitem);
+                }
+            }
+        }
+        uiwebcams.appendChild(uilistcontainer);
+    }
+
+    forecastLinks(spotcode) {
+        let collection = data.spots;
+        let uicontainer = document.getElementById("collection-wind");
+        let uilistcontainer = document.createElement("ul");
+
+        for (let item in collection) {
+            if (collection[item].code == spotcode) {
+                let forecasts = collection[item].metadata.forecast_links;
+                for (let cast in forecasts) {
+                    let uiitem = document.createElement("li");
+                    let forecastLink = document.createElement("a");
+                    forecastLink.setAttribute("href", forecasts[cast].link);
+                    forecastLink.innerText = forecasts[cast].name;
+
+                    uiitem.appendChild(forecastLink);
+                    uilistcontainer.appendChild(uiitem);
+                }
+            }
+        }
+        uicontainer.appendChild(uilistcontainer);
+    }
+
+    location(spotcode) {
+        let collection = data.spots;
+        let coordinates = document.getElementById("spot-location");
+
+        for (let item in collection) {
+            if (collection[item].code == spotcode) {
+                coordinates.innerText = collection[item].metadata.location.coordinates;
+            }
+        }
+    }
+
+    mapCode(spotcode) {
+        let collection = data.spots;
+        let spotmap = document.getElementById("spot-map");
+
+        for (let item in collection) {
+            if (collection[item].code == spotcode) {
+                spotmap.src = collection[item].metadata.location.map_code;
+            }
+        }
+    }
+
+    extrainfo(spotcode) {
+        let collection = data.spots;
+        let uicontainer = document.getElementById("spot-extrainfo");
+
+        for (let item in collection) {
+            if (collection[item].code == spotcode) {
+                let description = collection[item].metadata.extras;
+                for (let item in description) {
+                    let uiitem = document.createElement("p");
+                    uiitem.innerText = description[item];
+                    uicontainer.appendChild(uiitem);
+                }
+            }
+        }
+    }
+
+    breadcrumbs(spotcode) {
+        let config = data.config;
+        let collection = data.spots;
+        let uicontainer = document.getElementById("place-breadcrumbs");
+
+        for (let item in collection) {
+            if (collection[item].code == spotcode) {
+                let city = collection[item].metadata.location.city;
+                let water = collection[item].metadata.location.water.name;
+                let spot = collection[item].name;
+
+                let strBreadcrumbs = `<a class="uix-link--header" href="${config.home_url}">${city}</a> › ${water} › ${spot}`;
+                uicontainer.innerHTML = strBreadcrumbs;
+            }
+        }
+    }
+
+    parseurl() {
+        let currentURL = window.location.href;
+        console.log("CURRENT URL: ", currentURL);
+        let suffix = currentURL.split("#");
+        console.log("URL SUFFIX: ", suffix);
+        let pageCode = suffix[suffix.length - 1];
+        console.log("PAGE CODE: ", pageCode);
+        instanceState.spotcode = pageCode;
     }
 
 }

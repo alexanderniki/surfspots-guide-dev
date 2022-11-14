@@ -136,7 +136,8 @@ class IndexPage extends Page {
                 
                 uicard.primaryText = collection[item].name;
                 uicard.secondaryText = collection[item].metadata.location.water.name;
-                uicard.openURL = collection[item].page_link;
+                //uicard.openURL = collection[item].page_link;
+                uicard.openURL = "spot.html#" + collection[item].code
     
                 uicontainer.appendChild(uicard);
             }
