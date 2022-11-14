@@ -254,3 +254,13 @@ function displayNotification() {
     document.getElementById("inline-notification").appendChild(uinotification);
     //document.body.appendChild(uinotification);
 }
+
+
+function updatePage(link) {
+    if (link) {
+        //window.location.assign(link);
+        window.location.href = link;
+        window.location.reload();
+        window.scrollTo(0,0);
+    }
+}

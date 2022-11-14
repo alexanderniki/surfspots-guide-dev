@@ -144,7 +144,9 @@ class Spotlist extends HTMLElement {
                 let item = document.createElement("li");
                 let link = document.createElement("a");
                 let linkText = document.createTextNode(spots[i].name);
-                link.setAttribute("href", spots[i].page_link);
+                let strLink = "spot.html#" + spots[i].code;
+                link.setAttribute("href", "spot.html#" + spots[i].code);
+                link.addEventListener("click", function() {updatePage(strLink);});
 
                 link.appendChild(linkText);
                 item.appendChild(link);
@@ -1766,6 +1768,16 @@ function displayNotification() {
 
     document.getElementById("inline-notification").appendChild(uinotification);
     //document.body.appendChild(uinotification);
+}
+
+
+function updatePage(link) {
+    if (link) {
+        //window.location.assign(link);
+        window.location.href = link;
+        window.location.reload();
+        window.scrollTo(0,0);
+    }
 }
 
 /*

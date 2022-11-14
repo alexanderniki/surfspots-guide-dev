@@ -269,6 +269,7 @@
             is_active: true,
             is_popular: true,
             name: "Бухта Батарейная",
+            summary: "",
             code: "ruspbbattery",
             page_link: "spot-battery.html",
             metadata: 
@@ -349,16 +350,22 @@
             is_active: true,
             is_popular: true,
             name: "Маяк",
+            summary: "",
             code: "ruspblighthouse",
             page_link: "spot-lighthouse.html",
             metadata: 
                 {
+                    description: [
+                        "Благоустроенный спот на берегу Ладожского озера. Есть пляж, видовые рестораны и парковка.",
+                        "Место для катания в северной части пляжа в районе кафе/отеля.",
+                        "Берег песчаный. Волны у берега относительно небольшие, если выгрести дальше, можно ловить крупнее.",
+                    ],
                     location: 
                     {
                         coordinates: "60.118084,31.085118",
                         lat: 60.118084,
                         long: 31.085118,
-                        map_code: "",  // google maps link here
+                        map_code: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1987.7837461042984!2d31.082929316104316!3d60.11808398194176!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNjDCsDA3JzA1LjEiTiAzMcKwMDUnMDYuNCJF!5e0!3m2!1sru!2sru!4v1624995130674!5m2!1sru!2sru",  // google maps link here
                         city: "Санкт-Петербург",
                         water: {
                             water_type_id: 1,
@@ -372,6 +379,22 @@
                         "проживание",
                         "раздевалки",
                         "LTE",
+                    ],
+                    gallery_pics: [
+                        "media/spot-lighthouse-photo-1.jpg",
+                        "media/spot-lighthouse-photo-2.jpg",
+                        "media/spot-lighthouse-photo-3.jpg",
+                        "media/spot-lighthouse-photo-4.jpg",
+                    ],
+                    transport: [
+                        "Автомобиль",
+                        "Примерно в 200-300 метрах есть остановка электричек «Ладожское озеро».",
+                    ],
+                    rules: [
+                        "N/A",
+                    ],
+                    extras: [
+                        "N/A",
                     ],
                     wind_direction: ["none"],
                     orgs_ids: [0, 1, 2, 3, 4, 5],
@@ -412,6 +435,7 @@
             is_active: true,
             is_popular: false,
             name: "Осиновец",
+            summary: "",
             code: "ruspbosinovets",
             page_link: "spot-osinovets.html",
             metadata: 
@@ -472,6 +496,7 @@
             is_active: true,
             is_popular: false,
             name: "Большие пески",
+            summary: "",
             code: "ruspbbigsands",
             page_link: "spot-bigsands.html",
             metadata:
@@ -500,6 +525,7 @@
             is_active: true,
             is_popular: false,
             name: "Бухта Моторная",
+            summary: "",
             code: "ruspbmotor",
             page_link: "spot-motor.html",
             metadata:
@@ -555,6 +581,7 @@
             is_active: true,
             is_popular: false,
             name: "Мыс Флотский - Запад",
+            summary: "",
             code: "ruspbflowest",
             page_link: "spot-flo-west.html",
             metadata:
@@ -580,6 +607,7 @@
             is_active: true,
             is_popular: false,
             name: "Стоячий порог в Кингисеппе",
+            summary: "",
             code: "ruspbriverking",
             page_link: "spot-riverking.html",
             metadata:
@@ -637,6 +665,7 @@
             is_active: true,
             is_popular: false,
             name: "Сосновый Бор",
+            summary: "",
             code: "ruspbpinery",
             page_link: "spot-pinery.html",
             metadata:
@@ -662,6 +691,7 @@
             is_active: true,
             is_popular: false,
             name: "Липово",
+            summary: "",
             code: "ruspblipovo",
             page_link: "spot-lipovo.html",
             metadata:
@@ -687,6 +717,7 @@
             is_active: false,
             is_popular: false,
             name: "Сосновый Бор - Мол",
+            summary: "",
             code: "ruspbpinerymol",
             page_link: "spot-pinery-mol.html",
             metadata: {
@@ -722,6 +753,7 @@
             is_active: true,
             is_popular: false,
             name: "Мустово",
+            summary: "",
             code: "ruspbmustovo",
             page_link: "spot-mustovo.html",
             metadata:
@@ -777,6 +809,7 @@
             is_active: true,
             is_popular: false,
             name: "Дубки",
+            summary: "",
             code: "ruspbdubki",
             page_link: "spot-dubki.html",
             metadata:
@@ -832,6 +865,7 @@
             is_active: true,
             is_popular: false,
             name: "Бухта желтая",
+            summary: "",
             code: "ruspbyellowbay",
             page_link: "spot-yellowbay.html",
             metadata:
@@ -887,6 +921,7 @@
             is_active: true,
             is_popular: false,
             name: "Мыс Флотский - Парковка",
+            summary: "",
             code: "ruspbfloparking",
             page_link: "spot-flo-parking.html",
             metadata:
@@ -942,6 +977,7 @@
             is_active: true,
             is_popular: false,
             name: "Мыс Флотский - Чапин",
+            summary: "",
             code: "ruspbflochapa",
             page_link: "spot-flo-chapa.html",
             metadata:
@@ -997,6 +1033,7 @@
             is_active: false,
             is_popular: false,
             name: "Санкт-Петербург",
+            summary: "",
             code: "ruspb",
             metadata:
                 {
