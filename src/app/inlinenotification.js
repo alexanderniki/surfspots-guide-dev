@@ -94,8 +94,10 @@ class InlineNotificationView extends HTMLElement {
         notificationTitle.innerHTML = this.notification.title;
         notificationText.innerHTML = this.notification.text;
 
-        btnClose.setAttribute("href", "#");
+        //btnClose.setAttribute("href", "#");
+        btnClose.setAttribute("role", "button");
         btnClose.innerHTML = "✕";
+        btnClose.style.cursor = "pointer";
         btnClose.setAttribute("onclick", "InlineNotificationView.hide()");
 
         // Pack elements
