@@ -28,7 +28,9 @@ class Spotlist extends HTMLElement {
                 let linkText = document.createTextNode(spots[i].name);
                 let strLink = "spot.html#" + spots[i].code;
                 link.setAttribute("href", "spot.html#" + spots[i].code);
-                link.addEventListener("click", function() {updatePage(strLink);});
+                link.addEventListener("click", function() {
+                    updatePage(strLink);
+                });
 
                 link.appendChild(linkText);
                 item.appendChild(link);

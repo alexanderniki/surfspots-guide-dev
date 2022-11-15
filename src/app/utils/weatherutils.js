@@ -50,7 +50,7 @@
     static temperatureSign(temperature) {
         let sign = "";
         if (temperature < 0) {
-            sign = "-";
+            sign = "";
         } else if (temperature > 0) {
             sign = "+";
         } else {

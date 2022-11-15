@@ -146,7 +146,9 @@ class Spotlist extends HTMLElement {
                 let linkText = document.createTextNode(spots[i].name);
                 let strLink = "spot.html#" + spots[i].code;
                 link.setAttribute("href", "spot.html#" + spots[i].code);
-                link.addEventListener("click", function() {updatePage(strLink);});
+                link.addEventListener("click", function() {
+                    updatePage(strLink);
+                });
 
                 link.appendChild(linkText);
                 item.appendChild(link);
@@ -196,6 +198,38 @@ class UISpotTabbar extends HTMLElement{
 }
 
 customElements.define("ui-tabbar-spot", UISpotTabbar);
+/*
+ * label.js
+ * UILabel
+ */
+
+
+class UILabelSimple extends HTMLElement {
+
+    constructor() {
+        super();
+        this._text = "";
+    }
+
+    get text() {
+        return this._text;
+    }
+
+    set text(str) {
+        if (str) {
+            this._text = str;
+        }
+        else {
+            console.log("UILabelSimple: ", "No text given");
+        }
+    }
+
+    render() {
+        
+    }
+}
+
+customElements.define("ui-label--simple", UILabelSimple);
 /*
  * card.js
  * Generic card component
@@ -442,38 +476,6 @@ class UICardCommunication extends UICard {
 
 
 customElements.define("ui-card--communication", UICardCommunication);
-/*
- * label.js
- * UILabel
- */
-
-
-class UILabelSimple extends HTMLElement {
-
-    constructor() {
-        super();
-        this._text = "";
-    }
-
-    get text() {
-        return this._text;
-    }
-
-    set text(str) {
-        if (str) {
-            this._text = str;
-        }
-        else {
-            console.log("UILabelSimple: ", "No text given");
-        }
-    }
-
-    render() {
-        
-    }
-}
-
-customElements.define("ui-label--simple", UILabelSimple);
 /*
  * inlinenotification.js
  */
@@ -1935,7 +1937,7 @@ class DateUtils {
     static temperatureSign(temperature) {
         let sign = "";
         if (temperature < 0) {
-            sign = "-";
+            sign = "";
         } else if (temperature > 0) {
             sign = "+";
         } else {
