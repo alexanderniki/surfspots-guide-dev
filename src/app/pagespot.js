@@ -334,7 +334,8 @@ class SpotPage extends Page {
                 let water = collection[item].metadata.location.water.name;
                 let spot = collection[item].name;
 
-                let strBreadcrumbs = `<a class="uix-link--header" href="${config.home_url}">${city}</a> › ${water} › ${spot}`;
+                //let strBreadcrumbs = `<a class="uix-link--header" href="${config.home_url}">${city}</a> › ${water} › ${spot}`;
+                let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a> › ${water} › ${spot}`;
                 uicontainer.innerHTML = strBreadcrumbs;
             }
         }

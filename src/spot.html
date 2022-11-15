@@ -6,31 +6,10 @@
         <meta charset="utf-8">
 
         <!-- Meta for search -->
-        <meta name="keywords" content="санкт-петербург, питер, спб, серф, серфинг, серф-спот, спот, атлантис, солнечное, финский залив" />
-        <meta name="description" content="Описание и характеристики серф-спота Атлантис (Солнечное) в Санкт-Петербурге на Финском заливе" />
+        <meta name="keywords" content="серф, серфинг, серф-спот, спот" />
+        <meta name="description" content="Серф-споты, школы, шейперы, аксессуары" />
         <meta name="author" content="Alexander Niki" />
         <meta http-equiv="content-language" content="ru" />
-
-        <script type="application/ld+json">
-            {
-                "@context":"http://schema.org/",
-                "@type":"Place",
-                "name": "Серф-спот Атлантис (Солнечное)",
-                "description": "Основной серф-спот Атлантис (Солнечное) в Санкт-Петербурге",
-                "geo": {
-                    "@type": "GeoCoordinates",
-                    "latitude": "60.143992",
-                    "longitude": "29.926703"
-                },
-                "address": {
-                    "@type": "PostalAddress",
-                    "addressCountry": "Россия",
-                    "addressRegion": "Ленинградская область",
-                    "addressLocality": "поселок Солнечное",
-                    "streetAddress": "пляж Ласковый"
-                }
-            }
-        </script>
         
         <!-- Styles -->
         <link id="theme" rel="stylesheet" type="text/css" href="app/theme-light.css">
@@ -53,6 +32,10 @@
             page.parseurl();
             getCurrentTheme();
             getHistoryLength();
+            console.log("HISTIRY: ", window.history.length);
+            window.onhashchange = function() {
+                window.location.reload();
+            };
             
         </script>
         <!--
@@ -67,7 +50,7 @@
             gtag('config', 'G-23XXL476QR');
         </script>
 
-        <title>Серфинг. Cанкт-Петербург. Спот Атлантис (Солнечное)</title>
+        <title>Серф-спот</title>
     </head>
 
     <body>

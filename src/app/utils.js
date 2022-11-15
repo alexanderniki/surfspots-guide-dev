@@ -91,10 +91,11 @@ function navigateToPage(page) {
     window.location.href = page;
 }
 
-
 function adjustBackButton() {
     let backButton = document.getElementById("button--back");
     backButton.onclick = window.history.back();
+
+    
     /*
     if (window.history.length === 1) {
         // Direct link

@@ -199,38 +199,6 @@ class UISpotTabbar extends HTMLElement{
 
 customElements.define("ui-tabbar-spot", UISpotTabbar);
 /*
- * label.js
- * UILabel
- */
-
-
-class UILabelSimple extends HTMLElement {
-
-    constructor() {
-        super();
-        this._text = "";
-    }
-
-    get text() {
-        return this._text;
-    }
-
-    set text(str) {
-        if (str) {
-            this._text = str;
-        }
-        else {
-            console.log("UILabelSimple: ", "No text given");
-        }
-    }
-
-    render() {
-        
-    }
-}
-
-customElements.define("ui-label--simple", UILabelSimple);
-/*
  * card.js
  * Generic card component
  */
@@ -477,6 +445,38 @@ class UICardCommunication extends UICard {
 
 customElements.define("ui-card--communication", UICardCommunication);
 /*
+ * label.js
+ * UILabel
+ */
+
+
+class UILabelSimple extends HTMLElement {
+
+    constructor() {
+        super();
+        this._text = "";
+    }
+
+    get text() {
+        return this._text;
+    }
+
+    set text(str) {
+        if (str) {
+            this._text = str;
+        }
+        else {
+            console.log("UILabelSimple: ", "No text given");
+        }
+    }
+
+    render() {
+        
+    }
+}
+
+customElements.define("ui-label--simple", UILabelSimple);
+/*
  * inlinenotification.js
  */
 
@@ -685,7 +685,8 @@ class IndexPage extends Page {
                         let currentSpot = {}
                         currentSpot.water = spots[spot].metadata.location.water.name;
                         currentSpot.name = spots[spot].name;
-                        currentSpot.link = spots[spot].page_link;
+                        //currentSpot.link = spots[spot].page_link;
+                        currentSpot.link = spots[spot].code;
                         if (spots[spot].metadata.location.water.water_type_id == 2) {
                             currentSpot.description = spots[spot].metadata.location.water.description;
                         }
@@ -764,7 +765,7 @@ class IndexPage extends Page {
                 if (collection[item].spots[spot].description) {
                     uicard.secondaryText = collection[item].spots[spot].description;
                 }
-                uicard.openURL = collection[item].spots[spot].link;
+                uicard.openURL = "spot.html#" + collection[item].spots[spot].link;
                 container.appendChild(uicard);
             }
         uicontainer.appendChild(container);
@@ -783,7 +784,7 @@ class IndexPage extends Page {
                 uicard.primaryText = collection[item].name;
                 uicard.secondaryText = collection[item].metadata.location.water.name;
                 //uicard.openURL = collection[item].page_link;
-                uicard.openURL = "spot.html#" + collection[item].code
+                uicard.openURL = "spot.html#" + collection[item].code;
     
                 uicontainer.appendChild(uicard);
             }
@@ -1131,7 +1132,8 @@ class SpotPage extends Page {
                 let water = collection[item].metadata.location.water.name;
                 let spot = collection[item].name;
 
-                let strBreadcrumbs = `<a class="uix-link--header" href="${config.home_url}">${city}</a> › ${water} › ${spot}`;
+                //let strBreadcrumbs = `<a class="uix-link--header" href="${config.home_url}">${city}</a> › ${water} › ${spot}`;
+                let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a> › ${water} › ${spot}`;
                 uicontainer.innerHTML = strBreadcrumbs;
             }
         }
@@ -1608,10 +1610,11 @@ function navigateToPage(page) {
     window.location.href = page;
 }
 
-
 function adjustBackButton() {
     let backButton = document.getElementById("button--back");
     backButton.onclick = window.history.back();
+
+    
     /*
     if (window.history.length === 1) {
         // Direct link

@@ -39,7 +39,8 @@ class IndexPage extends Page {
                         let currentSpot = {}
                         currentSpot.water = spots[spot].metadata.location.water.name;
                         currentSpot.name = spots[spot].name;
-                        currentSpot.link = spots[spot].page_link;
+                        //currentSpot.link = spots[spot].page_link;
+                        currentSpot.link = spots[spot].code;
                         if (spots[spot].metadata.location.water.water_type_id == 2) {
                             currentSpot.description = spots[spot].metadata.location.water.description;
                         }
@@ -118,7 +119,7 @@ class IndexPage extends Page {
                 if (collection[item].spots[spot].description) {
                     uicard.secondaryText = collection[item].spots[spot].description;
                 }
-                uicard.openURL = collection[item].spots[spot].link;
+                uicard.openURL = "spot.html#" + collection[item].spots[spot].link;
                 container.appendChild(uicard);
             }
         uicontainer.appendChild(container);
@@ -137,7 +138,7 @@ class IndexPage extends Page {
                 uicard.primaryText = collection[item].name;
                 uicard.secondaryText = collection[item].metadata.location.water.name;
                 //uicard.openURL = collection[item].page_link;
-                uicard.openURL = "spot.html#" + collection[item].code
+                uicard.openURL = "spot.html#" + collection[item].code;
     
                 uicontainer.appendChild(uicard);
             }
