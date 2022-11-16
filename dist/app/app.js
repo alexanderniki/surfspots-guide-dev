@@ -1153,7 +1153,6 @@ class SpotPage extends Page {
                 let water = collection[item].metadata.location.water.name;
                 let spot = collection[item].name;
 
-                //let strBreadcrumbs = `<a class="uix-link--header" href="${config.home_url}">${city}</a> › ${water} › ${spot}`;
                 let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a> › ${water} › Споты`;
                 uicontainer.innerHTML = strBreadcrumbs;
             }
@@ -1162,16 +1161,12 @@ class SpotPage extends Page {
 
     parseurl() {
         let currentURL = window.location.href;
-        console.log("CURRENT URL: ", currentURL);
         let suffix = currentURL.split("#");
-        if (suffix.length == 1) {
-            window.location.href = "index.html";
+        if (suffix.length == 1) {  // If there is no #spotcode in URL
+            window.location.href = "index.html";  // Go to index page
         }
         else {
-            console.log("URL SUFFIX: ", suffix);
-            console.log("URL SUFFIX: ", suffix.length);
-            let pageCode = suffix[suffix.length - 1];
-            console.log("PAGE CODE: ", pageCode);
+            let pageCode = suffix[suffix.length - 1];  // Take spotcode
             instanceState.spotcode = pageCode;
         }
         
