@@ -71,7 +71,7 @@ class UICardCommunication extends UICard {
         this.innerHTML = `
             <div class="ui-card--communication">
                 <span class="caption typography-uppercase">${this.type} • ${this.channelType}</span>
-                <span class="headline-6">${this.primaryText}</span>
+                <span class="caption-accent">${this.primaryText}</span>
                 <span class="body-1"><a href="${this.link}">${this.linkText}</a></span>
                 <span class="body-1">${this.secondaryText}</span>
             </div>

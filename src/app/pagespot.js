@@ -335,7 +335,7 @@ class SpotPage extends Page {
                 let spot = collection[item].name;
 
                 //let strBreadcrumbs = `<a class="uix-link--header" href="${config.home_url}">${city}</a> › ${water} › ${spot}`;
-                let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a> › ${water} › ${spot}`;
+                let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a> › ${water} › Споты`;
                 uicontainer.innerHTML = strBreadcrumbs;
             }
         }
@@ -345,10 +345,17 @@ class SpotPage extends Page {
         let currentURL = window.location.href;
         console.log("CURRENT URL: ", currentURL);
         let suffix = currentURL.split("#");
-        console.log("URL SUFFIX: ", suffix);
-        let pageCode = suffix[suffix.length - 1];
-        console.log("PAGE CODE: ", pageCode);
-        instanceState.spotcode = pageCode;
-    }
+        if (suffix.length == 1) {
+            window.location.href = "index.html";
+        }
+        else {
+            console.log("URL SUFFIX: ", suffix);
+            console.log("URL SUFFIX: ", suffix.length);
+            let pageCode = suffix[suffix.length - 1];
+            console.log("PAGE CODE: ", pageCode);
+            instanceState.spotcode = pageCode;
+        }
+        
+   }
 
 }
