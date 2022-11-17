@@ -114,7 +114,7 @@ function adjustBackButton() {
     console.log("BACK"); */
 }
 
-
+/* @DEPRECATED */
 /* Toggle CSS style using sessionStorage to store current theme */
 function toggleTheme() {
     // Obtains an array of all <link>
@@ -133,7 +133,7 @@ function toggleTheme() {
     }
 }
 
-
+/* @DEPRECATED */
 function setTheme(value) {
   
     // Obtain the name of stylesheet 
@@ -145,7 +145,7 @@ function setTheme(value) {
     sheets[0].href = value;
 }
 
-
+/* @DEPRECATED */
 function getCurrentTheme() {
 
     // Initialize current theme

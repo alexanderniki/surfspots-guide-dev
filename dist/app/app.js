@@ -493,6 +493,10 @@ class SurflApp {
 
         this._getDataFromConfig();
 
+        this._theme = "";
+        this._country = "";
+        this.city = "";  // City code
+
         return this;
 
     }
@@ -519,6 +523,21 @@ class SurflApp {
      */
     get dataRevision() {
         return this._dataRevision;
+    }
+
+    get theme() {
+        this._theme = sessionStorage.getItem('theme');
+        return this._theme;
+    }
+
+    get country() {
+        this._country = sessionStorage.getItem('country');
+        return this._country;
+    }
+
+    get city() {
+        this._city = sessionStorage.getItem('city');
+        return this._city;
     }
 
      /**
@@ -557,11 +576,84 @@ class SurflApp {
         }
     }
 
+    set theme(theme) {
+        if (theme) {
+            this._theme = theme;
+            sessionStorage.setItem('theme', this._theme);
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    set country(country) {
+        if (country) {
+            this._country = country;
+            sessionStorage.setItem('country', this._country);
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    set city(city) {
+        if (city) {
+            this._city = city;
+            sessionStorage.setItem('city', this._city);
+        }
+        else {
+            // do nothing
+        }
+    }
+
 
     _getDataFromConfig() {
         this.version = this.CONFIG.app_ver;
         this.revision = this.CONFIG.app_revision;
         this.dataRevision = this.CONFIG.data_revision;
+    }
+
+    toggleTheme() {
+        // Obtains an array of all <link> elements.
+        // Select your element using indexing.
+        var theme = document.getElementsByTagName('link')[0];
+
+        // Change the value of href attribute 
+        // to change the css sheet.
+        if (theme.getAttribute('href') == 'app/theme-light.css') {
+            theme.setAttribute('href', 'app/theme-dark.css');
+            sessionStorage.setItem('theme', "app/theme-dark.css");
+        } else {
+            theme.setAttribute('href', 'app/theme-light.css');
+            sessionStorage.setItem('theme', "app/theme-light.css");
+        }
+    }
+
+    setTheme(value) {
+  
+        // Obtain the name of stylesheet 
+        // as a parameter and set it 
+        // using href attribute.
+        // https://www.geeksforgeeks.org/how-to-switch-between-multiple-css-stylesheets-using-javascript/
+    
+        var sheets = document.getElementsByTagName('link');
+        sheets[0].href = value;
+    }
+
+    getCurrentTheme() {
+
+        // Initialize current theme
+        // @TODO: rename the function
+    
+        var theme = sessionStorage.getItem('theme');
+        if (theme != null) {
+            setTheme(theme);
+        }
+        else {
+            theme = 'app/theme-light.css';
+            sessionStorage.setItem('theme', theme);
+            setTheme(theme);
+        }
     }
 
     /**
@@ -616,6 +708,99 @@ class SurflApp {
 
         uicontainer.appendChild(uinotification);
     }
+}
+/**
+ * dataprovider.js
+ */
+
+
+class DataProvider {
+
+    constructor() {
+        this.data = data;
+        this.citycode = "";  // City code
+
+        return this;
+    }
+
+    fromCity(citycode) {
+        this.citycode = citycode;
+        return this;
+    }
+
+    spots() {
+        let cities = this.data.cities;
+        let spots = [];
+        let cityName = "";
+        console.log("DataProvider().cities: ", cities);
+        
+        for (let item in cities) {
+            if (cities[item].code == this.citycode) {
+                console.log("DataProvider.spots().citycode", cities[item].code);
+                cityName = cities[item].name;
+                console.log("DataProvider.spots().cityname", cities[item].name);
+            }
+            else {
+                // do nothing
+            }
+        }
+
+        for (let item in this.data.spots) {  // For every spot
+            console.log("DataProvider().spots().items: ", this.data.spots[item]);
+            if (this.data.spots[item].is_active == true) {  // Take only active spots
+                console.log("DataProvider().spots().active: ", this.data.spots[item]);
+                console.log("DataProvider().spots().city: ", this.data.spots[item].metadata.location.city, cityName);
+                if (this.data.spots[item].metadata.location.city === cityName) {
+                    console.log("DataProvider().spots().spot: ", this.data.spots[item]);
+                    spots.push(this.data.spots[item]);
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+        console.log("DataProvider().spots(): ", spots);
+        return spots;
+    }
+
+    popularSpots() {
+        let spotsData = this.spots();
+        let spots = [];
+        for (let item in spotsData) {  // For every spot
+            if (spotsData[item].is_active == true) {  // Take only active spots
+                if (spotsData[item].is_popular == true) {
+                    spots.push(spotsData[item]);
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+        console.log("POPULAR SPOTS: ", spots);
+        return spots;
+    }
+
+    orgs() {
+
+    }
+
+    stores() {
+
+    }
+
+    workshops() {
+
+    }
+
+    otherSpots () {
+
+    }
+
+    communications() {
+
+    }
+
+
 }
 /*
  * inlinenotification.js
@@ -779,7 +964,7 @@ class CommunicationPage extends Page {
                 uicard.channelType = collection[item].metadata.channel_type;
                 uicard.primaryText = collection[item].name;
                 uicard.secondaryText = collection[item].metadata.summary;
-                uicard.link = collection[item].metadata.lin;
+                uicard.link = collection[item].metadata.link;
                 uicard.linkText = collection[item].metadata.link_text;
     
                 uicontainer.appendChild(uicard);
@@ -797,10 +982,12 @@ class IndexPage extends Page {
     constructor() {
         super();
 
-        this.uicontainerstores = document.getElementById("collection-stores");  // Stores
-        this.uicontainerorgs = document.getElementById("collection-orgs");  // Orgs
-        this.uicontainerspots = document.getElementById("collection-spots");  // Spots
+        this.uicontainerstores = document.getElementById("collection-stores");    // Stores
+        this.uicontainerorgs = document.getElementById("collection-orgs");        // Orgs
+        this.uicontainerspots = document.getElementById("collection-spots");      // Spots
         this.uicontainerpopularspots = document.getElementById("spots-popular");  // Popular spots
+        
+        this.data = new DataProvider().fromCity(app.city);
     }
 
     /* 
@@ -809,9 +996,11 @@ class IndexPage extends Page {
     _groupSpotsByWater(){
 
         let waterTypes = data.water_types;
-        let spots = data.spots;
+        // let spots = data.spots;
+        let spots = this.data.spots();
         let groups = [];
-        //console.log("WATER TYPES:", waterTypes);
+        console.log("WATER TYPES:", waterTypes);
+        console.log("SPOTS TO GROUP:", spots);
     
         // For every water type
         for(let water in waterTypes) {
@@ -837,10 +1026,19 @@ class IndexPage extends Page {
                     }
                 }
             }
-            groups.push(spotGroup);
-            //console.log(groups);
+            if (spotGroup.spots.length > 0) {
+                groups.push(spotGroup);
+            }
+            else {
+                // do nothing
+            }
+            console.log("GROUPS", groups);
         }
         return groups;
+    }
+
+    _groupSpotsByLocation() {
+        
     }
 
     /* 
@@ -916,7 +1114,9 @@ class IndexPage extends Page {
     }
 
     popularSpots() {
-        let collection = data.spots;
+        // let collection = this.data.spots;
+        let collection = this.data.spots();
+        console.log("POPULAR SPOTS: ", collection);
         let uicontainer = document.getElementById("spots-popular");
     
         for (let item in collection) {
@@ -956,6 +1156,27 @@ class IndexPage extends Page {
                 uicontainer.appendChild(uicard);
             }
         }
+    }
+
+    cityList() {
+
+        // Useful info: https://alvarotrigo.com/blog/javascript-select-option/
+
+        let self = this; // Must have for setting custom function in the callback
+        this.uicontainercitylist = document.getElementById("list-cities");
+        this.uicontainercitylist.value = app.city;
+        console.log("CITIES LIST: ", this.uicontainercitylist);
+        console.log("CITIES LIST VALUE: ", this.uicontainercitylist.value);
+        this.uicontainercitylist.addEventListener("change", function() {
+            self.onCitySelected();
+        });
+    }
+
+    onCitySelected() {
+        //let itemSelected = this.uicontainercitylist.options[this.uicontainercitylist.selectedIndex].value;  
+        //console.log("SELECTED", itemSelected);
+        app.city = this.uicontainercitylist.value;
+        window.location.reload();
     }
 }
 /*
@@ -1069,35 +1290,6 @@ class SpotPage extends Page {
         }
     }
 
-    /* @DEPRECATED */
-    /*header() {
-        let spots = data.spots;
-        let currentSpot = '';
-    
-        for (let i = 0; i < spots.length; i++) {
-    
-            if (spots[i].code == this.spotCode) {
-                currentSpot = spots[i];
-                console.log(spots[i]);
-            }
-            else {
-                // do nothing
-                console.log("getPageHeader(): spot not found");
-            }
-        }
-    
-        let output = document.getElementById("place-title");
-        try {
-            let item = currentSpot.name;
-            console.log(item);
-            output.innerHTML = item;
-        }
-        catch(error) {
-            // console.log(error);
-            console.log("no header");
-        }
-    }*/
-
     labels() {
         let uicontainer = document.getElementById("labels");
 
@@ -1116,36 +1308,6 @@ class SpotPage extends Page {
         }
     }
 
-    /*labels(instanceState) {
-        let spots = data.spots;
-        let currentSpot = '';
-        for (let i = 0; i < spots.length; i++) {
-            if (spots[i].code == instanceState.spotcode) {
-                currentSpot = spots[i];
-            }
-            else {
-                // do nothing
-                console.log("The spot not found");
-            }
-        }
-    
-        let output = document.getElementById("labels");
-        try {
-            let items = currentSpot.metadata.labels;
-            for (let i = 0; i < items.length; i++) {
-    
-                let label = document.createElement('ui-label');
-                label.setAttribute("ui-text", items[i]);
-                output.appendChild(label);
-    
-            }
-        }
-        catch(error) {
-            console.log(error);
-            console.log("no labels");
-        }
-    }*/
-
     summary() {
     
         let uicontainer = document.getElementById("place-summary");
@@ -1158,39 +1320,10 @@ class SpotPage extends Page {
         }
     }
 
-    /*summary(instanceState) {
-        let spots = data.spots;
-        let currentSpot = '';
-    
-        for (let i = 0; i < spots.length; i++) {
-    
-            if (spots[i].code == instanceState.spotcode) {
-                currentSpot = spots[i];
-            }
-            else {
-                // do nothing
-                console.log("The spot not found");
-            }
-        }
-    
-        let output = document.getElementById("place-summary");
-        try {
-            let item = currentSpot.summary;
-            console.log(item);
-            output.innerHTML = item;
-        }
-        catch(error) {
-            // console.log(error);
-            console.log("no summary");
-        }
-    }*/
 
-    async weather(instanceState) {
-        //let weatherProvider = new WeatherProvider(instanceState.spotcode);
+    async weather() {
         let weatherProvider = new WeatherProvider(this.spotCode);
         let result = await weatherProvider.fetchWeather();
-        //console.log("FETCH WEATHER RESULT");
-        //console.log(result);
     
         let time = result.daily.time;
         let winddirection = result.daily.winddirection_10m_dominant;
@@ -1257,38 +1390,6 @@ class SpotPage extends Page {
         }
     }
 
-    /*orgs(spotcode) {
-        let spots = data.spots;
-        let orgs = data.orgs;
-    
-        let uicontainer = document.getElementById("collection-orgs");
-    
-        for (let spot in spots) {
-            let currentSpot = spots[spot];
-            if (currentSpot.code == spotcode) {
-                let orgsArr = currentSpot.metadata.orgs_ids;
-                console.log("ORGS ARR: ", orgsArr);
-    
-                for (let item in orgsArr) {
-                    let itemID = orgsArr[item];
-                    for (let org in orgs) {
-                        let currentOrg = orgs[org];
-                        if (currentOrg.id == itemID) {
-                            console.log("MATCH: ", currentOrg.name);
-    
-                            let uicard = new UICardSimple();
-                            uicard.overline = currentOrg.metadata.type;
-                            uicard.primaryText = currentOrg.name;
-                            uicard.secondaryText = currentOrg.metadata.summary;
-    
-                            uicontainer.appendChild(uicard);
-                        }
-                    }
-                }
-            }
-        }
-    }*/
-
     specification() {
         let uicontainer = document.getElementById("collection-specification");
 
@@ -1302,24 +1403,6 @@ class SpotPage extends Page {
         }
     }
 
-    /* specification(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-specification");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let spec = collection[item].metadata.specification;
-                for (let prop in spec) {
-                    let uilistitem = new UIListItem();
-                    uilistitem.primaryText = spec[prop].value;
-                    uilistitem.overline = spec[prop].name;
-
-                    uicontainer.appendChild(uilistitem);
-                }
-            }
-        }
-    }*/
-
     rules() {
         let uicontainer = document.getElementById("collection-rules");
 
@@ -1330,22 +1413,6 @@ class SpotPage extends Page {
             uicontainer.appendChild(uiitem);
         }
     }
-
-    /*rules(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-rules");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let rules = collection[item].metadata.rules;
-                for (let rule in rules) {
-                    let uiitem = document.createElement("p");
-                    uiitem.innerText = rules[rule];
-                    uicontainer.appendChild(uiitem);
-                }
-            }
-        }
-    }*/
 
     transport() {
         let uicontainer = document.getElementById("collection-transport");
@@ -1361,24 +1428,6 @@ class SpotPage extends Page {
         uicontainer.appendChild(uilistcontainer);
     }
 
-    /*transport(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-transport");
-        let uilistcontainer = document.createElement("ul");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let transport = collection[item].metadata.transport;
-                for (let item in transport) {
-                    let uiitem = document.createElement("li");
-                    uiitem.innerText = transport[item];
-                    uilistcontainer.appendChild(uiitem);
-                }
-            }
-        }
-        uicontainer.appendChild(uilistcontainer);
-    }*/
-
     description() {
         let uicontainer = document.getElementById("collection-description");
 
@@ -1389,22 +1438,6 @@ class SpotPage extends Page {
             uicontainer.appendChild(uiitem);
         }
     }
-
-    /*description(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-description");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let description = collection[item].metadata.description;
-                for (let item in description) {
-                    let uiitem = document.createElement("p");
-                    uiitem.innerText = description[item];
-                    uicontainer.appendChild(uiitem);
-                }
-            }
-        }
-    }*/
 
     webcamLinks() {
         let uicontainer = document.getElementById("collection-webcams");
@@ -1422,28 +1455,6 @@ class SpotPage extends Page {
         }
         uicontainer.appendChild(uilistcontainer);
     }
-
-    /*webcamLinks(spotcode) {
-        let collection = data.spots;
-        let uiwebcams = document.getElementById("collection-webcams");
-        let uilistcontainer = document.createElement("ul");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let webcams = collection[item].metadata.webcam_links;
-                for (let cam in webcams) {
-                    let uiitem = document.createElement("li");
-                    let webcamLink = document.createElement("a");
-                    webcamLink.setAttribute("href", webcams[cam].link);
-                    webcamLink.innerText = webcams[cam].name;
-
-                    uiitem.appendChild(webcamLink);
-                    uilistcontainer.appendChild(uiitem);
-                }
-            }
-        }
-        uiwebcams.appendChild(uilistcontainer);
-    }*/
 
     forecastLinks() {
         let uicontainer = document.getElementById("collection-wind");
@@ -1463,59 +1474,15 @@ class SpotPage extends Page {
         uicontainer.appendChild(uilistcontainer);
     }
 
-    /*forecastLinks(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-wind");
-        let uilistcontainer = document.createElement("ul");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let forecasts = collection[item].metadata.forecast_links;
-                for (let cast in forecasts) {
-                    let uiitem = document.createElement("li");
-                    let forecastLink = document.createElement("a");
-                    forecastLink.setAttribute("href", forecasts[cast].link);
-                    forecastLink.innerText = forecasts[cast].name;
-
-                    uiitem.appendChild(forecastLink);
-                    uilistcontainer.appendChild(uiitem);
-                }
-            }
-        }
-        uicontainer.appendChild(uilistcontainer);
-    }*/
-
     location() {
         let uicontainer = document.getElementById("spot-location");
         uicontainer.innerText = this.currentSpot.metadata.location.coordinates;
     }
 
-    /*location(spotcode) {
-        let collection = data.spots;
-        let coordinates = document.getElementById("spot-location");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                coordinates.innerText = collection[item].metadata.location.coordinates;
-            }
-        }
-    }*/
-
     mapCode() {
         let uicontainer = document.getElementById("spot-map");
         uicontainer.src = this.currentSpot.metadata.location.map_code;
     }
-
-    /*mapCode(spotcode) {
-        let collection = data.spots;
-        let spotmap = document.getElementById("spot-map");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                spotmap.src = collection[item].metadata.location.map_code;
-            }
-        }
-    }*/
 
     extrainfo() {
         let uicontainer = document.getElementById("spot-extrainfo");
@@ -1528,22 +1495,6 @@ class SpotPage extends Page {
         }
     }
 
-    /*extrainfo(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("spot-extrainfo");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let description = collection[item].metadata.extras;
-                for (let item in description) {
-                    let uiitem = document.createElement("p");
-                    uiitem.innerText = description[item];
-                    uicontainer.appendChild(uiitem);
-                }
-            }
-        }
-    }*/
-
     breadcrumbs() {
         let uicontainer = document.getElementById("place-breadcrumbs");
 
@@ -1554,23 +1505,6 @@ class SpotPage extends Page {
         uicontainer.innerHTML = strBreadcrumbs;
 
     }
-
-    /*breadcrumbs(spotcode) {
-        let config = data.config;
-        let collection = data.spots;
-        let uicontainer = document.getElementById("place-breadcrumbs");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let city = collection[item].metadata.location.city;
-                let water = collection[item].metadata.location.water.name;
-                let spot = collection[item].name;
-
-                let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a> › ${water} › Споты`;
-                uicontainer.innerHTML = strBreadcrumbs;
-            }
-        }
-    }*/
 
     pros() {
         let uicontainer = document.getElementById("collection-pros");
@@ -1586,29 +1520,6 @@ class SpotPage extends Page {
         uicontainer.appendChild(uilistcontainer);
     }
 
-    /*pros(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-pros");
-        let uilistcontainer = document.createElement("ul");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let pros = collection[item].metadata.pros;
-                for (let i in pros) {
-                    let uiitem = document.createElement("li");
-                    //let consItem = document.createElement("a");
-                    //consItem.setAttribute("href", cons[i].link);
-                    //consItem.innerText = cons[i].name;
-                    uiitem.innerText = pros[i];
-
-                    //uiitem.appendChild(webcamLink);
-                    uilistcontainer.appendChild(uiitem);
-                }
-            }
-        }
-        uicontainer.appendChild(uilistcontainer);
-    }*/
-
     cons() {
         let uicontainer = document.getElementById("collection-cons");
         let uilistcontainer = document.createElement("ul");
@@ -1622,29 +1533,6 @@ class SpotPage extends Page {
         
         uicontainer.appendChild(uilistcontainer);
     }
-
-    /*cons(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-cons");
-        let uilistcontainer = document.createElement("ul");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let cons = collection[item].metadata.cons;
-                for (let i in cons) {
-                    let uiitem = document.createElement("li");
-                    //let consItem = document.createElement("a");
-                    //consItem.setAttribute("href", cons[i].link);
-                    //consItem.innerText = cons[i].name;
-                    uiitem.innerText = cons[i];
-
-                    //uiitem.appendChild(webcamLink);
-                    uilistcontainer.appendChild(uiitem);
-                }
-            }
-        }
-        uicontainer.appendChild(uilistcontainer);
-    }*/
 
 }
 /*
@@ -2130,7 +2018,7 @@ function adjustBackButton() {
     console.log("BACK"); */
 }
 
-
+/* @DEPRECATED */
 /* Toggle CSS style using sessionStorage to store current theme */
 function toggleTheme() {
     // Obtains an array of all <link>
@@ -2149,7 +2037,7 @@ function toggleTheme() {
     }
 }
 
-
+/* @DEPRECATED */
 function setTheme(value) {
   
     // Obtain the name of stylesheet 
@@ -2161,7 +2049,7 @@ function setTheme(value) {
     sheets[0].href = value;
 }
 
-
+/* @DEPRECATED */
 function getCurrentTheme() {
 
     // Initialize current theme

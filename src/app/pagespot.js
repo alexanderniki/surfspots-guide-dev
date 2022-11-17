@@ -109,35 +109,6 @@ class SpotPage extends Page {
         }
     }
 
-    /* @DEPRECATED */
-    /*header() {
-        let spots = data.spots;
-        let currentSpot = '';
-    
-        for (let i = 0; i < spots.length; i++) {
-    
-            if (spots[i].code == this.spotCode) {
-                currentSpot = spots[i];
-                console.log(spots[i]);
-            }
-            else {
-                // do nothing
-                console.log("getPageHeader(): spot not found");
-            }
-        }
-    
-        let output = document.getElementById("place-title");
-        try {
-            let item = currentSpot.name;
-            console.log(item);
-            output.innerHTML = item;
-        }
-        catch(error) {
-            // console.log(error);
-            console.log("no header");
-        }
-    }*/
-
     labels() {
         let uicontainer = document.getElementById("labels");
 
@@ -156,36 +127,6 @@ class SpotPage extends Page {
         }
     }
 
-    /*labels(instanceState) {
-        let spots = data.spots;
-        let currentSpot = '';
-        for (let i = 0; i < spots.length; i++) {
-            if (spots[i].code == instanceState.spotcode) {
-                currentSpot = spots[i];
-            }
-            else {
-                // do nothing
-                console.log("The spot not found");
-            }
-        }
-    
-        let output = document.getElementById("labels");
-        try {
-            let items = currentSpot.metadata.labels;
-            for (let i = 0; i < items.length; i++) {
-    
-                let label = document.createElement('ui-label');
-                label.setAttribute("ui-text", items[i]);
-                output.appendChild(label);
-    
-            }
-        }
-        catch(error) {
-            console.log(error);
-            console.log("no labels");
-        }
-    }*/
-
     summary() {
     
         let uicontainer = document.getElementById("place-summary");
@@ -198,39 +139,10 @@ class SpotPage extends Page {
         }
     }
 
-    /*summary(instanceState) {
-        let spots = data.spots;
-        let currentSpot = '';
-    
-        for (let i = 0; i < spots.length; i++) {
-    
-            if (spots[i].code == instanceState.spotcode) {
-                currentSpot = spots[i];
-            }
-            else {
-                // do nothing
-                console.log("The spot not found");
-            }
-        }
-    
-        let output = document.getElementById("place-summary");
-        try {
-            let item = currentSpot.summary;
-            console.log(item);
-            output.innerHTML = item;
-        }
-        catch(error) {
-            // console.log(error);
-            console.log("no summary");
-        }
-    }*/
 
-    async weather(instanceState) {
-        //let weatherProvider = new WeatherProvider(instanceState.spotcode);
+    async weather() {
         let weatherProvider = new WeatherProvider(this.spotCode);
         let result = await weatherProvider.fetchWeather();
-        //console.log("FETCH WEATHER RESULT");
-        //console.log(result);
     
         let time = result.daily.time;
         let winddirection = result.daily.winddirection_10m_dominant;
@@ -297,38 +209,6 @@ class SpotPage extends Page {
         }
     }
 
-    /*orgs(spotcode) {
-        let spots = data.spots;
-        let orgs = data.orgs;
-    
-        let uicontainer = document.getElementById("collection-orgs");
-    
-        for (let spot in spots) {
-            let currentSpot = spots[spot];
-            if (currentSpot.code == spotcode) {
-                let orgsArr = currentSpot.metadata.orgs_ids;
-                console.log("ORGS ARR: ", orgsArr);
-    
-                for (let item in orgsArr) {
-                    let itemID = orgsArr[item];
-                    for (let org in orgs) {
-                        let currentOrg = orgs[org];
-                        if (currentOrg.id == itemID) {
-                            console.log("MATCH: ", currentOrg.name);
-    
-                            let uicard = new UICardSimple();
-                            uicard.overline = currentOrg.metadata.type;
-                            uicard.primaryText = currentOrg.name;
-                            uicard.secondaryText = currentOrg.metadata.summary;
-    
-                            uicontainer.appendChild(uicard);
-                        }
-                    }
-                }
-            }
-        }
-    }*/
-
     specification() {
         let uicontainer = document.getElementById("collection-specification");
 
@@ -342,24 +222,6 @@ class SpotPage extends Page {
         }
     }
 
-    /* specification(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-specification");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let spec = collection[item].metadata.specification;
-                for (let prop in spec) {
-                    let uilistitem = new UIListItem();
-                    uilistitem.primaryText = spec[prop].value;
-                    uilistitem.overline = spec[prop].name;
-
-                    uicontainer.appendChild(uilistitem);
-                }
-            }
-        }
-    }*/
-
     rules() {
         let uicontainer = document.getElementById("collection-rules");
 
@@ -370,22 +232,6 @@ class SpotPage extends Page {
             uicontainer.appendChild(uiitem);
         }
     }
-
-    /*rules(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-rules");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let rules = collection[item].metadata.rules;
-                for (let rule in rules) {
-                    let uiitem = document.createElement("p");
-                    uiitem.innerText = rules[rule];
-                    uicontainer.appendChild(uiitem);
-                }
-            }
-        }
-    }*/
 
     transport() {
         let uicontainer = document.getElementById("collection-transport");
@@ -401,24 +247,6 @@ class SpotPage extends Page {
         uicontainer.appendChild(uilistcontainer);
     }
 
-    /*transport(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-transport");
-        let uilistcontainer = document.createElement("ul");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let transport = collection[item].metadata.transport;
-                for (let item in transport) {
-                    let uiitem = document.createElement("li");
-                    uiitem.innerText = transport[item];
-                    uilistcontainer.appendChild(uiitem);
-                }
-            }
-        }
-        uicontainer.appendChild(uilistcontainer);
-    }*/
-
     description() {
         let uicontainer = document.getElementById("collection-description");
 
@@ -429,22 +257,6 @@ class SpotPage extends Page {
             uicontainer.appendChild(uiitem);
         }
     }
-
-    /*description(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-description");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let description = collection[item].metadata.description;
-                for (let item in description) {
-                    let uiitem = document.createElement("p");
-                    uiitem.innerText = description[item];
-                    uicontainer.appendChild(uiitem);
-                }
-            }
-        }
-    }*/
 
     webcamLinks() {
         let uicontainer = document.getElementById("collection-webcams");
@@ -462,28 +274,6 @@ class SpotPage extends Page {
         }
         uicontainer.appendChild(uilistcontainer);
     }
-
-    /*webcamLinks(spotcode) {
-        let collection = data.spots;
-        let uiwebcams = document.getElementById("collection-webcams");
-        let uilistcontainer = document.createElement("ul");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let webcams = collection[item].metadata.webcam_links;
-                for (let cam in webcams) {
-                    let uiitem = document.createElement("li");
-                    let webcamLink = document.createElement("a");
-                    webcamLink.setAttribute("href", webcams[cam].link);
-                    webcamLink.innerText = webcams[cam].name;
-
-                    uiitem.appendChild(webcamLink);
-                    uilistcontainer.appendChild(uiitem);
-                }
-            }
-        }
-        uiwebcams.appendChild(uilistcontainer);
-    }*/
 
     forecastLinks() {
         let uicontainer = document.getElementById("collection-wind");
@@ -503,59 +293,15 @@ class SpotPage extends Page {
         uicontainer.appendChild(uilistcontainer);
     }
 
-    /*forecastLinks(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-wind");
-        let uilistcontainer = document.createElement("ul");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let forecasts = collection[item].metadata.forecast_links;
-                for (let cast in forecasts) {
-                    let uiitem = document.createElement("li");
-                    let forecastLink = document.createElement("a");
-                    forecastLink.setAttribute("href", forecasts[cast].link);
-                    forecastLink.innerText = forecasts[cast].name;
-
-                    uiitem.appendChild(forecastLink);
-                    uilistcontainer.appendChild(uiitem);
-                }
-            }
-        }
-        uicontainer.appendChild(uilistcontainer);
-    }*/
-
     location() {
         let uicontainer = document.getElementById("spot-location");
         uicontainer.innerText = this.currentSpot.metadata.location.coordinates;
     }
 
-    /*location(spotcode) {
-        let collection = data.spots;
-        let coordinates = document.getElementById("spot-location");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                coordinates.innerText = collection[item].metadata.location.coordinates;
-            }
-        }
-    }*/
-
     mapCode() {
         let uicontainer = document.getElementById("spot-map");
         uicontainer.src = this.currentSpot.metadata.location.map_code;
     }
-
-    /*mapCode(spotcode) {
-        let collection = data.spots;
-        let spotmap = document.getElementById("spot-map");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                spotmap.src = collection[item].metadata.location.map_code;
-            }
-        }
-    }*/
 
     extrainfo() {
         let uicontainer = document.getElementById("spot-extrainfo");
@@ -568,22 +314,6 @@ class SpotPage extends Page {
         }
     }
 
-    /*extrainfo(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("spot-extrainfo");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let description = collection[item].metadata.extras;
-                for (let item in description) {
-                    let uiitem = document.createElement("p");
-                    uiitem.innerText = description[item];
-                    uicontainer.appendChild(uiitem);
-                }
-            }
-        }
-    }*/
-
     breadcrumbs() {
         let uicontainer = document.getElementById("place-breadcrumbs");
 
@@ -594,23 +324,6 @@ class SpotPage extends Page {
         uicontainer.innerHTML = strBreadcrumbs;
 
     }
-
-    /*breadcrumbs(spotcode) {
-        let config = data.config;
-        let collection = data.spots;
-        let uicontainer = document.getElementById("place-breadcrumbs");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let city = collection[item].metadata.location.city;
-                let water = collection[item].metadata.location.water.name;
-                let spot = collection[item].name;
-
-                let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a> › ${water} › Споты`;
-                uicontainer.innerHTML = strBreadcrumbs;
-            }
-        }
-    }*/
 
     pros() {
         let uicontainer = document.getElementById("collection-pros");
@@ -626,29 +339,6 @@ class SpotPage extends Page {
         uicontainer.appendChild(uilistcontainer);
     }
 
-    /*pros(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-pros");
-        let uilistcontainer = document.createElement("ul");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let pros = collection[item].metadata.pros;
-                for (let i in pros) {
-                    let uiitem = document.createElement("li");
-                    //let consItem = document.createElement("a");
-                    //consItem.setAttribute("href", cons[i].link);
-                    //consItem.innerText = cons[i].name;
-                    uiitem.innerText = pros[i];
-
-                    //uiitem.appendChild(webcamLink);
-                    uilistcontainer.appendChild(uiitem);
-                }
-            }
-        }
-        uicontainer.appendChild(uilistcontainer);
-    }*/
-
     cons() {
         let uicontainer = document.getElementById("collection-cons");
         let uilistcontainer = document.createElement("ul");
@@ -662,28 +352,5 @@ class SpotPage extends Page {
         
         uicontainer.appendChild(uilistcontainer);
     }
-
-    /*cons(spotcode) {
-        let collection = data.spots;
-        let uicontainer = document.getElementById("collection-cons");
-        let uilistcontainer = document.createElement("ul");
-
-        for (let item in collection) {
-            if (collection[item].code == spotcode) {
-                let cons = collection[item].metadata.cons;
-                for (let i in cons) {
-                    let uiitem = document.createElement("li");
-                    //let consItem = document.createElement("a");
-                    //consItem.setAttribute("href", cons[i].link);
-                    //consItem.innerText = cons[i].name;
-                    uiitem.innerText = cons[i];
-
-                    //uiitem.appendChild(webcamLink);
-                    uilistcontainer.appendChild(uiitem);
-                }
-            }
-        }
-        uicontainer.appendChild(uilistcontainer);
-    }*/
 
 }

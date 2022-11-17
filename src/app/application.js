@@ -15,6 +15,10 @@ class SurflApp {
 
         this._getDataFromConfig();
 
+        this._theme = "";
+        this._country = "";
+        this.city = "";  // City code
+
         return this;
 
     }
@@ -41,6 +45,21 @@ class SurflApp {
      */
     get dataRevision() {
         return this._dataRevision;
+    }
+
+    get theme() {
+        this._theme = sessionStorage.getItem('theme');
+        return this._theme;
+    }
+
+    get country() {
+        this._country = sessionStorage.getItem('country');
+        return this._country;
+    }
+
+    get city() {
+        this._city = sessionStorage.getItem('city');
+        return this._city;
     }
 
      /**
@@ -79,11 +98,84 @@ class SurflApp {
         }
     }
 
+    set theme(theme) {
+        if (theme) {
+            this._theme = theme;
+            sessionStorage.setItem('theme', this._theme);
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    set country(country) {
+        if (country) {
+            this._country = country;
+            sessionStorage.setItem('country', this._country);
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    set city(city) {
+        if (city) {
+            this._city = city;
+            sessionStorage.setItem('city', this._city);
+        }
+        else {
+            // do nothing
+        }
+    }
+
 
     _getDataFromConfig() {
         this.version = this.CONFIG.app_ver;
         this.revision = this.CONFIG.app_revision;
         this.dataRevision = this.CONFIG.data_revision;
+    }
+
+    toggleTheme() {
+        // Obtains an array of all <link> elements.
+        // Select your element using indexing.
+        var theme = document.getElementsByTagName('link')[0];
+
+        // Change the value of href attribute 
+        // to change the css sheet.
+        if (theme.getAttribute('href') == 'app/theme-light.css') {
+            theme.setAttribute('href', 'app/theme-dark.css');
+            sessionStorage.setItem('theme', "app/theme-dark.css");
+        } else {
+            theme.setAttribute('href', 'app/theme-light.css');
+            sessionStorage.setItem('theme', "app/theme-light.css");
+        }
+    }
+
+    setTheme(value) {
+  
+        // Obtain the name of stylesheet 
+        // as a parameter and set it 
+        // using href attribute.
+        // https://www.geeksforgeeks.org/how-to-switch-between-multiple-css-stylesheets-using-javascript/
+    
+        var sheets = document.getElementsByTagName('link');
+        sheets[0].href = value;
+    }
+
+    getCurrentTheme() {
+
+        // Initialize current theme
+        // @TODO: rename the function
+    
+        var theme = sessionStorage.getItem('theme');
+        if (theme != null) {
+            setTheme(theme);
+        }
+        else {
+            theme = 'app/theme-light.css';
+            sessionStorage.setItem('theme', theme);
+            setTheme(theme);
+        }
     }
 
     /**

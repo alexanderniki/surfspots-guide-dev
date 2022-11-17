@@ -25,6 +25,7 @@
             const instanceState = {
                 // Basic page parameters
                 spotcode: "ruspb",
+                //placecode: "ruspb",
             };
             main();
             const app = new SurflApp();
@@ -54,6 +55,14 @@
             <div class="page-header" id="page-header--container--main">
                 <span class="body-1">Серфинг</span>
                 <span class="headline-4">Россия, Санкт-Петербург</span>
+                <span>
+                    <label for="list-cities">Россия:</label>
+                    <select id="list-cities" name="list-cities">
+                        <option value="spb">Санкт-Петербург</option>
+                        <option value="konig" selected>Калининград</option>
+                    </select>
+                </div>
+                <script>page.cityList();</script>
             </div>
         </header>
 

@@ -8,10 +8,12 @@ class IndexPage extends Page {
     constructor() {
         super();
 
-        this.uicontainerstores = document.getElementById("collection-stores");  // Stores
-        this.uicontainerorgs = document.getElementById("collection-orgs");  // Orgs
-        this.uicontainerspots = document.getElementById("collection-spots");  // Spots
+        this.uicontainerstores = document.getElementById("collection-stores");    // Stores
+        this.uicontainerorgs = document.getElementById("collection-orgs");        // Orgs
+        this.uicontainerspots = document.getElementById("collection-spots");      // Spots
         this.uicontainerpopularspots = document.getElementById("spots-popular");  // Popular spots
+        
+        this.data = new DataProvider().fromCity(app.city);
     }
 
     /* 
@@ -20,9 +22,11 @@ class IndexPage extends Page {
     _groupSpotsByWater(){
 
         let waterTypes = data.water_types;
-        let spots = data.spots;
+        // let spots = data.spots;
+        let spots = this.data.spots();
         let groups = [];
-        //console.log("WATER TYPES:", waterTypes);
+        console.log("WATER TYPES:", waterTypes);
+        console.log("SPOTS TO GROUP:", spots);
     
         // For every water type
         for(let water in waterTypes) {
@@ -48,10 +52,19 @@ class IndexPage extends Page {
                     }
                 }
             }
-            groups.push(spotGroup);
-            //console.log(groups);
+            if (spotGroup.spots.length > 0) {
+                groups.push(spotGroup);
+            }
+            else {
+                // do nothing
+            }
+            console.log("GROUPS", groups);
         }
         return groups;
+    }
+
+    _groupSpotsByLocation() {
+        
     }
 
     /* 
@@ -127,7 +140,9 @@ class IndexPage extends Page {
     }
 
     popularSpots() {
-        let collection = data.spots;
+        // let collection = this.data.spots;
+        let collection = this.data.spots();
+        console.log("POPULAR SPOTS: ", collection);
         let uicontainer = document.getElementById("spots-popular");
     
         for (let item in collection) {
@@ -167,5 +182,26 @@ class IndexPage extends Page {
                 uicontainer.appendChild(uicard);
             }
         }
+    }
+
+    cityList() {
+
+        // Useful info: https://alvarotrigo.com/blog/javascript-select-option/
+
+        let self = this; // Must have for setting custom function in the callback
+        this.uicontainercitylist = document.getElementById("list-cities");
+        this.uicontainercitylist.value = app.city;
+        console.log("CITIES LIST: ", this.uicontainercitylist);
+        console.log("CITIES LIST VALUE: ", this.uicontainercitylist.value);
+        this.uicontainercitylist.addEventListener("change", function() {
+            self.onCitySelected();
+        });
+    }
+
+    onCitySelected() {
+        //let itemSelected = this.uicontainercitylist.options[this.uicontainercitylist.selectedIndex].value;  
+        //console.log("SELECTED", itemSelected);
+        app.city = this.uicontainercitylist.value;
+        window.location.reload();
     }
 }
