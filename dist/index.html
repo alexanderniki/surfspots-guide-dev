@@ -27,8 +27,8 @@
                 spotcode: "ruspb",
             };
             main();
+            const app = new SurflApp();
             const page = new IndexPage();
-            console.log("HISTORY: ", window.history.length);
         </script>
         <!-- Google Analytics -->
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -59,8 +59,9 @@
 
         <main>
             <!-- NOTIFICATIONS -->
-            <div id="inline-notification"></div>
-            <script>displayNotification();</script>
+            <div id="inline-notification">
+                <script>app.showInlineNotification("inline-notification");</script>
+            </div>
             <!-- / NOTIFICATIONS -->
             
             <section class="uix-layout--vbox" id="main-spots">

@@ -233,7 +233,9 @@ function toggleDonationAlert() {
     }
 }
 
-
+/* @DEPRECATED
+ * Use app.showInlineNotification(uielement) instead
+ */
 function displayNotification() {
 
     console.log("displayNotification");
