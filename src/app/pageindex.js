@@ -13,7 +13,14 @@ class IndexPage extends Page {
         this.uicontainerspots = document.getElementById("collection-spots");      // Spots
         this.uicontainerpopularspots = document.getElementById("spots-popular");  // Popular spots
         
-        this.data = new DataProvider().fromCity(app.city);
+        if (app.city) {
+            this.data = new DataProvider().fromCity(app.city);
+        }
+        else {
+            app.city = "spb";
+            this.data = new DataProvider().fromCity(app.city);
+        }
+        
     }
 
     /* 
@@ -209,9 +216,12 @@ class IndexPage extends Page {
 
         let self = this; // Must have for setting custom function in the callback
         this.uicontainercitylist = document.getElementById("list-cities");
-        this.uicontainercitylist.value = app.city; 
-        console.log("CITIES LIST: ", this.uicontainercitylist);
-        console.log("CITIES LIST VALUE: ", this.uicontainercitylist.value);
+        if (app.city) {
+            this.uicontainercitylist.value = app.city;
+        }
+        else {
+            // do nothing
+        }
         this.uicontainercitylist.addEventListener("change", function() {
             self.onCitySelected();
         });

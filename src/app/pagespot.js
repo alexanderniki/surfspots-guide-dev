@@ -6,6 +6,14 @@
 class SpotPage extends Page {
     constructor() {
         super();
+
+        if (app.city) {
+            this.data = new DataProvider().fromCity(app.city);
+        }
+        else {
+            app.city = "spb";
+            this.data = new DataProvider().fromCity(app.city);
+        }
         
         this._spotcode = "";
         this._parseurl()

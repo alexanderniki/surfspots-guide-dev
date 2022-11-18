@@ -914,7 +914,30 @@ class DataProvider {
     }
 
     communications() {
+        let communications = this.data.communications;
+        let result = [];
 
+        let currentCity = this._getCityByCode(this.citycode);
+        let cityCommunications = currentCity.communication_ids;
+
+        for (let item in cityCommunications) {
+            for (let channel in communications) {
+                if (cityCommunications[item] == communications[channel].id) {
+                    if (communications[channel].is_active = true) {
+                        result.push(communications[channel]);
+                    }
+                    else {
+                        // do nothing
+                    }
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+
+        console.log("DataProvider.communications() :: result", result);
+        return result;
     }
 
 
@@ -1066,10 +1089,21 @@ class CommunicationPage extends Page {
 
     constructor() {
         super();
+
+        if (app.city) {
+            this.data = new DataProvider().fromCity(app.city);
+        }
+        else {
+            app.city = "spb";
+            this.data = new DataProvider().fromCity(app.city);
+        }
     }
 
     сommunications() {
-        let collection = data.communications;
+        //let collection = data.communications;
+        let collection = this.data.communications();
+        console.log("PageCommunication.communications :: data", this.data);
+        console.log("PageCommunication.communications :: collection", collection);
         let uicontainer = document.getElementById("collection-communication");
     
         for (let item in collection) {
@@ -1088,6 +1122,17 @@ class CommunicationPage extends Page {
             }
         }
     }
+
+    breadcrumbs() {
+        let uicontainer = document.getElementById("place-breadcrumbs");
+
+        let city = this.data._getCityByCode(app.city).name;
+        console.log("COMMUNICATION BREADCRUMBS: ", city);
+
+        let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a>`;
+        uicontainer.innerHTML = strBreadcrumbs;
+
+    }
 }
 /*
  * index.js
@@ -1104,7 +1149,14 @@ class IndexPage extends Page {
         this.uicontainerspots = document.getElementById("collection-spots");      // Spots
         this.uicontainerpopularspots = document.getElementById("spots-popular");  // Popular spots
         
-        this.data = new DataProvider().fromCity(app.city);
+        if (app.city) {
+            this.data = new DataProvider().fromCity(app.city);
+        }
+        else {
+            app.city = "spb";
+            this.data = new DataProvider().fromCity(app.city);
+        }
+        
     }
 
     /* 
@@ -1300,9 +1352,12 @@ class IndexPage extends Page {
 
         let self = this; // Must have for setting custom function in the callback
         this.uicontainercitylist = document.getElementById("list-cities");
-        this.uicontainercitylist.value = app.city; 
-        console.log("CITIES LIST: ", this.uicontainercitylist);
-        console.log("CITIES LIST VALUE: ", this.uicontainercitylist.value);
+        if (app.city) {
+            this.uicontainercitylist.value = app.city;
+        }
+        else {
+            // do nothing
+        }
         this.uicontainercitylist.addEventListener("change", function() {
             self.onCitySelected();
         });
@@ -1323,6 +1378,14 @@ class IndexPage extends Page {
 class SpotPage extends Page {
     constructor() {
         super();
+
+        if (app.city) {
+            this.data = new DataProvider().fromCity(app.city);
+        }
+        else {
+            app.city = "spb";
+            this.data = new DataProvider().fromCity(app.city);
+        }
         
         this._spotcode = "";
         this._parseurl()

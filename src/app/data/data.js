@@ -54,6 +54,7 @@
             org_ids: [0, 1, 2, 3, 4, 5],
             store_ids: [0, 1, 2, 3, 4],
             workshop_ids: [0, 1, 2, 3],
+            communication_ids: [0, 1, 2, 3, 4, 5, 6, 7],
         },
         {
             id: 2,
@@ -63,8 +64,9 @@
             code: "konig",
             spot_ids: [18],
             org_ids: [6],
-            store_ids: [],
-            workshop_ids: [],
+            store_ids: [5],
+            workshop_ids: [4],
+            communication_ids: [7, 8],
         },
         {
             id: 3,
@@ -1729,7 +1731,7 @@
                         "LTE",
                     ],
                     wind_direction: ["SW ↗", "W →"],
-                    orgs_ids: [],
+                    orgs_ids: [6],
                     specification: [
                         {
                             name: "Тип",
@@ -1902,6 +1904,26 @@
                         value: "ask@sup-shop.ru",
                     },
                 ]
+            },
+        },
+        {
+            id: 5,
+            is_active: true,
+            is_popular: false,
+            name: "König Surf Club Shop",
+            code: "rukonigstorekonigsp",
+            metadata: {
+                type: "магазин",
+                summary: "Одежда, аксесуары",
+                homepage: "https://konigsurf.club/store",
+                location: {
+                    address: "",
+                    city: {
+                        id: 2,
+                        name: "Калининград",
+                    },
+                },
+                contacts: []
             },
         },
     ],
@@ -2313,6 +2335,29 @@
                     city: {
                         id: 1,
                         name: "Санкт-Петербург",
+                    },
+                },
+            },
+        },
+        {
+            id: 4,
+            is_active: true,
+            is_popular: false,
+            name: "candysurfboards",
+            code: "",
+            metadata: {
+                type: "Мастерская",
+                summary: "Изготовление и ремонт серф-досок",
+                homepage: "", // https://www.instagram.com/candysurfboards/
+                link: "",
+                location: {
+                    country: {
+                        id: 1,
+                        name: "Россия",
+                    },
+                    city: {
+                        id: 2,
+                        name: "Калининград",
                     },
                 },
             },

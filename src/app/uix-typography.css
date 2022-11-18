@@ -103,6 +103,10 @@ h6 {
     font-weight: bold;
 }
 
+.typography-light {
+    font-weight: lighter;
+}
+
 .typography-uppercase {
     text-transform: uppercase;
 }

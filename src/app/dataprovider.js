@@ -203,7 +203,30 @@ class DataProvider {
     }
 
     communications() {
+        let communications = this.data.communications;
+        let result = [];
 
+        let currentCity = this._getCityByCode(this.citycode);
+        let cityCommunications = currentCity.communication_ids;
+
+        for (let item in cityCommunications) {
+            for (let channel in communications) {
+                if (cityCommunications[item] == communications[channel].id) {
+                    if (communications[channel].is_active = true) {
+                        result.push(communications[channel]);
+                    }
+                    else {
+                        // do nothing
+                    }
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+
+        console.log("DataProvider.communications() :: result", result);
+        return result;
     }
 
 
