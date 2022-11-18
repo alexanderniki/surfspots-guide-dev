@@ -728,6 +728,30 @@ class DataProvider {
         return this;
     }
 
+    _getCityByCode(code) {
+        let result = {};
+        if (code) {
+            let collection = this.data.cities;
+            for (let item in collection) {
+                if (collection[item].code == code) {
+                    if(collection[item].is_active == true) {
+                        result = collection[item];
+                    }
+                    else {
+                        // do nothing
+                    }
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+        else {
+            // do nothing
+        }
+        return result;
+    }
+
     spots() {
         let cities = this.data.cities;
         let spots = [];
@@ -776,20 +800,88 @@ class DataProvider {
                 }
             }
         }
-        console.log("POPULAR SPOTS: ", spots);
+        //console.log("POPULAR SPOTS: ", spots);
         return spots;
     }
 
     orgs() {
+        let orgs = this.data.orgs;
+        let result = [];
 
+        let currentCity = this._getCityByCode(this.citycode);
+
+        let cityOrgs = currentCity.org_ids;  // Take orgs IDs
+        for (let item in cityOrgs) {
+            for (let org in orgs) {
+                if (cityOrgs[item] == orgs[org].id) {
+                    let currentOrg = orgs[org];
+                    if (currentOrg.is_active == true) {
+                        result.push(currentOrg);
+                    }
+                    else {
+                        // do nothing
+                    }
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+        return result;
     }
 
     stores() {
+        let stores = this.data.stores;
+        let result = [];
 
+        let currentCity = this._getCityByCode(this.citycode);
+        let cityStores = currentCity.store_ids;
+
+        for (let item in cityStores) {
+            for (let store in stores) {
+                if (cityStores[item] == stores[store].id) {
+                    console.log("DataProvider.stores() :: stores[store]", stores[store]);
+                    if (stores[store].is_active == true) {
+                        result.push(stores[store]);
+                    }
+                    else {
+                        // do nothing
+                    }
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+        //console.log("DataProvider.stores() :: result", result);
+        return result;
     }
 
     workshops() {
+        let workshops = this.data.workshops;
+        let result = [];
 
+        let currentCity = this._getCityByCode(this.citycode);
+        let cityWorkshops = currentCity.workshop_ids;
+
+        for (let item in cityWorkshops) {
+            for (let workshop in workshops) {
+                if (cityWorkshops[item] == workshops[workshop].id) {
+                    let currentWorkshop = workshops[workshop]
+                    if (currentWorkshop.is_active == true) {
+                        result.push(currentWorkshop);
+                    }
+                    else {
+                        // do nothing
+                    }
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+        //console.log("DataProvider.workshops() :: result", result);
+        return result;
     }
 
     otherSpots () {
@@ -1045,7 +1137,8 @@ class IndexPage extends Page {
      * Get and display stores, shops
      */
     stores() {
-        let collection = data.stores;
+        //let collection = data.stores;
+        let collection = this.data.stores();
         let uicontainer = document.getElementById("collection-stores");
     
         for (let item in collection) {
@@ -1067,7 +1160,7 @@ class IndexPage extends Page {
     /* 
      * Get and display Schools, Rents and Instructors
      */
-    orgs() {
+    orgs2() {
         let collection = data.orgs;
         let uicontainer = document.getElementById("collection-orgs");
     
@@ -1083,6 +1176,23 @@ class IndexPage extends Page {
     
                 uicontainer.appendChild(uicard);
             }
+        }
+    }
+
+    orgs() {
+        let collection = this.data.orgs();
+        let uicontainer = document.getElementById("collection-orgs");
+        console.log("ORGS: ", collection);
+
+        for (let item in collection) {
+            let uicard = new UICardSimple();
+    
+            uicard.overline = collection[item].metadata.type;
+            uicard.primaryText = collection[item].name;
+            uicard.secondaryText = collection[item].metadata.summary;
+            uicard.openURL = collection[item].metadata.homepage;
+
+            uicontainer.appendChild(uicard);
         }
     }
 
@@ -1139,8 +1249,9 @@ class IndexPage extends Page {
         forecast.getWorkingSpots();
     }
 
+
     workshops() {
-        let collection = data.workshops;
+        let collection = this.data.workshops();
         let uicontainer = document.getElementById("collection-workshops");
 
         for (let item in collection) {
@@ -1164,7 +1275,7 @@ class IndexPage extends Page {
 
         let self = this; // Must have for setting custom function in the callback
         this.uicontainercitylist = document.getElementById("list-cities");
-        this.uicontainercitylist.value = app.city;
+        this.uicontainercitylist.value = app.city; 
         console.log("CITIES LIST: ", this.uicontainercitylist);
         console.log("CITIES LIST VALUE: ", this.uicontainercitylist.value);
         this.uicontainercitylist.addEventListener("change", function() {

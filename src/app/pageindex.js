@@ -71,7 +71,8 @@ class IndexPage extends Page {
      * Get and display stores, shops
      */
     stores() {
-        let collection = data.stores;
+        //let collection = data.stores;
+        let collection = this.data.stores();
         let uicontainer = document.getElementById("collection-stores");
     
         for (let item in collection) {
@@ -93,7 +94,7 @@ class IndexPage extends Page {
     /* 
      * Get and display Schools, Rents and Instructors
      */
-    orgs() {
+    orgs2() {
         let collection = data.orgs;
         let uicontainer = document.getElementById("collection-orgs");
     
@@ -109,6 +110,23 @@ class IndexPage extends Page {
     
                 uicontainer.appendChild(uicard);
             }
+        }
+    }
+
+    orgs() {
+        let collection = this.data.orgs();
+        let uicontainer = document.getElementById("collection-orgs");
+        console.log("ORGS: ", collection);
+
+        for (let item in collection) {
+            let uicard = new UICardSimple();
+    
+            uicard.overline = collection[item].metadata.type;
+            uicard.primaryText = collection[item].name;
+            uicard.secondaryText = collection[item].metadata.summary;
+            uicard.openURL = collection[item].metadata.homepage;
+
+            uicontainer.appendChild(uicard);
         }
     }
 
@@ -165,8 +183,9 @@ class IndexPage extends Page {
         forecast.getWorkingSpots();
     }
 
+
     workshops() {
-        let collection = data.workshops;
+        let collection = this.data.workshops();
         let uicontainer = document.getElementById("collection-workshops");
 
         for (let item in collection) {
@@ -190,7 +209,7 @@ class IndexPage extends Page {
 
         let self = this; // Must have for setting custom function in the callback
         this.uicontainercitylist = document.getElementById("list-cities");
-        this.uicontainercitylist.value = app.city;
+        this.uicontainercitylist.value = app.city; 
         console.log("CITIES LIST: ", this.uicontainercitylist);
         console.log("CITIES LIST VALUE: ", this.uicontainercitylist.value);
         this.uicontainercitylist.addEventListener("change", function() {

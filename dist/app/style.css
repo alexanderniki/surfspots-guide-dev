@@ -74,7 +74,7 @@
     .ui-card--simple {
         min-height: var(--space-900);
         padding-bottom: var(--space-200);
-        border-radius: var(--space-50);
+        border-radius: var(--space-100);
     }
     .ui-card--simple--data {
         margin-bottom: auto;

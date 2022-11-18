@@ -22,11 +22,13 @@
             id: 1,
             name: "Россия",
             code: "ru",
+            city_ids: [1, 2, 3, 4],
         },
         {
             id: 2,
             name: "Кипр",
             code: "cy",
+            city_ids: [5],
         },
     ],
 
@@ -37,18 +39,29 @@
             country_id: 0,
             name: "DEFAULT",
             code: "default",
+            org_ids: [],
+            store_ids: [],
+            workshop_ids: [],
         },
         {
             id: 1,
+            is_active: true,
             country_id: 1,
             name: "Санкт-Петербург",
             code: "spb",
+            org_ids: [0, 1, 2, 3, 4, 5],
+            store_ids: [0, 1, 2, 3, 4],
+            workshop_ids: [0, 1, 2, 3],
         },
         {
             id: 2,
+            is_active: true,
             country_id: 1,
             name: "Калининград",
             code: "konig",
+            org_ids: [6],
+            store_ids: [],
+            workshop_ids: [],
         },
         {
             id: 3,
@@ -56,6 +69,9 @@
             country_id: 1,
             name: "Зеленоградск",
             code: "zelg",
+            org_ids: [],
+            store_ids: [],
+            workshop_ids: [],
         },
         {
             id: 4,
@@ -63,6 +79,9 @@
             country_id: 1,
             name: "Байтийск",
             code: "balt",
+            org_ids: [],
+            store_ids: [],
+            workshop_ids: [],
         },
         {
             id: 5,
@@ -70,6 +89,9 @@
             country_id: 2,
             name: "Пафос",
             code: "pahpos",
+            org_ids: [],
+            store_ids: [],
+            workshop_ids: [],
         },
     ],
 
@@ -1777,6 +1799,13 @@
                 type: "магазин",
                 summary: "Серф-снаряжение и гидроодежда",
                 homepage: "https://goodrider.ru/",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             }
         },
         {
@@ -1789,6 +1818,13 @@
                 type: "магазин",
                 summary: "Серф-снаряжение, аксесуары, гидроодежда",
                 homepage: "https://wsgs.ru/surfshop/",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1801,6 +1837,13 @@
                 type: "магазин",
                 summary: "Доски, аксесуары, гидроодежда",
                 homepage: "https://ankercompany.store/",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1813,6 +1856,13 @@
                 type: "магазин",
                 summary: "Доски, аксесуары, гидроодежда",
                 homepage: "https://www.traektoria.ru/",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1827,6 +1877,10 @@
                 homepage: "https://sup-shop.ru/",
                 location: {
                     address: "Санкт-Петербург, ул. Кораблестроителей 30",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
                 },
                 contacts: [
                     {
@@ -1858,6 +1912,13 @@
                 summary: "Доски (софт, хард), гидрокостюмы, лиши",
                 homepage: "",
                 link: "",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1871,6 +1932,13 @@
                 summary: "Уроки серфинга на флэте и на волнах",
                 homepage: "",
                 link: "",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1884,6 +1952,13 @@
                 summary: "Школа серфинга Максима Фомина",
                 homepage: "",
                 link: "",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1897,6 +1972,13 @@
                 summary: "Обучение классическому серфингу",
                 homepage: "",
                 link: "",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1910,6 +1992,13 @@
                 summary: "Доски, гидрокостюмы",
                 homepage: "",
                 link: "",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1923,6 +2012,33 @@
                 summary: "Обучение классическому серфингу",
                 homepage: "",
                 link: "",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
+            },
+        },
+        {
+            id: 6,
+            is_active: true,
+            is_popular: false,
+            name: "König Surf Club",
+            code: "",
+            metadata: {
+                type: "Школа",
+                summary: "Обучение классическому серфингу и SUP-серфингу",
+                homepage: "",
+                link: "",
+                location: {
+                    address: "",
+                    city: {
+                        id: 2,
+                        name: "Калининград",
+                    },
+                },
             },
         },
     ],
@@ -1939,6 +2055,13 @@
                 link: "https://t.me/spbsurfclub",
                 link_text: "@spbsurfclub",
                 summary: "Частота публикаций - от нуля до 5-6 в день прогноза. Основные темы: прогнозы, каталки в С-Пб, фото и видео, главные серфновости по миру. Канал дублируется в Whatsapp.",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1952,6 +2075,13 @@
                 link: "https://t.me/surfing_ru",
                 link_text: "@surfing_ru",
                 summary: "Что происходит с сёрфингом в России и в мире. Автор: участник расширенного состава сборной России Игорь Вечканов.",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1965,6 +2095,13 @@
                 link: "https://t.me/surfing_chat",
                 link_text: "@surfing_chat",
                 summary: "Прикреплен к каналу «Сёрфинг».",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1978,6 +2115,13 @@
                 link: "https://t.me/naspot",
                 link_text: "@naspot",
                 summary: "Можно найти компанию в поездку, новые знакомства и т.д. Не забывайте, что владельцу транспорта важно, если вы добавите ему денег на бензин.",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -1991,6 +2135,13 @@
                 link: "https://t.me/surffv",
                 link_text: "Ссылка",
                 summary: "Фото и видео с каталок, спотов, уроков и пр.",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -2004,6 +2155,13 @@
                 link: "https://vk.me/join//zLUyVD5q9IAxCfu0ULZHrWTj1RnGKLAdwg=",
                 link_text: "Ссылка",
                 summary: "Чат с прогнозами, новостями, анонсами для тех, кому удобнее пользоваться ВКонтакте.",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -2017,6 +2175,13 @@
                 link: "https://t.me/surfsp",
                 link_text: "@surfsp",
                 summary: "Чат, привязанный к каналу @spbsurfclub.",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
             },
         },
         {
@@ -2045,10 +2210,10 @@
                 summary: "Telegram-чат школы König Surf Club.",
                 location: {
                     city: {
-                        id: 4,
-                        name: "Зеленоградск",
+                        id: 2,
+                        name: "Калининград",
                     },
-                }
+                },
             },
         },
     ],
@@ -2147,4 +2312,4 @@
             },
         },
     ],
-};
+}
