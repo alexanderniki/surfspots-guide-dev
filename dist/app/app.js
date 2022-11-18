@@ -753,6 +753,31 @@ class DataProvider {
     }
 
     spots() {
+        let spots = this.data.spots;
+        let result = [];
+
+        let currentCity = this._getCityByCode(this.citycode);
+        let citySpots = currentCity.spot_ids;  // Take orgs IDs
+
+        for (let item in citySpots) {
+            for (let spot in spots) {
+                if (citySpots[item] == spots[spot].id) {
+                    if (spots[spot].is_active == true) {
+                        result.push(spots[spot]);
+                    }
+                    else {
+                        // do nothing
+                    }
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+        return result;
+    }
+
+    spots2() {
         let cities = this.data.cities;
         let spots = [];
         let cityName = "";
