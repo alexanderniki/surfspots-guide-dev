@@ -25,6 +25,8 @@ a {
     border-radius: var(--space-400);
     border-color: var(--color-on-surface);
     box-sizing: border-box;
+
+    border-color: var(--color-on-surface-light);
 }
 
 .uix-button--circle--s {
@@ -42,7 +44,8 @@ a {
 
 .uix-button--back {
     /*background-color: var(--color-on-accent);*/
-    color: var(--color-on-surface);
+    /*color: var(--color-on-surface);*/
+    color: var(--color-on-surface-light);
     padding-bottom: 4px; /* align symbol precisely in the center of the button*/
 }
 
