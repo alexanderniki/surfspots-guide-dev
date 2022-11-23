@@ -31,6 +31,18 @@
     border-radius: var(--space-100);
 }
 
+.page-header--inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-100);
+
+    padding: var(--space-300);
+    min-height: 360px;
+    /*border-radius: var(--space-100);*/
+    border-radius: 0px 0px var(--space-100) var(--space-100);
+}
+
 .page-header--main { /* Header on index page */
     display: flex;
     flex-direction: column;

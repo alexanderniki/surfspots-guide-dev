@@ -44,8 +44,8 @@ a {
 
 .uix-button--back {
     /*background-color: var(--color-on-accent);*/
-    /*color: var(--color-on-surface);*/
-    color: var(--color-on-surface-light);
+    color: var(--color-on-accent);
+    /*color: var(--color-on-surface-light);*/
     padding-bottom: 4px; /* align symbol precisely in the center of the button*/
 }
 
