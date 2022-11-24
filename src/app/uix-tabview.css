@@ -36,6 +36,7 @@
     cursor: pointer;
     padding: var(--space-200);
     /*transition: 0.3s;*/
+    margin: 0px;
 
     font-family: "PT Root UI", sans-serif;
     line-height: 1.5;

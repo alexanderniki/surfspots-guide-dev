@@ -118,7 +118,7 @@ class SpotPage extends Page {
     }
 
     labels() {
-        let uicontainer = document.getElementById("labels");
+        let uicontainer = document.getElementById("collection-labels");
 
         try {
             let items = this.currentSpot.metadata.labels;
