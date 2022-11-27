@@ -1758,6 +1758,17 @@ class SpotPage extends Page {
         uicontainer.appendChild(uilistcontainer);
     }
 
+    transportHowto() {
+        let uicontainer = document.getElementById("collection-transport-howto");
+
+        let howto = this.currentSpot.metadata.transport_howto;
+        for (let item in howto) {
+            let uiitem = document.createElement("p");
+            uiitem.innerHTML = howto[item];
+            uicontainer.appendChild(uiitem);
+        }
+    }
+
 }
 /*
  * spotforecast.js
