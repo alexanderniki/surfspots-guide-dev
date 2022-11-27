@@ -1137,7 +1137,8 @@ class CommunicationPage extends Page {
         let city = this.data._getCityByCode(app.city).name;
         console.log("COMMUNICATION BREADCRUMBS: ", city);
 
-        let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a>`;
+        //let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a>`;
+        let strBreadcrumbs = `<a class="uix-link--header" href="index.html">SURFL</a>`;
         uicontainer.innerHTML = strBreadcrumbs;
 
     }
