@@ -28,6 +28,31 @@
     text-transform: uppercase;
 }
 /*
+ * label.css
+ * UILabel
+ */
+
+
+/*.uix-label--simple {
+    color: var(--color-on-accent-t75);
+    background-color: rgba(255, 255, 255, 0.1);
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 24px;
+}*/
+
+.uix-label--simple {
+    color: var(--color-on-accent);
+    background-color: var(--color-on-surface-light);
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-radius: 24px;
+}
+/*
  * cardsimple.css
  * UICardSimple
  */
@@ -103,31 +128,6 @@
     background-color: var(--color-surface);
     color: var(--color-on-surface);
 }
-/*
- * label.css
- * UILabel
- */
-
-
-/*.uix-label--simple {
-    color: var(--color-on-accent-t75);
-    background-color: rgba(255, 255, 255, 0.1);
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border-radius: 24px;
-}*/
-
-.uix-label--simple {
-    color: var(--color-on-accent);
-    background-color: var(--color-on-surface-light);
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    border-radius: 24px;
-}
 /* 
  * Page elements
  */
@@ -179,17 +179,6 @@
     gap: var(--space-100);
     padding: var(--space-300);
     border-radius: var(--space-100);
-}
-
-/* Main toolbar */
-.uix-toolbar-main {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    height: var(--space-700);
-
-    padding: var(--space-100) var(--space-0);
 }
 
 /* CARD: Rent and instructors */
@@ -830,6 +819,46 @@ footer {
     max-width: 960px;
     padding: var(--space-300);
 }
+/*
+ * main-nav.css
+ * Main navigation
+ */
+
+/* Main toolbar */
+.uix-toolbar-main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    position: relative;
+
+    height: var(--space-700);
+
+    padding: var(--space-100) var(--space-0);
+
+}
+
+#toolbar-topnav-menu {
+    display: none;
+    z-index: 1;
+    position: fixed;
+
+    align-self: flex-end;
+
+    background-color: var(--color-primary);
+
+    border: 0px;
+    border-radius: var(--space-100);
+
+    padding: var(--space-200);
+    margin-top: var(--space-100);
+}
+
+/*.ui-overlay {
+    position: relative;
+    z-index: 1;
+}*/
 a {
     color: var(--color-secondary);
     text-decoration: none;

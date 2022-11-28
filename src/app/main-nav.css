@@ -1,0 +1,40 @@
+/*
+ * main-nav.css
+ * Main navigation
+ */
+
+/* Main toolbar */
+.uix-toolbar-main {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    position: relative;
+
+    height: var(--space-700);
+
+    padding: var(--space-100) var(--space-0);
+
+}
+
+#toolbar-topnav-menu {
+    display: none;
+    z-index: 1;
+    position: fixed;
+
+    align-self: flex-end;
+
+    background-color: var(--color-primary);
+
+    border: 0px;
+    border-radius: var(--space-100);
+
+    padding: var(--space-200);
+    margin-top: var(--space-100);
+}
+
+/*.ui-overlay {
+    position: relative;
+    z-index: 1;
+}*/

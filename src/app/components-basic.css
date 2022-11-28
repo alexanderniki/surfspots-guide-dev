@@ -51,17 +51,6 @@
     border-radius: var(--space-100);
 }
 
-/* Main toolbar */
-.uix-toolbar-main {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-
-    height: var(--space-700);
-
-    padding: var(--space-100) var(--space-0);
-}
-
 /* CARD: Rent and instructors */
 /* @DEPRECATED */
 .uix-card--rent {
