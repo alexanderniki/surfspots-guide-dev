@@ -4,7 +4,7 @@ a {
 }
 
 .uix-link--header {
-    text-decoration: underline;
+    text-decoration: none;
     color: var(--color-on-accent);
 }
 
