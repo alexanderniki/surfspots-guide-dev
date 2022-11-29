@@ -93,3 +93,16 @@
     height: 1px;
     background-color: var(--color-on-accent-t25);
 }
+
+#toolbar-topnav-menu-overlay {
+    width: 100vw;
+    height: 100vh;
+    z-index: 1;
+    position: fixed;
+
+    background-color: var(--color-on-accent-t25);
+
+    border: 1px solid #000;
+
+    margin-right: 300px;
+}
