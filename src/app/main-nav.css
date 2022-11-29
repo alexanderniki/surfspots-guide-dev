@@ -14,8 +14,12 @@
 
     height: var(--space-700);
 
-    padding: var(--space-100) var(--space-0);
+    padding: var(--space-0) var(--space-0);
 
+}
+
+.logo-container {
+    height: 48px;
 }
 
 #toolbar-topnav-menu {
@@ -23,14 +27,16 @@
     z-index: 1;
     position: fixed;
 
-    align-self: flex-end;
-
     background-color: var(--color-primary);
+    color: var(--color-on-primary);
 
-    border: 0px;
+    border: 1px solid var(--color-helper-2);
     border-radius: var(--space-100);
+    box-sizing: border-box;
+    box-shadow: 4px 4px 16px var(--color-on-background-variant);
 
     padding: var(--space-200);
+    padding-bottom: var(--space-400);
     margin-top: var(--space-100);
 }
 
@@ -38,3 +44,52 @@
     position: relative;
     z-index: 1;
 }*/
+
+#toolbar-topnav-menu ul {
+    list-style: none;
+    margin: 0px;
+    padding: 0px;
+}
+
+#toolbar-topnav-menu li {
+    /*margin-bottom: 8px;*/
+    cursor: pointer;
+}
+
+#toolbar-topnav-menu a {
+    color: var(--color-on-primary);
+    text-decoration: none;
+}
+
+#toolbar-topnav-menubutton {
+    color: var(--color-secondary);
+    min-width: 48px;
+    min-height: 48px;
+}
+
+.ic-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    justify-content: center;
+
+    flex-grow: 1;
+    flex-shrink: 1;
+
+    min-width: 48px;
+    min-height: 48px;
+}
+
+.ic-menu-hline {
+    height: 1px;
+    width: 16px;
+
+    background-color: #000;
+}
+
+.main-nav-divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--color-on-accent-t25);
+}

@@ -207,38 +207,6 @@ class UISpotTabbar extends HTMLElement{
 
 customElements.define("ui-tabbar-spot", UISpotTabbar);
 /*
- * label.js
- * UILabel
- */
-
-
-class UILabelSimple extends HTMLElement {
-
-    constructor() {
-        super();
-        this._text = "";
-    }
-
-    get text() {
-        return this._text;
-    }
-
-    set text(str) {
-        if (str) {
-            this._text = str;
-        }
-        else {
-            console.log("UILabelSimple: ", "No text given");
-        }
-    }
-
-    render() {
-        
-    }
-}
-
-customElements.define("ui-label--simple", UILabelSimple);
-/*
  * card.js
  * Generic card component
  */
@@ -484,6 +452,38 @@ class UICardCommunication extends UICard {
 
 
 customElements.define("ui-card--communication", UICardCommunication);
+/*
+ * label.js
+ * UILabel
+ */
+
+
+class UILabelSimple extends HTMLElement {
+
+    constructor() {
+        super();
+        this._text = "";
+    }
+
+    get text() {
+        return this._text;
+    }
+
+    set text(str) {
+        if (str) {
+            this._text = str;
+        }
+        else {
+            console.log("UILabelSimple: ", "No text given");
+        }
+    }
+
+    render() {
+        
+    }
+}
+
+customElements.define("ui-label--simple", UILabelSimple);
 /**
  * application.js
  */
@@ -1065,8 +1065,10 @@ class InlineNotificationView extends HTMLElement {
     }
 
     static hide() {
-        let notification = document.getElementById("inline-notification-card"); 
+        let notification = document.getElementById("inline-notification-card");
+        let notificationContainer = document.getElementById("inline-notification");
         notification.style.display = "none";
+        notificationContainer.style.display = "none";
     }
 
     render() {
@@ -1089,6 +1091,35 @@ function toggleNavigation() {
       x.style.display = "flex";
     }
   }
+
+  /*function openTab(evt, tabID) {
+    // Declare all variables
+    var i, tabcontent, tablinks;
+
+
+    console.log("mainnav.js::openTab()");
+    let tabMenu = document.getElementById("toolbar-topnav-menu");
+    console.log("TAB MENU: ", tabMenu);
+  
+    // Get all elements with class="tabcontent" and hide them
+    tabcontent = document.getElementsByClassName("uix-tabview--tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+  
+    // Get all elements with class="tablinks" and remove the class "active"
+    tablinks = document.getElementsByClassName("uix-tabview--tablink");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+  
+    // Show the current tab, and add an "active" class to the button that opened the tab
+    document.getElementById(tabID).style.display = "flex";
+    evt.currentTarget.className += " active";
+    
+    // Close menu
+    tabMenu.style.display = none;
+}*/
 class Page {
     
     constructor() {
@@ -1386,6 +1417,57 @@ class IndexPage extends Page {
         //console.log("SELECTED", itemSelected);
         app.city = this.uicontainercitylist.value;
         window.location.reload();
+    }
+
+    сommunications() {
+        //let collection = data.communications;
+        let collection = this.data.communications();
+        console.log("PageCommunication.communications :: data", this.data);
+        console.log("PageCommunication.communications :: collection", collection);
+        let uicontainer = document.getElementById("collection-communication");
+    
+        for (let item in collection) {
+            if (collection[item].is_active == true) {
+    
+                let uicard = new UICardCommunication();
+    
+                uicard.type = collection[item].metadata.type;
+                uicard.channelType = collection[item].metadata.channel_type;
+                uicard.primaryText = collection[item].name;
+                uicard.secondaryText = collection[item].metadata.summary;
+                uicard.link = collection[item].metadata.link;
+                uicard.linkText = collection[item].metadata.link_text;
+    
+                uicontainer.appendChild(uicard);
+            }
+        }
+    }
+
+    openTab(evt, tabID) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+    
+        let tabMenu = document.getElementById("toolbar-topnav-menu");
+      
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("uix-tabview--tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+      
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("uix-tabview--tablink");
+        console.log("NAVLINCS COUNT: ", tablinks.length);
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+      
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(tabID).style.display = "flex";
+        evt.currentTarget.className += " active";
+        
+        // Close menu
+        tabMenu.style.display = "none";
     }
 }
 /*

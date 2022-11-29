@@ -113,8 +113,10 @@ class InlineNotificationView extends HTMLElement {
     }
 
     static hide() {
-        let notification = document.getElementById("inline-notification-card"); 
+        let notification = document.getElementById("inline-notification-card");
+        let notificationContainer = document.getElementById("inline-notification");
         notification.style.display = "none";
+        notificationContainer.style.display = "none";
     }
 
     render() {

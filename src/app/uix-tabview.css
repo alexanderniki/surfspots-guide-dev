@@ -52,6 +52,11 @@
     color: var(--color-surface);
 }
 
+.uix-tabbar--navlinks li.active {
+    color: var(--color-surface);
+    font-weight: bold;
+}
+
 .uix-tabview--tabcontent {
     display: none;
 }
