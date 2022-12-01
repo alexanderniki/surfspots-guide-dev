@@ -824,6 +824,31 @@ footer {
  * Main navigation
  */
 
+/* MOBILE */
+@media (max-width: 576px) {
+    #toolbar-topnav-menu {
+        margin-left: var(--space-200);
+        margin-right: var(--space-200);
+    }
+}
+
+/* TABLET */
+@media (min-width: 576px) {
+    #toolbar-topnav-menu {
+        margin-left: var(--space-400);
+        margin-right: var(--space-400);
+    }
+}
+
+/* DESKTOP */
+@media (min-width: 1200px) {
+    #toolbar-topnav-menu {
+        margin-left: var(--space-400);
+        margin-right: var(--space-400);
+    }
+}
+
+
 /* Main toolbar */
 .uix-toolbar-main {
     display: flex;
@@ -847,6 +872,8 @@ footer {
     display: none;
     z-index: 1;
     position: fixed;
+    left: 0;
+    right: 0;
 
     background-color: var(--color-primary);
     color: var(--color-on-primary);
