@@ -344,7 +344,7 @@ class SpotPage extends Page {
 
         //let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a> › Споты › ${water}`;
         //let strBreadcrumbs = `<a class="uix-link--header" href="index.html">${city}</a> › ${water}`;
-        let strBreadcrumbs = `<a class="uix-link--header" href="index.html">SURFL</a>&nbsp; ⏵  &nbsp;${water}`;
+        let strBreadcrumbs = `<a class="uix-link--header" href="index.html">SURFL</a>&nbsp; › &nbsp;${water}`;
         uicontainer.innerHTML = strBreadcrumbs;
 
     }

@@ -856,8 +856,6 @@ footer {
     align-items: center;
     justify-content: space-between;
 
-    position: relative;
-
     height: var(--space-700);
 
     padding: var(--space-0) var(--space-0);
@@ -930,10 +928,10 @@ footer {
 }
 
 .ic-menu-hline {
-    height: 1px;
-    width: 16px;
+    height: 2px;
+    width: 20px;
 
-    background-color: #000;
+    background-color: var(--color-on-background);
 }
 
 .main-nav-divider {
