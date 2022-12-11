@@ -2521,4 +2521,55 @@
             },
         },
     ],
+    persons: [
+        {
+            id: 0,
+            code: "DEFAULT",
+            is_active: false,
+            is_popular: false,
+            name: "DEFAULT",
+            metadata: {
+                userpic_url: "", 
+                type: "DEFAULT",
+                summary: "Summary",
+                city_ids: [
+                    0,
+                    1,
+                ],
+                contacts: [
+                    {
+                        name: "",
+                        value: "",
+                    },
+                    {
+                        name: "",
+                        value: "",
+                    }
+                ]
+            }
+        },
+        {
+            id: 1,
+            is_active: true,
+            is_popular: false,
+            code: "litvinovleonid",
+            name: "Леонид Литвинов",
+            metadata: {
+                userpic_url: "",
+                type: "Инструктор",
+                summary: "Один из первых инструкторов в Санкт-Петербурге",
+                city_ids: [1],
+                contacts: [
+                    {
+                        name: "Telegram",
+                        value: "https://t.me/pitersurf",
+                    },
+                    {
+                        name: "Телефон",
+                        value: "+79219361361",
+                    },
+                ],
+            },
+        },
+    ]
 }
