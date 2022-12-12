@@ -29,7 +29,8 @@
                 personcode: "DEFAULT",
             };
             const app = new SurflApp();
-            const page = new SpotPage().fromcode(instanceState);
+            const page = new PersonPage().fromcode(instanceState.personcode);
+            console.log("PAGE: ", page);
             getCurrentTheme();
             getHistoryLength();
             
@@ -66,7 +67,7 @@
                 </div>
                 <div class="page-header--wrapper">
                     <div><span class="body-2" id="place-breadcrumbs"><script>page.breadcrumbs()</script></span></div>
-                    <span class="headline-5" id="place-title"><script>page.header();</script></span>
+                    <span class="headline-5" id="place-title"><script>page.title();</script></span>
                 </div>
             </div>
         </header>
@@ -78,20 +79,6 @@
             <!-- / Notifications -->
 
             <!-- MAIN CONTENT -->
-            <div class="uix-tabview uix-layout--vbox">
-                <ui-tabbar-spot></ui-tabbar-spot>
-
-                <section class="uix-tabview--tabcontent uix-tabview--tabcontent--default uix-layout--vbox" id="tab-spot-overview">
-
-                    <!-- Weather forecast -->
-                    <div class="uix-layout--hbox--wrapped">
-                        <div class="uix-card--weather--forecast">
-                            <div class="uix-layout--hbox--wrapped" id="weather-data"></div>
-                        </div>
-                    </div>
-                    <script>page.weather();</script>
-                    <!-- / Weather forecast -->
-
                     <!-- Overview -->
                     <div class="uix-layout--hbox--wrapped">
                     
@@ -104,12 +91,12 @@
                     
                     <div class="uix-card--spot--description-item">
                         <div id="spot--properties--header">
-                            <span class="caption-accent">Характеристики</span>
+                            <span class="caption-accent">Контакты</span>
                             <button class="uix-button--circle--s uix-button--card--inline uix-card--link--overall" onclick="location.href='reference-spots.html'">?</button>
                         </div>
                         <div>
-                            <ul class="uix-card--list" id="collection-specification">
-                                <script>page.specification();</script>
+                            <ul class="uix-card--list" id="collection-contacts">
+                                <script>page.contacts();</script>
                             </ul>
                         </div>
                     </div>
@@ -118,138 +105,23 @@
                 <div class="uix-layout--vbox">
                     <div class="uix-card--spot--description-item--compact">
                         <div id="spot--properties--header">
-                            <span class="caption-accent">Плюсы</span>
+                            <span class="caption-accent">Города</span>
                         </div>
-                        <div id="collection-pros">
-                            <script>page.pros();</script>
+                        <div id="collection-cities">
+                            <script>page.cities();</script>
                         </div>
                     </div>
                     <div class="uix-card--spot--description-item--compact">
                         <div id="spot--properties--header">
-                            <span class="caption-accent">Минусы</span>
+                            <span class="caption-accent">Работа</span>
                         </div>
-                        <div  id="collection-cons">
-                            <script>page.cons();</script>
+                        <div  id="collection-jobs">
+                            <script>page.jobs();</script>
                         </div>
                     </div>
                 </div>
                 <!-- / Pros and Cons -->
                 </div>
-
-                <div class="uix-layout--hbox--wrapped">
-                    <div class="uix-card--spot--description-item" id="card--gallery">
-                        <span class="caption-accent" id="card--gallery--header">Галерея</span>
-                        <div class="uix-card--main" id="">
-                            <div id="gallery">
-                                <div class="main-img">
-                                    <img id="current">
-                                </div>
-                                <div id="gallery--images" class="images">
-                                </div>
-                            </div>
-                            <div class="uix-popup" id="gallery-modal">
-                                <div class="uix-card--link--overall uix-button--circle headline-6 uix-button--gallery--close">✕</div>
-                                <img class="uix-popup--content" id="gallery-image">
-                            </div>
-                            <script src="app/gallery.js"></script>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="uix-layout--hbox--wrapped">
-                    <div class="uix-card--spot--description-item">
-                        <span class="caption-accent">Инфраструктура</span>
-                        <div class="uix-layout--hbox-dense--wrapped" id="collection-labels">
-                            <script>page.labels();</script>
-                        </div>
-                    </div>
-                    <div class="uix-card--spot--description-item">
-                        <span class="caption-accent">Веб-камеры</span>
-                        <div id="collection-webcams">
-                            <script>page.webcamLinks();</script>
-                        </div>
-                    </div>
-                    <div class="uix-card--spot--description-item">
-                        <span class="caption-accent">Прогноз ветра</span>
-                        <div id="collection-wind">
-                            <script>page.forecastLinks();</script>
-                        </div>
-                    </div>
-                </div>
-
-                </section>
-                <!-- / Overview -->
-
-                <!-- Location -->
-                <section class="uix-tabview--tabcontent uix-layout--vbox" id="tab-spot-location">
-                    <div class="uix-layout--hbox--wrapped">
-                        <div class="uix-card--spot--description-item">
-                            <div id="spot--properties--header">
-                                <span class="caption-accent">Расположение</span>
-                                <button class="uix-button--circle--s uix-button--card--inline uix-card--link--overall" id="copy-location" onclick="copyToClipboard('spot-location')">
-                                    <img src="https://img.icons8.com/material-outlined/48/000000/copy.png"/>
-                                </button>
-                            </div>
-                                Координаты: <span id="spot-location"><script>page.location();</script></span>
-                            <div class="map-responsive">
-                                <iframe id="spot-map" src="" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
-                                <script>page.mapCode();</script>
-                            </div>
-                        </div>
-                        <div class="uix-card--spot--description-item">
-                            <span class="caption-accent">Схема проезда</span>
-                            <div id="collection-transport-howto">
-                                <script>page.transportHowto();</script>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="uix-layout--hbox--wrapped">
-                        <div class="uix-card--spot--description-item">
-                            <span class="caption-accent">Транспорт</span>
-                            <div id="collection-transport">
-                                <script>page.transport()</script>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!-- / Location -->
-
-                <!-- Other -->
-                <section class="uix-tabview--tabcontent uix-layout--vbox" id="tab-spot-other">
-                    <div class="uix-layout--hbox--wrapped">
-                    <div class="uix-card--spot--description-item">
-                        <span class="caption-accent">Правила поведения</span>
-                        <div id="collection-rules">
-                            <script>page.rules()</script>
-                        </div>
-                    </div>
-                    </div>
-                    <div class="uix-layout--hbox--wrapped">
-                        <div class="uix-card--spot--description-item">
-                            <span class="caption-accent">Дополнительно</span>
-                            <div id="spot-extrainfo">
-                                <script>page.extrainfo()</script>
-                            </div>
-                        </div>
-                    </div>
-        
-                </section>
-                <!-- / Other -->
-
-                <!-- Here -->
-                <section class="uix-tabview--tabcontent uix-layout--vbox" id="tab-spot-here">
-                    <div class="uix-layout--grid--wrapped" id="collection-orgs">
-                        <script>page.orgs();</script>
-                    </div>
-                </section>
-                <!-- / Here -->
-
-            </div>
-            <!-- / MAIN CONTENT -->
-            
-            
-            <span class="title">Другие споты</span>
-            <spotlist-component></spotlist-component>
         </main>
         
         <footer>

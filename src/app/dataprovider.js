@@ -8,6 +8,7 @@ class DataProvider {
     constructor() {
         this.data = data;
         this.citycode = "";  // City code
+        this.personcode = "";  // Person code
 
         return this;
     }
@@ -38,6 +39,27 @@ class DataProvider {
         else {
             // do nothing
         }
+        return result;
+    }
+
+    getPersonByCode(code) {
+        let result = {};
+
+        if (code) {
+            let collection = this.persons();
+            for (let item in collection) {
+                if (collection[item].code == code) {
+                    result = collection[item];
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+        else {
+            // do nothing
+        }
+
         return result;
     }
 
@@ -227,6 +249,23 @@ class DataProvider {
 
         console.log("DataProvider.communications() :: result", result);
         return result;
+    }
+
+    persons() {
+        let collection = data.persons;
+        let result = [];
+
+        for(let item in collection) {
+            if (collection[item].is_active == true) {
+                result.push(collection[item]);
+            }
+            else {
+                // do nothing
+            }
+        }
+
+        return result;
+
     }
 
 

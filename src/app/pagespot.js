@@ -16,7 +16,7 @@ class SpotPage extends Page {
         }
         
         this._spotcode = "";
-        this._parseurl()
+        this._parseurl();
         this._data = data.spots;
         this._currentSpot = {};
         this._getCurrentSpot();

@@ -6,9 +6,9 @@
 
     config: {
         home_url: "https://surfl.guide",
-        app_ver: "0.2.1",
-        app_revision: 3,
-        data_revision: 3,
+        app_ver: "0.3.1",
+        app_revision: 4,
+        data_revision: 4,
     },
 
     // REFERENCES
@@ -2558,7 +2558,12 @@
                 userpic_url: "",
                 type: "Инструктор",
                 summary: "Один из первых инструкторов в Санкт-Петербурге",
+                description: [
+                    "Знаменитый инструктор - один из первых в Санкт-Петербурге.",
+                    "Обучение классическому серфингу и бодибордингу",
+                ],
                 city_ids: [1],
+                job_ids: [0, 1],
                 contacts: [
                     {
                         name: "Telegram",
