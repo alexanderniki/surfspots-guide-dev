@@ -170,7 +170,7 @@ class PersonPage extends Page {
             console.log("current city id: ", currentItem);
             for (let org in orgs) {
                 if (orgs[org].id == currentItem) {
-                    result.push(orgs[org].name);
+                    result.push(orgs[org]);
                     break;
                 }
                 else {
@@ -181,9 +181,15 @@ class PersonPage extends Page {
         console.log("persons' cities: ", result);
         let uilistcontainer = document.createElement("ul");
         for (let i in result) {
-            let uiitem = document.createElement("li");
+            /*let uiitem = document.createElement("li");
             uiitem.innerText = result[i];
-            uilistcontainer.appendChild(uiitem);
+            uilistcontainer.appendChild(uiitem);*/
+
+            let uilistitem = new UIListItem();
+            uilistitem.primaryText = result[i].name;
+            uilistitem.overline = result[i].metadata.type;
+
+            uicontainer.appendChild(uilistitem);
         }
         
         uicontainer.appendChild(uilistcontainer);

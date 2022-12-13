@@ -281,6 +281,21 @@
         },
     ],
 
+    person_types: [
+        {
+            id: 0,
+            name: "DEFAULT",
+        },
+        {
+            id: 1,
+            name: "Инструктор",
+        },
+        {
+            id: 2,
+            name: "Шейпер",
+        },
+    ],
+
     notifications: [
         {
             id: 0,
