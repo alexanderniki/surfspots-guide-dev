@@ -782,6 +782,24 @@ class DataProvider {
         return result;
     }
 
+    by(key, value) {
+        // @TODO: make generic search function. Something like reference(this.data.cities().by(id, 1));
+    }
+
+    getReferenceItemById(reference, id) {
+        let result = {};
+        for (let item in reference) {
+            if (reference[item].id == id) {
+                result = reference[item];
+                break;
+            }
+            else {
+                // do nothing
+            }
+        }
+        return result;
+    }
+
     spots() {
         let spots = this.data.spots;
         let result = [];

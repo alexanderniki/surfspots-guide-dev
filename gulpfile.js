@@ -49,5 +49,13 @@ gulp.task('media', function() {
     .pipe(dest('./dist/media'));
 });
 
+gulp.task('pwa', function() {
+    return gulp.src([
+        'manifest.json',
+        'sw.js'
+    ])
+    .pipe(dest('./dist'));
+});
 
-gulp.task('build', ['code', 'style', 'page', 'data', 'media']);
+
+gulp.task('build', ['code', 'style', 'page', 'data', 'media', 'pwa']);
