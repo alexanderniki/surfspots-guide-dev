@@ -52,7 +52,6 @@ gulp.task('media', function() {
 gulp.task('pwa', function() {
     return gulp.src([
         'manifest.json',
-        'sw.js'
     ])
     .pipe(dest('./dist'));
 });
