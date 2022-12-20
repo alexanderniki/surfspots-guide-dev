@@ -10,7 +10,15 @@ class PersonPage extends Page {
 
         this.personcode = "";
         this.currentPerson = {};
-        this.data = new DataProvider().persons();
+
+        if (app.city) {
+            this.data = new DataProvider().fromCity(app.city);
+        }
+        else {
+            app.city = "spb";
+            this.data = new DataProvider().fromCity(app.city);
+        }
+
         console.log("data collection: ", this.data);
         this._parseurl();
         console.log("personcode: ", this.personcode);
@@ -24,7 +32,7 @@ class PersonPage extends Page {
         // Current person
         let result = {};
 
-        let collection = this.data;
+        let collection = this.data.persons();
         for (let item in collection) {
             console.log("collection item code: ", collection[item].code);
             if (collection[item].code == this.personcode) {

@@ -270,21 +270,52 @@ class DataProvider {
     }
 
     persons() {
+
+        let currentCity = this._getCityByCode(this.citycode);
+        console.log("CityCode: ", this.citycode);
+        let cityPersons = currentCity.persons_ids;
+        console.log("City persons: ", cityPersons);
+
         let collection = data.persons;
         let result = [];
 
-        for(let item in collection) {
+        for (let personId in cityPersons) {
+            for (let item in collection) {
+                if (cityPersons[personId] == collection[item].id) {
+                    console.log("Personnnn: ", collection[item]);
+                    if (collection[item].is_active == true) {
+                        result.push(collection[item]);
+                    }
+                    else {
+                        // do nothing
+                    }
+                }
+                else {
+                    // do nothing
+                }
+            }
+        }
+
+        /*for(let item in collection) {
             if (collection[item].is_active == true) {
+                console.log("Person: ", collection[item].code);
                 result.push(collection[item]);
             }
             else {
                 // do nothing
             }
-        }
+        }*/
 
         return result;
-
     }
 
+    static union(collection1, collection2) {
+        let result = collection1;
+
+        for (let item in collection2) {
+            result.push(collection2[item]);
+        }
+        return result;
+    }
 
 }

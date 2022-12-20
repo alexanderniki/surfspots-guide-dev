@@ -135,6 +135,8 @@ class IndexPage extends Page {
 
             uicontainer.appendChild(uicard);
         }
+
+        this.persons();
     }
 
     spots() {
@@ -283,5 +285,33 @@ class IndexPage extends Page {
         
         // Close menu
         tabMenu.style.display = "none";
+    }
+
+    persons() {
+        let collection = this.data.persons();
+        console.log("PageIndex.persons(): ", collection);
+        let uicontainer = document.getElementById("collection-orgs");
+    
+        for (let item in collection) {
+            if (collection[item].is_active == true) {
+    
+                let uicard = new UICardSimple();
+                
+                uicard.primaryText = collection[item].name;
+                uicard.secondaryText = collection[item].metadata.summary;
+                uicard.overline = collection[item].metadata.type;
+                if (collection[item].has_link == true) {
+                    uicard.openURL = "person.html#" + collection[item].code;
+                }
+                else {
+                    // do nothing
+                }
+    
+                uicontainer.appendChild(uicard);
+            }
+            else {
+                // do nothing
+            }
+        }
     }
 }
