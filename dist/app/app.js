@@ -1446,7 +1446,7 @@ class IndexPage extends Page {
         let uicontainer = document.getElementById("collection-workshops");
 
         for (let item in collection) {
-            if (collection[item].is_active == true) {
+            if (collection[item].is_active == true) { 
 
                 let uicard = new UICardSimple();
 

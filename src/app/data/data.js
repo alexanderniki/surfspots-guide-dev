@@ -69,7 +69,7 @@
             country_id: 1,
             name: "Калининград",
             code: "konig",
-            spot_ids: [18, 19],
+            spot_ids: [18, 19, 20],
             org_ids: [6, 7],
             store_ids: [5],
             workshop_ids: [4, 5],
@@ -1928,11 +1928,118 @@
                         "Есть парковка",
                     ],
                     cons: [
-                        "Высока загруженность",
+                        "Высокая загруженность",
                         "При сильно ветре много кайтеров",
                     ],
                 },
         },
+        {
+            id: 20,
+            is_active: true,
+            is_popular: false,
+            name: "Колесо",
+            summary: "Спот у колеса обозрения",
+            code: "ruzelgwheel",
+            page_link: "spot-wheel.html",
+            metadata:
+                {
+                    description: [
+                        "Спот находится напротив колеса обозрения и немного левее него.",
+                    ],
+                    properties:
+                        {
+                            type: "Beach break",
+                            wave_direction: "Не известно",
+                            bottom_type: "Песок",
+                            difficulty: "Средний",
+                            crowd_level: "Не известно",
+                            threats: "Нет",
+                            wave_quality: "Не известно",
+                        },
+                    location:
+                        {
+                            coordinates: "54.96388, 20.48058",
+                            lat: 54.96388,
+                            long: 20.48058,
+                            map_code: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2290.5256784001717!2d20.478391315819707!3d54.96387998034976!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0xbec80b9749e78ecc!2zNTTCsDU3JzUwLjAiTiAyMMKwMjgnNTAuMSJF!5e0!3m2!1sen!2sge!4v1673716824833!5m2!1sen!2sge",
+                            city: "Калининград",
+                            water: {
+                                water_type_id: 4,
+                                name: "Балтийское море",
+                            },
+                        },
+                    gallery_pics: [
+                        "",
+                    ],
+                    transport: [
+                        "Автомобиль",
+                    ],
+                    rules: [
+                        "",
+                    ],
+                    extras: [
+                        "На споте несколько пирсов, формирующих волну. Чтобы сэкономить время и силы, можно выходить на лайн-ап по ним.",
+                    ],
+                    labels: [
+                        "парковка",
+                        "кафе",
+                        "LTE",
+                        "Гостиница",
+                    ],
+                    wind_direction: ["SW ↗", "W →"],
+                    orgs_ids: [],
+                    specification: [
+                        {
+                            name: "Тип",
+                            value: "Beach break",
+                        },
+                        {
+                            name: "Направление волны",
+                            value: "Не известно",
+                        },
+                        {
+                            name: "Дно",
+                            value: "Песок",
+                        },
+                        {
+                            name: "Сложность",
+                            value: "Продвинутый",
+                        },
+                        {
+                            name: "Уровень загруженности",
+                            value: "Не известно",
+                        },
+                        {
+                            name: "Угрозы",
+                            value: "Не известно",
+                        },
+                        {
+                            name: "Качество волн",
+                            value: "Не известно",
+                        },
+                    ],
+                    webcam_links: [
+                        {
+                            name: "Камера на побережье (на сайте windy.com)",
+                            link: "https://windy.com/webcams/1463303860",
+                        },
+                    ],
+                    forecast_links: [
+                        {
+                            name: "Windy",
+                            link: "https://www.windy.com/?54.963,20.462,15",
+                        },
+                    ],
+                    pros: [
+                        "Развитая инфраструктура",
+                        "Есть парковка",
+                    ],
+                    cons: [
+                        "",
+                    ],
+                },
+        },
+
     ],
 
     /* SHOPS */

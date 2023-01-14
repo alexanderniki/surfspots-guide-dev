@@ -215,6 +215,12 @@ Table spot_notes {
     value varchar
 }
 
+Table spot_webcams {
+    id integer [pk]
+    spot_id integer [ref: > places.id]
+    value varchar
+}
+
 
 /* CONNECTIONS */
 
@@ -259,4 +265,21 @@ Table spots_theats {
     id integer [pk]
     place_id integer [ref: > places.id]
     theat_id integer [ref: > r_spot_threat_types.id]
+}
+
+
+/* VIEWS */
+
+Table view_spots {
+    id integer [pk]
+    is_active boolean
+    is_popular boolean
+    name varchar
+    summary varchar
+    description varchar
+    spot_pros_id integer [ref: > spot_pros.id]
+    spot_cons_id integer [ref: > spot_cons.id]
+    spot_specification_id integer [ref: > spot_specification.id]
+    spot_wave_specification_id integer [ref: > spot_wave_specification.id]
+    // @TODO: continue. Decide how to get full view of the spot
 }
