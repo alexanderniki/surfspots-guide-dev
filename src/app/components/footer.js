@@ -18,9 +18,9 @@ class Footer extends HTMLElement {
                 <span>
                     Контакты:
                     <ul>
-                        <li>Telegram/WhatsApp: @alexanderniki</li>
-                        <li>Instagram: <a href="https://instagram.com/alexanderniki">@alexanderniki</a></li>
-                        <li><a href="mailto:inbox@alexanderniki.name">inbox@alexanderniki.name</a></li>
+                        <li>Telegram-канал: <a href="https://t.me/surflguide">@surflguide</a></li>
+                        <li>Telegram-бот: <a href="https://t.me/surflbot">@surflbot</a></li>
+                        <li><a href="mailto:surflguide@gmail.com">surflguide@gmail.com</a></li>
                     </ul>
                 </span>
                 <span>
@@ -28,7 +28,6 @@ class Footer extends HTMLElement {
                     <ul>
                         <li><a href="about.html">О проекте</a></li>
                         <li><a href="contribute.html">Помочь проекту</a></li>
-                        <li><a href="https://t.me/surflbot">Телеграм-бот @surflbot</a></li>
                     </ul>
                 </span>
             </div>
