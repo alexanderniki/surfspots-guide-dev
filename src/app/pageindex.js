@@ -30,7 +30,7 @@ class IndexPage extends Page {
 
         let waterTypes = data.water_types;
         // let spots = data.spots;
-        let spots = this.data.spots();
+        let spots = this.data.spots2();
         let groups = [];
         console.log("WATER TYPES:", waterTypes);
         console.log("SPOTS TO GROUP:", spots);

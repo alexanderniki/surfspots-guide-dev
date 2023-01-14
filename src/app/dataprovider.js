@@ -107,38 +107,22 @@ class DataProvider {
     }
 
     spots2() {
-        let cities = this.data.cities;
-        let spots = [];
-        let cityName = "";
-        console.log("DataProvider().cities: ", cities);
+        //let cities = this.data.cities;
+        let spots = this.data.spots;
+        let result = [];
+        let currentCity = this._getCityByCode(this.citycode);
         
-        for (let item in cities) {
-            if (cities[item].code == this.citycode) {
-                console.log("DataProvider.spots().citycode", cities[item].code);
-                cityName = cities[item].name;
-                console.log("DataProvider.spots().cityname", cities[item].name);
+        for (let item in spots) {
+            console.log("SPOTS: ", spots[item]);
+            if (spots[item].metadata.location.city_id == currentCity.id) {
+                result.push(spots[item]);
             }
             else {
                 // do nothing
             }
         }
-
-        for (let item in this.data.spots) {  // For every spot
-            console.log("DataProvider().spots().items: ", this.data.spots[item]);
-            if (this.data.spots[item].is_active == true) {  // Take only active spots
-                console.log("DataProvider().spots().active: ", this.data.spots[item]);
-                console.log("DataProvider().spots().city: ", this.data.spots[item].metadata.location.city, cityName);
-                if (this.data.spots[item].metadata.location.city === cityName) {
-                    console.log("DataProvider().spots().spot: ", this.data.spots[item]);
-                    spots.push(this.data.spots[item]);
-                }
-                else {
-                    // do nothing
-                }
-            }
-        }
-        console.log("DataProvider().spots(): ", spots);
-        return spots;
+        console.log("SPOTS IN CITY: ", result);
+        return result;
     }
 
     popularSpots() {
