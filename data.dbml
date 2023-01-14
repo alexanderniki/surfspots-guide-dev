@@ -121,6 +121,14 @@ Table r_wave_qualities {
     name varchar
 }
 
+Table r_wind_directions {
+    // N, NE, E, SE, S, SW, W, WN
+    id integer [pk]
+    parent_id integer
+    code varchar
+    name varchar
+}
+
 
 /* MAIN TABLES */
 
