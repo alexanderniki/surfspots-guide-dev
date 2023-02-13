@@ -1,13 +1,43 @@
+/** Class representing collection of items. */
 class Collection {
 
+    /**
+     * Create a collection.
+     * @return {Collection} new empty Collection.
+     */
     constructor() {
-        this.data = new DataProvider();
-        this.collection = []
+        /** @type {?any} */
+        this.rawdata = null;
+        /** @type {Array<Object>} */
+        this.collection = [];
+        /** @type {Array<Object>} */
+        this.items = [];
 
         return this;
     }
 
-    select(collection) {
+    /**
+     * Create a collection.
+     * @param {Array} data - JS array of objects
+     * @return {Collection} new Collection.
+     */
+    new(data) {
+        // do nothing
+
+        for (let item in data) {
+            if (item) {
+                this.items.push(data[item]);
+            }
+            else {
+                // do nothing
+            }
+        }
+
+        return this;
+    }
+
+    /** @static */
+    static select(collection) {
 
         return this;
     }
@@ -41,6 +71,9 @@ class Collection {
         this.collection = result;
         return this;
     }
+
+    search(what) {}
+    filter(callback){}
 }
 
 /*

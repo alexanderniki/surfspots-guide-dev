@@ -303,6 +303,40 @@
         },
     ],
 
+    r_donation_method_types: [
+        {
+            id: 0,
+            parent_id: null,
+            code: "DEFAULT",
+            name: "DEFAULT",
+        },
+        {
+            id: 1,
+            parent_id: null,
+            code: "cruptocurrency",
+            name: "Криптовалюта",
+        },
+        {
+            id: 2,
+            parent_id: null,
+            code: "bankcard",
+            name: "Банковские карты",
+        },
+        {
+            id: 3,
+            parent_id: null,
+            code: "ewallet",
+            name: "Электронные кошельки",
+        },
+        {
+            id: 4,
+            parent_id: null,
+            code: "subscription",
+            name: "Подписка",
+
+        },
+    ],
+
     notifications: [
         {
             id: 0,
@@ -2814,4 +2848,121 @@
             },
         },
     ],
+
+    service_data: {
+
+        donations: [
+            {
+                id: 0,
+                donation_method_type_id: 1,
+                code: "usdt",
+                name: "USDT",
+                value: "",
+            },
+            {
+                id: 1,
+                donation_method_type_id: 1,
+                code: "usdc",
+                name: "USDC",
+                value: "",
+            },
+            {
+                id: 2,
+                donation_method_type_id: 1,
+                code: "euroc",
+                name: "EUROC",
+                value: "",
+            },
+            {
+                id: 3,
+                donation_method_type_id: 1,
+                code: "usdd",
+                name: "USDD",
+                value: "",
+                link: null,
+            },
+            {
+                id: 4,
+                donation_method_type_id: 1,
+                code: "busd",
+                name: "BUSD",
+                value: "",
+                link: null,
+            },
+            {
+                id: 5,
+                donation_method_type_id: 2,
+                code: "alfabank",
+                name: "Альфа Банк",
+                value: "5559 4941 6360 8564",
+                link: null,
+            },
+            {
+                id: 6,
+                donation_method_type_id: 2,
+                code: "tinkoffbank",
+                name: "Тинькофф",
+                value: "2200 7001 4131 0507",
+                link: null,
+            },
+            {
+                id: 7,
+                donation_method_type_id: 2,
+                code: "vtbbank",
+                name: "ВТБ",
+                value: "5368 2902 1348 3664",
+                link: null,
+            },
+            {
+                id: 8,
+                donation_method_type_id: 3,
+                code: "qiwiwallet",
+                name: "Qiwi",
+                value: "+79052563050",
+                link: "https://qiwi.com/n/SURFL",
+            },
+            {
+                id: 9,
+                donation_method_type_id: 3,
+                code: "umoneywallet",
+                name: "ЮMoney",
+                value: "4100117988468489",
+                link: null,
+            },
+            {
+                id: 10,
+                donation_method_type_id: 3,
+                code: "umoneywallet",
+                name: "CloudTips",
+                value: null,
+                link: "https://pay.cloudtips.ru/p/0319faad",
+            },
+            {
+                id: 11,
+                donation_method_type_id: 3,
+                code: "bmacwallet",
+                name: "Buymeacoffee (если вы не в РФ)",
+                value: null,
+                link: "https://www.buymeacoffee.com/surfl",
+            },
+            {
+                id: 12,
+                donation_method_type_id: 4,
+                code: "subscriptionboosty",
+                name: "Boosty",
+                value: null,
+                link: "https://boosty.to/surfl",
+            },
+            {
+                id: 13,
+                donation_method_type_id: 4,
+                code: "subscriptionpatreon",
+                name: "Patreon (если вы не в РФ)",
+                value: null,
+                link: "https://www.patreon.com/surfl",
+            },
+        ],
+
+    },
+
 }
