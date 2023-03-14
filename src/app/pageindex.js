@@ -20,6 +20,8 @@ class IndexPage extends Page {
             app.city = "spb";
             this.data = new DataProvider().fromCity(app.city);
         }
+
+        this.commDAO = new CommunicationsDaoJS();
         
     }
 
@@ -258,6 +260,53 @@ class IndexPage extends Page {
                 uicontainer.appendChild(uicard);
             }
         }
+    }
+
+    communicationsd() {
+        let communications = this.commDAO.select();
+        console.log("dao.select(): ", communications);
+        communications.each((item) => {
+            if (item.metadata.location.city) {
+                console.log(item.name, " : " , item.metadata.location.city);
+            }
+            else if (item.metadata.location.country) {
+                console.log(item.name, " : " , item.metadata.location.country);
+            }
+            else {
+                // do nothing
+            }
+        });
+
+        /* communications.filter((item) => {
+            if (item.metadata.location.city) {
+                return item.metadata.location.city.id === 1;
+            }
+            else {
+                // do nothing
+            }
+        }); */
+
+        communications.filter((item) => {
+            if (item.metadata.location.city) {
+                if (item.metadata.location.city.id === 2) {
+                    return true;
+                }
+            }
+            else if (item.metadata.location.country) {
+                return true
+            }
+            else {
+                return false;
+            }
+        }).filter((item) => {
+            return item.is_popular == true;
+        });
+
+        /* communications.filter((item) => {
+            return item.is_popular == false;
+        }); */
+
+        console.log("Filtered collection: ", communications);
     }
 
     openTab(evt, tabID) {

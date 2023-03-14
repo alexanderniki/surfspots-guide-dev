@@ -1,5 +1,5 @@
 /** Class representing collection of items. */
-class Collection {
+class CollectionOne {
 
     /**
      * Create a collection.
@@ -77,9 +77,9 @@ class Collection {
 }
 
 /*
-Collection.select("data")
+CollectionName.select("data")
     .union(
-        .select("persons")
+        CollectionName.select("persons")
         .where("id", 2)
     )
     .where("is_active", true);

@@ -2521,7 +2521,7 @@
         {
             id: 7,
             is_active: true,
-            is_popular: false,
+            is_popular: true,
             name: "Российская Федерация Серфинга",
             metadata: {
                 type: "Канал",
@@ -2529,6 +2529,12 @@
                 link: "https://t.me/RFSurf",
                 link_text: "@RFSurf",
                 summary: "Telegram-канал Российской Федерации Серфинга.",
+                location: {
+                    country: {
+                        id: 1,
+                        name: "Россия",
+                    },
+                },
             },
         },
         {

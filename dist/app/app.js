@@ -1251,6 +1251,8 @@ class IndexPage extends Page {
             app.city = "spb";
             this.data = new DataProvider().fromCity(app.city);
         }
+
+        this.commDAO = new CommunicationsDaoJS();
         
     }
 
@@ -1489,6 +1491,53 @@ class IndexPage extends Page {
                 uicontainer.appendChild(uicard);
             }
         }
+    }
+
+    communicationsd() {
+        let communications = this.commDAO.select();
+        console.log("dao.select(): ", communications);
+        communications.each((item) => {
+            if (item.metadata.location.city) {
+                console.log(item.name, " : " , item.metadata.location.city);
+            }
+            else if (item.metadata.location.country) {
+                console.log(item.name, " : " , item.metadata.location.country);
+            }
+            else {
+                // do nothing
+            }
+        });
+
+        /* communications.filter((item) => {
+            if (item.metadata.location.city) {
+                return item.metadata.location.city.id === 1;
+            }
+            else {
+                // do nothing
+            }
+        }); */
+
+        communications.filter((item) => {
+            if (item.metadata.location.city) {
+                if (item.metadata.location.city.id === 2) {
+                    return true;
+                }
+            }
+            else if (item.metadata.location.country) {
+                return true
+            }
+            else {
+                return false;
+            }
+        }).filter((item) => {
+            return item.is_popular == true;
+        });
+
+        /* communications.filter((item) => {
+            return item.is_popular == false;
+        }); */
+
+        console.log("Filtered collection: ", communications);
     }
 
     openTab(evt, tabID) {
@@ -2865,16 +2914,46 @@ class WeatherProvider {
     
 
 }
-class Collection {
+/** Class representing collection of items. */
+class CollectionOne {
 
+    /**
+     * Create a collection.
+     * @return {Collection} new empty Collection.
+     */
     constructor() {
-        this.data = new DataProvider();
-        this.collection = []
+        /** @type {?any} */
+        this.rawdata = null;
+        /** @type {Array<Object>} */
+        this.collection = [];
+        /** @type {Array<Object>} */
+        this.items = [];
 
         return this;
     }
 
-    select(collection) {
+    /**
+     * Create a collection.
+     * @param {Array} data - JS array of objects
+     * @return {Collection} new Collection.
+     */
+    new(data) {
+        // do nothing
+
+        for (let item in data) {
+            if (item) {
+                this.items.push(data[item]);
+            }
+            else {
+                // do nothing
+            }
+        }
+
+        return this;
+    }
+
+    /** @static */
+    static select(collection) {
 
         return this;
     }
@@ -2908,16 +2987,20 @@ class Collection {
         this.collection = result;
         return this;
     }
+
+    search(what) {}
+    filter(callback){}
 }
 
 /*
-Collection.select("data")
+CollectionName.select("data")
     .union(
-        .select("persons")
+        CollectionName.select("persons")
         .where("id", 2)
     )
     .where("is_active", true);
 */
+
 /*
  * dateutils.js
  * Useful tools for working with date and time.
@@ -3002,6 +3085,335 @@ class DateUtils {
             sign = "";
         }
         return sign;
+    }
+
+
+}
+
+/**
+ * BaseModel.js
+ * Basic model class. Abstract
+ */
+
+/**
+ * Basic model.
+ */
+class BaseModel {
+
+    /**
+     * Create basic empty model
+     */
+    constructor() {}
+
+    /**
+     * Check if the object is model
+     * @return {bool} Model attribute
+     */
+    isModel() {
+        return true;
+    }
+}
+/**
+ * Collection.js
+ */
+
+class Collection {
+
+    /** @type Array<Object> */
+    items = [];
+
+    constructor() { this.test(); }
+
+    /**
+     * Check if this is a collection
+     * @returns {Boolean} - This is a collection
+     */
+    isCollection() {
+        return true;
+    }
+
+    /**
+     * Get all elements of the collection
+     * @returns {Array<Object>} - Array of items
+     */
+    all() {
+        return this.items;
+    }
+
+    /**
+     * Add element to the end of the collection
+     * @param {Object} element - Element to be added
+     */
+    add(element) {
+        if (element) {
+            this.items.push(element);
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Delete an element from collection
+     * @param {Object} element What to delete
+     * @returns {Collection} Self (Should I return new collection every time?)
+     */
+    delete(element) {
+        if (element) {
+            this.items.pop(element);
+        }
+        else {
+            // do nothing
+        }
+
+        return this;
+    }
+
+    /**
+     * Get FIRST item with given ID
+     * @param {number} id - Item's ID
+     * @returns {Object} Item with specified ID
+     */
+    getItemByID(id) {
+        // @TODO
+        for (let item in this.items) {
+            if (this.items[item].id = id) {
+                return this.items[item];
+            }
+            else {
+                // do nothing
+            }
+        }
+    }
+
+    each(callback) {
+        for (let item in this.items) {
+            callback(this.items[item]);
+        }
+    }
+
+    /**
+     * FUTURE API
+     */
+
+    select() {}
+
+    from(collection) {}
+
+    search(what) {}
+
+    group() {}
+
+    filter(callback) {
+        this.items = this.items.filter(callback);
+        return this;
+    }
+
+    update() {}
+
+    union(collection) {}
+
+    where(key, value) {}
+
+    test() {
+        console.log("Collection.test()", this);
+        console.log("Collection.all()", this.all());
+    }
+
+}
+/**
+ * CommunicationWay.js
+ */
+
+
+/**
+ * Communication way model.
+ * @extends BaseModel
+ */
+class CommunicationWay extends BaseModel {
+
+    id = 0;
+    name = "";
+    type = "";
+    platform = "";
+    link = "";
+    description = "";
+
+    constructor() {
+        super();
+    }
+
+    /**
+     * Create new communication way
+     * @return {CommunicationWay} New communication way
+     */
+    new() {
+        return this;
+    }
+
+    /**
+     * Get name
+     * @return {string} Name
+     */
+    get name() {
+        return this.name;
+    }
+
+    /**
+     * Set name
+     * @param {string} value - new name
+     */
+    set name(value) {
+        if (value) {
+            this.name = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get type
+     * @returns {string} Type
+     */
+    get type() {
+        return this.type
+    }
+
+    /**
+     * Set type
+     * @param {string} value - new type
+     */
+    set type(value) {
+        if (value) {
+            this.name = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get platform
+     * @returns {string} Platform
+     */
+    get platform() {
+        return this.platform;
+    }
+
+    /**
+     * Set platform
+     * @param {string} value - New value
+     */
+    set platform(value) {
+        if (value) {
+            this.name = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get link
+     * @returns {string} Link
+     */
+    get link() {
+        return this.link;
+    }
+
+    /**
+     * Set link
+     * @param {string} value - New value
+     */
+    set link(value) {
+        if (value) {
+            this.name = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get description
+     * @returns {string} Description
+     */
+    get description() {
+        return this.description;
+    }
+
+    /**
+     * Set description
+     * @param {string} value - New value
+     */
+    set description(value) {
+        if (value) {
+            this.name = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+}
+/**
+ * Communications DAO
+ */
+
+class CommunicationsDAO {
+
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {DataSource} datasource 
+     * @returns {CommunicationsDAO} New CommunicationsDAO
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+}
+
+/**
+ * CommunicationsDAO implementation for data located in plain JS file
+ */
+
+
+class CommunicationsDaoJS extends CommunicationsDAO {
+
+    constructor() {
+        super();
+
+        this.data = data;  // Connecting to JS file
+
+        this.test();
+    }
+
+    select() {
+        let rawData = this.data.communications;
+        let collection = new Collection();
+
+        for (let item in rawData) {
+            collection.add(rawData[item]);
+        }
+
+        return collection;
+    }
+
+    test() {
+        console.log("select() -> Collection: ", this.select());
     }
 
 
