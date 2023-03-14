@@ -581,6 +581,12 @@
 
     border-radius: var(--space-300);
 }
+
+#footer--container--main--label {
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
 :root {
     --space-0: 0px;
     --space-50: 4px;
