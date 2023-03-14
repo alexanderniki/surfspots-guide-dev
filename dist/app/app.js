@@ -2222,7 +2222,7 @@ class SpotForecast {
                                 let parcedDate = Date.parse(time[wind]);  // Unix time
                                 let newDate = new Date(parcedDate);
                                 let weekday = DateUtils.weekday(newDate.getDay());
-                                let strdate = `${weekday}, ${newDate.getDate()}.${newDate.getMonth()}`;
+                                let strdate = `${weekday}, ${newDate.getDate()}.${newDate.getMonth()+1}`;
 
                                 let workingSpot = {};
                                 workingSpot.originalDate = Date.parse(time[wind]);
