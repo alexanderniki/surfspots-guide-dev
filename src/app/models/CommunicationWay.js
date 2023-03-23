@@ -9,15 +9,20 @@
  */
 class CommunicationWay extends BaseModel {
 
-    id = 0;
-    name = "";
-    type = "";
-    platform = "";
-    link = "";
-    description = "";
-
     constructor() {
         super();
+
+        this._id = 0;
+        this._active = false;
+        this._popular = false;
+        this._name = "";
+        this._type = "";
+        this._platform = "";
+        this._link = "";
+        this._linktext = "";
+        this._summary = "";
+        this.country = new Country();
+        this.city = new City();
     }
 
     /**
@@ -29,11 +34,32 @@ class CommunicationWay extends BaseModel {
     }
 
     /**
+     * Get id
+     * @return {Number} Name
+     */
+    get id() {
+        return this._id;
+    }
+
+    /**
+     * Set id
+     * @param {Number} value - New value
+     */
+    set id(value) {
+        if (value) {  // !TODO: check id type - MUST be integer
+            this._id = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
      * Get name
      * @return {string} Name
      */
     get name() {
-        return this.name;
+        return this._name;
     }
 
     /**
@@ -42,7 +68,7 @@ class CommunicationWay extends BaseModel {
      */
     set name(value) {
         if (value) {
-            this.name = value;
+            this._name = value;
         }
         else {
             // do nothing
@@ -54,7 +80,7 @@ class CommunicationWay extends BaseModel {
      * @returns {string} Type
      */
     get type() {
-        return this.type
+        return this._type
     }
 
     /**
@@ -63,7 +89,7 @@ class CommunicationWay extends BaseModel {
      */
     set type(value) {
         if (value) {
-            this.name = value;
+            this._type = value;
         }
         else {
             // do nothing
@@ -75,7 +101,7 @@ class CommunicationWay extends BaseModel {
      * @returns {string} Platform
      */
     get platform() {
-        return this.platform;
+        return this._platform;
     }
 
     /**
@@ -84,7 +110,7 @@ class CommunicationWay extends BaseModel {
      */
     set platform(value) {
         if (value) {
-            this.name = value;
+            this._platform = value;
         }
         else {
             // do nothing
@@ -96,7 +122,7 @@ class CommunicationWay extends BaseModel {
      * @returns {string} Link
      */
     get link() {
-        return this.link;
+        return this._link;
     }
 
     /**
@@ -105,7 +131,7 @@ class CommunicationWay extends BaseModel {
      */
     set link(value) {
         if (value) {
-            this.name = value;
+            this._link = value;
         }
         else {
             // do nothing
@@ -113,20 +139,41 @@ class CommunicationWay extends BaseModel {
     }
 
     /**
-     * Get description
-     * @returns {string} Description
+     * Get link text
+     * @returns {string} Link
      */
-    get description() {
-        return this.description;
+    get link() {
+        return this._linktext;
     }
 
     /**
-     * Set description
+     * Set link text
      * @param {string} value - New value
      */
-    set description(value) {
+    set link(value) {
         if (value) {
-            this.name = value;
+            this._linktext = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get summary
+     * @returns {string} Summary
+     */
+    get summary() {
+        return this._summary;
+    }
+
+    /**
+     * Set summary
+     * @param {string} value - New value
+     */
+    set summary(value) {
+        if (value) {
+            this._summary = value;
         }
         else {
             // do nothing

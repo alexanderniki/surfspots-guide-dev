@@ -502,7 +502,7 @@ class SurflApp {
 
         this._theme = "";
         this._country = "";
-        this.city = "";  // City code
+        this._city = "";  // City code
 
         return this;
 
@@ -545,6 +545,14 @@ class SurflApp {
     get city() {
         this._city = sessionStorage.getItem('city');
         return this._city;
+    }
+
+    get locale() {
+        // !TODO
+    }
+
+    get language() {
+        // !TODO
     }
 
      /**
@@ -1543,6 +1551,33 @@ class IndexPage extends Page {
 
             uicontainer.appendChild(uicard);
         });
+    }
+
+    communicationse() {
+        let communications = this.commDAO.cselect();
+        //console.log("dao.select(): ", communications);
+        console.log("COLLECTION", communications);
+        communications.filter((item) => {
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    console.log("city found: ", item.city.code)
+                    return true;
+                }
+            }
+            else if (item.country.code) {
+                console.log("country found: ", item.country.code)
+                return true
+            }
+            else {
+                console.log("nothing found: ", item.country.code)
+                return false;
+            };
+        }).filter((item) => {
+            return item.active == true;
+        });
+
+        communications.each((item) => {console.log("EACH", item)});
+
     }
 
     openTab(evt, tabID) {
@@ -3118,6 +3153,25 @@ class BaseModel {
         return true;
     }
 }
+class Place extends BaseModel {
+    constructor() {
+        super();
+
+        this._id = 0;
+        this.active = false;
+        this.popular = false;
+        this.code = "spb";
+        this.name = "";
+        this.lat = 0.0;
+        this.long = 0.0;
+        this.address = "";
+    }
+}
+class City extends Place {
+    constructor() {
+        super();
+    }
+}
 /**
  * Collection.js
  */
@@ -3237,15 +3291,20 @@ class Collection {
  */
 class CommunicationWay extends BaseModel {
 
-    id = 0;
-    name = "";
-    type = "";
-    platform = "";
-    link = "";
-    description = "";
-
     constructor() {
         super();
+
+        this._id = 0;
+        this._active = false;
+        this._popular = false;
+        this._name = "";
+        this._type = "";
+        this._platform = "";
+        this._link = "";
+        this._linktext = "";
+        this._summary = "";
+        this.country = new Country();
+        this.city = new City();
     }
 
     /**
@@ -3257,11 +3316,32 @@ class CommunicationWay extends BaseModel {
     }
 
     /**
+     * Get id
+     * @return {Number} Name
+     */
+    get id() {
+        return this._id;
+    }
+
+    /**
+     * Set id
+     * @param {Number} value - New value
+     */
+    set id(value) {
+        if (value) {  // !TODO: check id type - MUST be integer
+            this._id = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
      * Get name
      * @return {string} Name
      */
     get name() {
-        return this.name;
+        return this._name;
     }
 
     /**
@@ -3270,7 +3350,7 @@ class CommunicationWay extends BaseModel {
      */
     set name(value) {
         if (value) {
-            this.name = value;
+            this._name = value;
         }
         else {
             // do nothing
@@ -3282,7 +3362,7 @@ class CommunicationWay extends BaseModel {
      * @returns {string} Type
      */
     get type() {
-        return this.type
+        return this._type
     }
 
     /**
@@ -3291,7 +3371,7 @@ class CommunicationWay extends BaseModel {
      */
     set type(value) {
         if (value) {
-            this.name = value;
+            this._type = value;
         }
         else {
             // do nothing
@@ -3303,7 +3383,7 @@ class CommunicationWay extends BaseModel {
      * @returns {string} Platform
      */
     get platform() {
-        return this.platform;
+        return this._platform;
     }
 
     /**
@@ -3312,7 +3392,7 @@ class CommunicationWay extends BaseModel {
      */
     set platform(value) {
         if (value) {
-            this.name = value;
+            this._platform = value;
         }
         else {
             // do nothing
@@ -3324,7 +3404,7 @@ class CommunicationWay extends BaseModel {
      * @returns {string} Link
      */
     get link() {
-        return this.link;
+        return this._link;
     }
 
     /**
@@ -3333,7 +3413,7 @@ class CommunicationWay extends BaseModel {
      */
     set link(value) {
         if (value) {
-            this.name = value;
+            this._link = value;
         }
         else {
             // do nothing
@@ -3341,20 +3421,41 @@ class CommunicationWay extends BaseModel {
     }
 
     /**
-     * Get description
-     * @returns {string} Description
+     * Get link text
+     * @returns {string} Link
      */
-    get description() {
-        return this.description;
+    get link() {
+        return this._linktext;
     }
 
     /**
-     * Set description
+     * Set link text
      * @param {string} value - New value
      */
-    set description(value) {
+    set link(value) {
         if (value) {
-            this.name = value;
+            this._linktext = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get summary
+     * @returns {string} Summary
+     */
+    get summary() {
+        return this._summary;
+    }
+
+    /**
+     * Set summary
+     * @param {string} value - New value
+     */
+    set summary(value) {
+        if (value) {
+            this._summary = value;
         }
         else {
             // do nothing
@@ -3403,7 +3504,7 @@ class CommunicationsDaoJS extends CommunicationsDAO {
 
         this.data = data;  // Connecting to JS file
 
-        this.test();
+        //this.test();
     }
 
     select() {
@@ -3417,9 +3518,49 @@ class CommunicationsDaoJS extends CommunicationsDAO {
         return collection;
     }
 
+    cselect() {
+        let rawData = this.data.communications;
+        let collection = new Collection();
+        //let arr = [];
+
+        /* for (let item in rawData) {
+            collection.add(rawData[item]);
+        } */
+
+        for (let item in rawData) {
+            console.log("ITEM: ", item);
+            let way = new CommunicationWay();
+            way.id = rawData[item].id;
+            way.active = rawData[item].is_active;
+            way.popular = rawData[item].is_popular;
+            way.name = rawData[item].name;
+            way.type = rawData[item].metadata.channel_type;
+            way.platform = rawData[item].platform;
+            way.link = rawData[item].metadata.link;
+            way.summary = rawData[item].metadata.summary;
+            //way.country.code = rawData[item].metadata.country.id;
+            if (rawData[item].metadata.location.city) {
+                way.city.code = rawData[item].metadata.location.city.code;
+            }
+            collection.add(way);
+            //arr.push(way);
+        }
+
+        //console.log("COLLECTION ADDING", arr);
+        return collection;
+    }
+
     test() {
         console.log("select() -> Collection: ", this.select());
     }
 
 
+}
+class Country extends Place {
+    
+    constructor() {
+        super();
+
+        this.cities = [];
+    }
 }

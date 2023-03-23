@@ -314,6 +314,33 @@ class IndexPage extends Page {
         });
     }
 
+    communicationse() {
+        let communications = this.commDAO.cselect();
+        //console.log("dao.select(): ", communications);
+        console.log("COLLECTION", communications);
+        communications.filter((item) => {
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    console.log("city found: ", item.city.code)
+                    return true;
+                }
+            }
+            else if (item.country.code) {
+                console.log("country found: ", item.country.code)
+                return true
+            }
+            else {
+                console.log("nothing found: ", item.country.code)
+                return false;
+            };
+        }).filter((item) => {
+            return item.active == true;
+        });
+
+        communications.each((item) => {console.log("EACH", item)});
+
+    }
+
     openTab(evt, tabID) {
         // Declare all variables
         var i, tabcontent, tablinks;

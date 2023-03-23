@@ -17,7 +17,7 @@ class SurflApp {
 
         this._theme = "";
         this._country = "";
-        this.city = "";  // City code
+        this._city = "";  // City code
 
         return this;
 
@@ -60,6 +60,14 @@ class SurflApp {
     get city() {
         this._city = sessionStorage.getItem('city');
         return this._city;
+    }
+
+    get locale() {
+        // !TODO
+    }
+
+    get language() {
+        // !TODO
     }
 
      /**
