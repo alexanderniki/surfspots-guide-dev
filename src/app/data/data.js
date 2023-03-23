@@ -8,7 +8,7 @@
         home_url: "https://surfl.guide",
         app_ver: "0.3.3",
         app_revision: 6,
-        data_revision: 7,
+        data_revision: 8,
     },
 
     // REFERENCES
@@ -2393,6 +2393,7 @@
                     address: "",
                     city: {
                         id: 1,
+                        code: "spb",
                         name: "Санкт-Петербург",
                     },
                 },
@@ -2413,6 +2414,7 @@
                     address: "",
                     city: {
                         id: 1,
+                        code: "spb",
                         name: "Санкт-Петербург",
                     },
                 },
@@ -2433,6 +2435,7 @@
                     address: "",
                     city: {
                         id: 1,
+                        code: "spb",
                         name: "Санкт-Петербург",
                     },
                 },
@@ -2453,6 +2456,7 @@
                     address: "",
                     city: {
                         id: 1,
+                        code: "spb",
                         name: "Санкт-Петербург",
                     },
                 },
@@ -2473,6 +2477,7 @@
                     address: "",
                     city: {
                         id: 1,
+                        code: "spb",
                         name: "Санкт-Петербург",
                     },
                 },
@@ -2493,6 +2498,7 @@
                     address: "",
                     city: {
                         id: 1,
+                        code: "spb",
                         name: "Санкт-Петербург",
                     },
                 },
@@ -2513,6 +2519,7 @@
                     address: "",
                     city: {
                         id: 1,
+                        code: "spb",
                         name: "Санкт-Петербург",
                     },
                 },
@@ -2532,6 +2539,7 @@
                 location: {
                     country: {
                         id: 1,
+                        code: "ru",
                         name: "Россия",
                     },
                 },
@@ -2551,6 +2559,7 @@
                 location: {
                     city: {
                         id: 2,
+                        code: "konig",
                         name: "Калининград",
                     },
                 },
@@ -2570,7 +2579,28 @@
                 location: {
                     city: {
                         id: 2,
+                        code: "konig",
                         name: "Калининград",
+                    },
+                },
+            },
+        },
+        {
+            id: 10,
+            is_active: false,
+            is_popular: false,
+            name: "гдеволна.рф",
+            metadata: {
+                type: "Чат",
+                channel_type: "Telegram",
+                link: "https://t.me/gdevolna",
+                link_text: "@gdevolna",
+                summary: "Путеводитель по спотам РФ",
+                location: {
+                    city: {
+                        id: 1,
+                        code: "spb",
+                        name: "Санкт-Петербург",
                     },
                 },
             },

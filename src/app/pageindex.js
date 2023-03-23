@@ -239,10 +239,7 @@ class IndexPage extends Page {
     }
 
     сommunications() {
-        //let collection = data.communications;
         let collection = this.data.communications();
-        console.log("PageCommunication.communications :: data", this.data);
-        console.log("PageCommunication.communications :: collection", collection);
         let uicontainer = document.getElementById("collection-communication");
     
         for (let item in collection) {
@@ -267,7 +264,7 @@ class IndexPage extends Page {
         console.log("dao.select(): ", communications);
         communications.each((item) => {
             if (item.metadata.location.city) {
-                console.log(item.name, " : " , item.metadata.location.city);
+                console.log("communicationsd: ", item.name, " : " , item.metadata.location.city);
             }
             else if (item.metadata.location.country) {
                 console.log(item.name, " : " , item.metadata.location.country);
@@ -277,18 +274,9 @@ class IndexPage extends Page {
             }
         });
 
-        /* communications.filter((item) => {
-            if (item.metadata.location.city) {
-                return item.metadata.location.city.id === 1;
-            }
-            else {
-                // do nothing
-            }
-        }); */
-
         communications.filter((item) => {
             if (item.metadata.location.city) {
-                if (item.metadata.location.city.id === 2) {
+                if (item.metadata.location.city.code == app.city) {
                     return true;
                 }
             }
@@ -297,9 +285,9 @@ class IndexPage extends Page {
             }
             else {
                 return false;
-            }
+            };
         }).filter((item) => {
-            return item.is_popular == true;
+            return item.is_active == true;
         });
 
         /* communications.filter((item) => {
@@ -307,6 +295,23 @@ class IndexPage extends Page {
         }); */
 
         console.log("Filtered collection: ", communications);
+
+        /**
+         * DISPLAY COLLECTION
+         */
+        communications.each((item) => {
+            let uicontainer = document.getElementById("collection-communication");
+            let uicard = new UICardCommunication();
+    
+            uicard.type = item.metadata.type;
+            uicard.channelType = item.metadata.channel_type;
+            uicard.primaryText = item.name;
+            uicard.secondaryText = item.metadata.summary;
+            uicard.link = item.metadata.link;
+            uicard.linkText = item.metadata.link_text;
+
+            uicontainer.appendChild(uicard);
+        });
     }
 
     openTab(evt, tabID) {
