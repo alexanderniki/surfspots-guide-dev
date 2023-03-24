@@ -21,7 +21,7 @@ class IndexPage extends Page {
             this.data = new DataProvider().fromCity(app.city);
         }
 
-        this.commDAO = new CommunicationsDaoJS();
+        this.commDAO = new CommunicationProvider(new CommunicationProviderScript);
         
     }
 

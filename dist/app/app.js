@@ -209,38 +209,6 @@ class UISpotTabbar extends HTMLElement{
 
 customElements.define("ui-tabbar-spot", UISpotTabbar);
 /*
- * label.js
- * UILabel
- */
-
-
-class UILabelSimple extends HTMLElement {
-
-    constructor() {
-        super();
-        this._text = "";
-    }
-
-    get text() {
-        return this._text;
-    }
-
-    set text(str) {
-        if (str) {
-            this._text = str;
-        }
-        else {
-            console.log("UILabelSimple: ", "No text given");
-        }
-    }
-
-    render() {
-        
-    }
-}
-
-customElements.define("ui-label--simple", UILabelSimple);
-/*
  * card.js
  * Generic card component
  */
@@ -497,73 +465,6 @@ class UICardSimple extends UICard {
 
 customElements.define("ui-card--simple", UICardSimple);
 /*
-<<<<<<< HEAD
- * communicationcard.js
- * UICardCommunication
- */
-
-
-class UICardCommunication extends UICard {
-
-    constructor() {
-        super();
-
-        this._type = "";
-        this._channelType = "";
-        this._link = "";
-        this._linkText = "";
-    }
-
-    get type() {
-        return this._type;
-    }
-
-    get channelType() {
-        return this._channelType;
-    }
-
-    get link() {
-        return this._link;
-    }
-
-    get linkText() {
-        return this._linkText;
-    }
-
-    set type(str) {
-        if (str) {
-            this._type = str;
-        }
-        else {
-            //do nothing
-        }
-    }
-
-    set channelType(str) {
-        if (str) {
-            this._channelType = str;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    set link(str) {
-        if (str) {
-            this._link = str;
-        }
-        else {
-            //do nothing
-        }
-    }
-
-    set linkText(str) {
-        if (str) {
-            this._linkText = str;
-        }
-        else {
-            this.linkText = "Ссылка";
-=======
  * label.js
  * UILabel
  */
@@ -586,36 +487,15 @@ class UILabelSimple extends HTMLElement {
         }
         else {
             console.log("UILabelSimple: ", "No text given");
->>>>>>> 10-comminications-DAL
         }
     }
 
     render() {
-<<<<<<< HEAD
-        this.innerHTML = `
-            <div class="ui-card--communication">
-                <span class="caption typography-uppercase">${this.type} • ${this.channelType}</span>
-                <span class="caption-accent">${this.primaryText}</span>
-                <span class="body-1"><a href="${this.link}">${this.linkText}</a></span>
-                <span class="body-1">${this.secondaryText}</span>
-            </div>
-        `;
-    }
-
-    connectedCallback() {
-        this.render();
-    }
-}
-
-
-customElements.define("ui-card--communication", UICardCommunication);
-=======
         
     }
 }
 
 customElements.define("ui-label--simple", UILabelSimple);
->>>>>>> 10-comminications-DAL
 /**
  * application.js
  */
@@ -1393,7 +1273,7 @@ class IndexPage extends Page {
             this.data = new DataProvider().fromCity(app.city);
         }
 
-        this.commDAO = new CommunicationsDaoJS();
+        this.commDAO = new CommunicationProvider(new CommunicationProviderScript);
         
     }
 
@@ -1610,7 +1490,6 @@ class IndexPage extends Page {
         let communications = this.commDAO.communications();
         let uicontainer = document.getElementById("collection-communication");
         communications.each((item) => {
-            //let uicontainer = document.getElementById("collection-communication");
             let uicard = new UICardCommunication().new(item);
             uicontainer.appendChild(uicard);
         });
@@ -3314,6 +3193,126 @@ class Collection {
     }
 
 }
+class Country extends Place {
+    
+    constructor() {
+        super();
+
+        this.cities = [];
+    }
+}
+/**
+ * communication_provider.js
+ */
+
+class CommunicationProvider {  // !TODO extends DataProvider
+
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {CommunicationProvider} datasource 
+     * @returns {CommunicationProvider} New CommunicationProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    communications() {
+        return this.datasource.communications();
+    }
+}
+
+/**
+ * communication_provider_script.js
+ */
+
+
+/**
+ * Communications - provided by in-app javascript file
+ * @extends CommunicationProvider
+ */
+class CommunicationProviderScript extends CommunicationProvider {
+
+    constructor() {
+        super();
+
+        this.data = data;  // Connecting to JS file
+
+        //this.test();  // Debugging purpose
+    }
+
+    select() {
+        let rawData = this.data.communications;
+        let collection = new Collection();
+
+        for (let item in rawData) {
+            let way = new CommunicationWay();
+            way.id = rawData[item].id;
+            way.active = rawData[item].is_active;
+            way.popular = rawData[item].is_popular;
+            way.name = rawData[item].name;
+            way.type = rawData[item].metadata.type;
+            way.platform = rawData[item].metadata.channel_type;
+            way.link = rawData[item].metadata.link;
+            way.summary = rawData[item].metadata.summary;
+            if (rawData[item].metadata.location.country) {
+                way.country.code = rawData[item].metadata.location.country.code;
+            }
+            if (rawData[item].metadata.location.city) {
+                way.city.code = rawData[item].metadata.location.city.code;
+            }
+            collection.add(way);
+        }
+
+        return collection;
+    }
+
+    communications() {
+        let collection = this.select();
+
+        collection.filter((item) => {
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    return true;
+                }
+            }
+            if (item.country.code) {  // !TODO == app.country
+                return true
+            }
+            else {
+                return false;
+            };
+        }).filter((item) => {
+            return item.active == true;
+        });
+
+        return collection;
+    }
+
+    test() {
+        console.log("select() -> Collection: ", this.select());
+        console.log("communications() -> Collection: ", this.communications());
+    }
+
+
+}
 /**
  * CommunicationWay.js
  */
@@ -3494,114 +3493,5 @@ class CommunicationWay extends BaseModel {
         else {
             // do nothing
         }
-    }
-}
-/**
- * Communications DAO
- */
-
-class CommunicationsDAO {
-
-    /**
-     * Constructor
-     * @param {DataSource} datasource
-     */
-    constructor(datasource) {
-        this.datasource = datasource;
-    }
-
-    /**
-     * 
-     * @param {DataSource} datasource 
-     * @returns {CommunicationsDAO} New CommunicationsDAO
-     */
-    new(datasource) {
-        if (datasource) {
-            this.datasource = datasource;
-            return this;
-        }
-        else {
-            // do nothing
-        }
-    }
-}
-
-/**
- * CommunicationsDAO implementation for data located in plain JS file
- */
-
-
-class CommunicationsDaoJS extends CommunicationsDAO {
-
-    constructor() {
-        super();
-
-        this.data = data;  // Connecting to JS file
-
-        //this.test();  // Debugging purpose
-    }
-
-    select() {
-        let rawData = this.data.communications;
-        let collection = new Collection();
-
-        for (let item in rawData) {
-            let way = new CommunicationWay();
-            way.id = rawData[item].id;
-            way.active = rawData[item].is_active;
-            way.popular = rawData[item].is_popular;
-            way.name = rawData[item].name;
-            way.type = rawData[item].metadata.type;
-            way.platform = rawData[item].metadata.channel_type;
-            way.link = rawData[item].metadata.link;
-            way.summary = rawData[item].metadata.summary;
-            if (rawData[item].metadata.location.country) {
-                way.country.code = rawData[item].metadata.location.country.code;
-            }
-            if (rawData[item].metadata.location.city) {
-                way.city.code = rawData[item].metadata.location.city.code;
-            }
-            collection.add(way);
-        }
-
-        return collection;
-    }
-
-    communications() {
-        let collection = this.select();
-
-        collection.filter((item) => {
-            if (item.city) {
-                if (item.city.code == app.city) {
-                    console.log("SHI: ", item);
-                    return true;
-                }
-            }
-            if (item.country.code) {  // !TODO == app.country
-                console.log("SHI: ", item);
-                return true
-            }
-            else {
-                return false;
-            };
-        }).filter((item) => {
-            return item.active == true;
-        });
-
-        return collection;
-    }
-
-    test() {
-        console.log("select() -> Collection: ", this.select());
-    }
-
-
-}
-class Country extends Place {
-    
-    constructor() {
-        super();
-
-        this.cities = [];
     }
 }
