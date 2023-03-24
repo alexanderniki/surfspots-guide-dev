@@ -7,7 +7,9 @@ class Collection {
     /** @type Array<Object> */
     items = [];
 
-    constructor() { this.test(); }
+    constructor() { 
+        //this.test(); 
+    }
 
     /**
      * Check if this is a collection

@@ -21,7 +21,9 @@ class IndexPage extends Page {
             this.data = new DataProvider().fromCity(app.city);
         }
 
-        this.commDAO = new CommunicationProvider(new CommunicationProviderScript);
+        if(app.country) {
+            // !TODO
+        }
         
     }
 
@@ -79,24 +81,17 @@ class IndexPage extends Page {
      * Get and display stores, shops
      */
     stores() {
-        //let collection = data.stores;
-        let collection = this.data.stores();
+        let collection = new ShopsProvider().new(new ShopsProviderScript()).shops();
         let uicontainer = document.getElementById("collection-stores");
-    
-        for (let item in collection) {
-            if (collection[item].is_active == true) {
-    
-                let uicard = new UICardSimple();
-    
-                uicard.overline = collection[item].metadata.type;
-                uicard.primaryText = collection[item].name;
-                uicard.secondaryText = collection[item].metadata.summary;
-                uicard.openURL = collection[item].metadata.homepage;
-                uicard.openNewPage = true;
-    
-                uicontainer.appendChild(uicard);
-            }
-        }
+        collection.each((item) => {
+            let uicard = new UICardSimple();
+            uicard.primaryText = item.name;
+            uicard.secondaryText = item.summary;
+            uicard.overline = item.type;
+            uicard.openURL = item.homepage;
+            uicard.openNewPage = true;
+            uicontainer.appendChild(uicard);
+        });
     }
 
     /* 
@@ -235,9 +230,9 @@ class IndexPage extends Page {
     }
 
     сommunications() {
-        let communications = this.commDAO.communications();
+        let collection = new CommunicationProvider(new CommunicationProviderScript()).communications();
         let uicontainer = document.getElementById("collection-communication");
-        communications.each((item) => {
+        collection.each((item) => {
             let uicard = new UICardCommunication().new(item);
             uicontainer.appendChild(uicard);
         });

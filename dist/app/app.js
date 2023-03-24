@@ -1273,7 +1273,9 @@ class IndexPage extends Page {
             this.data = new DataProvider().fromCity(app.city);
         }
 
-        this.commDAO = new CommunicationProvider(new CommunicationProviderScript);
+        if(app.country) {
+            // !TODO
+        }
         
     }
 
@@ -1331,24 +1333,17 @@ class IndexPage extends Page {
      * Get and display stores, shops
      */
     stores() {
-        //let collection = data.stores;
-        let collection = this.data.stores();
+        let collection = new ShopsProvider().new(new ShopsProviderScript()).shops();
         let uicontainer = document.getElementById("collection-stores");
-    
-        for (let item in collection) {
-            if (collection[item].is_active == true) {
-    
-                let uicard = new UICardSimple();
-    
-                uicard.overline = collection[item].metadata.type;
-                uicard.primaryText = collection[item].name;
-                uicard.secondaryText = collection[item].metadata.summary;
-                uicard.openURL = collection[item].metadata.homepage;
-                uicard.openNewPage = true;
-    
-                uicontainer.appendChild(uicard);
-            }
-        }
+        collection.each((item) => {
+            let uicard = new UICardSimple();
+            uicard.primaryText = item.name;
+            uicard.secondaryText = item.summary;
+            uicard.overline = item.type;
+            uicard.openURL = item.homepage;
+            uicard.openNewPage = true;
+            uicontainer.appendChild(uicard);
+        });
     }
 
     /* 
@@ -1487,9 +1482,9 @@ class IndexPage extends Page {
     }
 
     сommunications() {
-        let communications = this.commDAO.communications();
+        let collection = new CommunicationProvider(new CommunicationProviderScript()).communications();
         let uicontainer = document.getElementById("collection-communication");
-        communications.each((item) => {
+        collection.each((item) => {
             let uicard = new UICardCommunication().new(item);
             uicontainer.appendChild(uicard);
         });
@@ -3094,7 +3089,9 @@ class Collection {
     /** @type Array<Object> */
     items = [];
 
-    constructor() { this.test(); }
+    constructor() { 
+        //this.test(); 
+    }
 
     /**
      * Check if this is a collection
@@ -3193,14 +3190,6 @@ class Collection {
     }
 
 }
-class Country extends Place {
-    
-    constructor() {
-        super();
-
-        this.cities = [];
-    }
-}
 /**
  * communication_provider.js
  */
@@ -3252,9 +3241,7 @@ class CommunicationProviderScript extends CommunicationProvider {
 
     constructor() {
         super();
-
         this.data = data;  // Connecting to JS file
-
         //this.test();  // Debugging purpose
     }
 
@@ -3494,4 +3481,157 @@ class CommunicationWay extends BaseModel {
             // do nothing
         }
     }
+}
+class Country extends Place {
+    
+    constructor() {
+        super();
+
+        this.cities = [];
+    }
+}
+/**
+ * shop.js
+ */
+
+/**
+ * Shop model
+ * @extends BaseModel
+ */
+class Shop extends BaseModel {
+    constructor() {
+        super();
+
+        this.id = 0;
+        this.popular = false;
+        this.active = true;
+        this.type = "";
+        this.name = "";
+        this.summary = "";
+        this.homepage = "";
+        this.city = new City();
+        this.country = new Country();
+    }
+
+    new() {
+        return this;
+    }
+
+}
+/**
+ * shops_provider.js
+ */
+
+/**
+ * ShopsProvider
+ */
+class ShopsProvider {  // !TODO extends DataProvider
+
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {ShopsProvider} datasource 
+     * @returns {ShopsProvider} New ShopsProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    shops() {
+        return this.datasource.shops();
+    }
+
+    test() {
+        return this.datasource.test();
+    }
+
+}
+/**
+ * shops_provider_script.js
+ */
+
+
+/**
+ * Shops - provided by in-app javascript file
+ * @extends ShopsProvider
+ */
+class ShopsProviderScript extends ShopsProvider {
+
+    constructor() {
+        super();
+        this.data = data;  // Connecting to JS file
+        //this.test();  // Debugging purpose
+    }
+
+    select() {
+        let rawdata = this.data.stores;
+        let collection = new Collection();
+
+        for (let item in rawdata) {
+            let shop = new Shop();
+            shop.id = rawdata[item].id;
+            shop.active = rawdata[item].is_active;
+            shop.popular = rawdata[item].is_popular;
+            shop.type = rawdata[item].metadata.type;
+            shop.name = rawdata[item].name;
+            shop.summary = rawdata[item].metadata.summary;
+            shop.homepage = rawdata[item].metadata.homepage;
+            if (rawdata[item].metadata.location.city) {
+                shop.city.code = rawdata[item].metadata.location.city.code;
+            }
+            if (rawdata[item].metadata.location.country) {
+                shop.country.code = rawdata[item].metadata.location.country.code;
+            }
+            
+            collection.add(shop);
+        }
+
+        return collection;
+    }
+
+    shops() {
+        let collection = this.select();
+
+        collection.filter((item) => {
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    return true;
+                }
+            }
+            if (item.country.code) {  // !TODO == app.country
+                return true
+            }
+            else {
+                return false;
+            };
+        }).filter((item) => {
+            return item.active == true;
+        });
+        
+        return collection;
+    }
+
+    test() {
+        console.log("ShopsProviderScript.select() -> Collection: ", this.select());
+        console.log("ShopsProviderScript.shops() -> Collection: ", this.shops());
+    }
+
+
 }
