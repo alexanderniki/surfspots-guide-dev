@@ -10,6 +10,7 @@ gulp.task('code', function() {
         './src/app/*.js',
         './src/app/utils/**/*.js',
         './src/app/utils/*.js',
+        './src/app/models/*.js',  // Delete if doesn't work
     ])
     .pipe(concat('app.js'))
     .pipe(dest('./dist/app'));

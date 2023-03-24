@@ -20,6 +20,8 @@ class IndexPage extends Page {
             app.city = "spb";
             this.data = new DataProvider().fromCity(app.city);
         }
+
+        this.commDAO = new CommunicationsDaoJS();
         
     }
 
@@ -65,7 +67,6 @@ class IndexPage extends Page {
             else {
                 // do nothing
             }
-            console.log("GROUPS", groups);
         }
         return groups;
     }
@@ -123,7 +124,6 @@ class IndexPage extends Page {
     orgs() {
         let collection = this.data.orgs();
         let uicontainer = document.getElementById("collection-orgs");
-        console.log("ORGS: ", collection);
 
         for (let item in collection) {
             let uicard = new UICardSimple();
@@ -230,34 +230,17 @@ class IndexPage extends Page {
     }
 
     onCitySelected() {
-        //let itemSelected = this.uicontainercitylist.options[this.uicontainercitylist.selectedIndex].value;  
-        //console.log("SELECTED", itemSelected);
         app.city = this.uicontainercitylist.value;
         window.location.reload();
     }
 
     сommunications() {
-        //let collection = data.communications;
-        let collection = this.data.communications();
-        console.log("PageCommunication.communications :: data", this.data);
-        console.log("PageCommunication.communications :: collection", collection);
+        let communications = this.commDAO.communications();
         let uicontainer = document.getElementById("collection-communication");
-    
-        for (let item in collection) {
-            if (collection[item].is_active == true) {
-    
-                let uicard = new UICardCommunication();
-    
-                uicard.type = collection[item].metadata.type;
-                uicard.channelType = collection[item].metadata.channel_type;
-                uicard.primaryText = collection[item].name;
-                uicard.secondaryText = collection[item].metadata.summary;
-                uicard.link = collection[item].metadata.link;
-                uicard.linkText = collection[item].metadata.link_text;
-    
-                uicontainer.appendChild(uicard);
-            }
-        }
+        communications.each((item) => {
+            let uicard = new UICardCommunication().new(item);
+            uicontainer.appendChild(uicard);
+        });
     }
 
     openTab(evt, tabID) {
@@ -274,7 +257,6 @@ class IndexPage extends Page {
       
         // Get all elements with class="tablinks" and remove the class "active"
         tablinks = document.getElementsByClassName("uix-tabview--tablink");
-        console.log("NAVLINCS COUNT: ", tablinks.length);
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
@@ -289,7 +271,6 @@ class IndexPage extends Page {
 
     persons() {
         let collection = this.data.persons();
-        console.log("PageIndex.persons(): ", collection);
         let uicontainer = document.getElementById("collection-orgs");
     
         for (let item in collection) {

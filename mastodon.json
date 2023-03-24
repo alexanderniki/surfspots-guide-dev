@@ -1,0 +1,24 @@
+{
+  "Options": [
+    {
+      "Name": "instance",
+      "Value": "https://mstdn.social"
+    },
+    {
+      "Name": "id",
+      "Value": "tFzfcpABpGRh2LGa2xVi4XiYCpWyACPmAMbCPRmIgBw"
+    },
+    {
+      "Name": "secret",
+      "Value": "XN0OMlLHWnC6m6JXMzgYHaz-Yn5XtK2Y3BSAAFe_OQQ"
+    },
+    {
+      "Name": "redirectURI",
+      "Value": "urn:ietf:wg:oauth:2.0:oob"
+    },
+    {
+      "Name": "token",
+      "Value": "KBiS5hObSiDWJzwcXwVpkppAqCpDKd1sDSu_L50bKUg"
+    }
+  ]
+}

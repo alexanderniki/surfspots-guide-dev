@@ -129,6 +129,14 @@ Table r_wind_directions {
     name varchar
 }
 
+Table r_wave_types {
+    // Swell, Wind, River, Atrificial
+    id integer [pk]
+    parent_id integer
+    code varchar
+    name varchar
+}
+
 
 /* MAIN TABLES */
 
