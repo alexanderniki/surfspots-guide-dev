@@ -15,6 +15,16 @@ class UICardCommunication extends UICard {
         this._linkText = "";
     }
 
+    new(model) {
+        this.type = model.type;
+        this.channelType = model.platform;
+        this.primaryText = model.name;
+        this.secondaryText = model.summary;
+        this.link = model.link;
+        this.linkText = model.link_text;
+        return this;
+    }
+
     get type() {
         return this._type;
     }

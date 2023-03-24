@@ -67,7 +67,6 @@ class IndexPage extends Page {
             else {
                 // do nothing
             }
-            console.log("GROUPS", groups);
         }
         return groups;
     }
@@ -125,7 +124,6 @@ class IndexPage extends Page {
     orgs() {
         let collection = this.data.orgs();
         let uicontainer = document.getElementById("collection-orgs");
-        console.log("ORGS: ", collection);
 
         for (let item in collection) {
             let uicard = new UICardSimple();
@@ -232,112 +230,34 @@ class IndexPage extends Page {
     }
 
     onCitySelected() {
-        //let itemSelected = this.uicontainercitylist.options[this.uicontainercitylist.selectedIndex].value;  
-        //console.log("SELECTED", itemSelected);
         app.city = this.uicontainercitylist.value;
         window.location.reload();
     }
 
     сommunications() {
-        let collection = this.data.communications();
-        let uicontainer = document.getElementById("collection-communication");
-    
-        for (let item in collection) {
-            if (collection[item].is_active == true) {
-    
-                let uicard = new UICardCommunication();
-    
-                uicard.type = collection[item].metadata.type;
-                uicard.channelType = collection[item].metadata.channel_type;
-                uicard.primaryText = collection[item].name;
-                uicard.secondaryText = collection[item].metadata.summary;
-                uicard.link = collection[item].metadata.link;
-                uicard.linkText = collection[item].metadata.link_text;
-    
-                uicontainer.appendChild(uicard);
-            }
-        }
-    }
-
-    communicationsd() {
         let communications = this.commDAO.select();
-        console.log("dao.select(): ", communications);
-        communications.each((item) => {
-            if (item.metadata.location.city) {
-                console.log("communicationsd: ", item.name, " : " , item.metadata.location.city);
-            }
-            else if (item.metadata.location.country) {
-                console.log(item.name, " : " , item.metadata.location.country);
-            }
-            else {
-                // do nothing
-            }
-        });
 
-        communications.filter((item) => {
-            if (item.metadata.location.city) {
-                if (item.metadata.location.city.code == app.city) {
-                    return true;
-                }
-            }
-            else if (item.metadata.location.country) {
-                return true
-            }
-            else {
-                return false;
-            };
-        }).filter((item) => {
-            return item.is_active == true;
-        });
-
-        /* communications.filter((item) => {
-            return item.is_popular == false;
-        }); */
-
-        console.log("Filtered collection: ", communications);
-
-        /**
-         * DISPLAY COLLECTION
-         */
-        communications.each((item) => {
-            let uicontainer = document.getElementById("collection-communication");
-            let uicard = new UICardCommunication();
-    
-            uicard.type = item.metadata.type;
-            uicard.channelType = item.metadata.channel_type;
-            uicard.primaryText = item.name;
-            uicard.secondaryText = item.metadata.summary;
-            uicard.link = item.metadata.link;
-            uicard.linkText = item.metadata.link_text;
-
-            uicontainer.appendChild(uicard);
-        });
-    }
-
-    communicationse() {
-        let communications = this.commDAO.cselect();
-        //console.log("dao.select(): ", communications);
-        console.log("COLLECTION", communications);
         communications.filter((item) => {
             if (item.city) {
                 if (item.city.code == app.city) {
-                    console.log("city found: ", item.city.code)
                     return true;
                 }
             }
-            else if (item.country.code) {
-                console.log("country found: ", item.country.code)
+            else if (item.country.code) {  // !TODO == app.country
                 return true
             }
             else {
-                console.log("nothing found: ", item.country.code)
                 return false;
             };
         }).filter((item) => {
             return item.active == true;
         });
 
-        communications.each((item) => {console.log("EACH", item)});
+        communications.each((item) => {
+            let uicontainer = document.getElementById("collection-communication");
+            let uicard = new UICardCommunication().new(item);
+            uicontainer.appendChild(uicard);
+        });
 
     }
 
@@ -355,7 +275,6 @@ class IndexPage extends Page {
       
         // Get all elements with class="tablinks" and remove the class "active"
         tablinks = document.getElementsByClassName("uix-tabview--tablink");
-        console.log("NAVLINCS COUNT: ", tablinks.length);
         for (i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
@@ -370,7 +289,6 @@ class IndexPage extends Page {
 
     persons() {
         let collection = this.data.persons();
-        console.log("PageIndex.persons(): ", collection);
         let uicontainer = document.getElementById("collection-orgs");
     
         for (let item in collection) {
