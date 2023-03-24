@@ -235,30 +235,12 @@ class IndexPage extends Page {
     }
 
     сommunications() {
-        let communications = this.commDAO.select();
-
-        communications.filter((item) => {
-            if (item.city) {
-                if (item.city.code == app.city) {
-                    return true;
-                }
-            }
-            else if (item.country.code) {  // !TODO == app.country
-                return true
-            }
-            else {
-                return false;
-            };
-        }).filter((item) => {
-            return item.active == true;
-        });
-
+        let communications = this.commDAO.communications();
+        let uicontainer = document.getElementById("collection-communication");
         communications.each((item) => {
-            let uicontainer = document.getElementById("collection-communication");
             let uicard = new UICardCommunication().new(item);
             uicontainer.appendChild(uicard);
         });
-
     }
 
     openTab(evt, tabID) {

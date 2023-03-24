@@ -1484,30 +1484,13 @@ class IndexPage extends Page {
     }
 
     сommunications() {
-        let communications = this.commDAO.select();
-
-        communications.filter((item) => {
-            if (item.city) {
-                if (item.city.code == app.city) {
-                    return true;
-                }
-            }
-            else if (item.country.code) {  // !TODO == app.country
-                return true
-            }
-            else {
-                return false;
-            };
-        }).filter((item) => {
-            return item.active == true;
-        });
-
+        let communications = this.commDAO.communications();
+        let uicontainer = document.getElementById("collection-communication");
         communications.each((item) => {
-            let uicontainer = document.getElementById("collection-communication");
+            //let uicontainer = document.getElementById("collection-communication");
             let uicard = new UICardCommunication().new(item);
             uicontainer.appendChild(uicard);
         });
-
     }
 
     openTab(evt, tabID) {
@@ -3088,7 +3071,7 @@ class Place extends BaseModel {
         this._id = 0;
         this.active = false;
         this.popular = false;
-        this.code = "spb";
+        this.code = "";
         this.name = "";
         this.lat = 0.0;
         this.long = 0.0;
@@ -3457,6 +3440,30 @@ class CommunicationsDaoJS extends CommunicationsDAO {
             }
             collection.add(way);
         }
+
+        return collection;
+    }
+
+    communications() {
+        let collection = this.select();
+
+        collection.filter((item) => {
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    console.log("SHI: ", item);
+                    return true;
+                }
+            }
+            if (item.country.code) {  // !TODO == app.country
+                console.log("SHI: ", item);
+                return true
+            }
+            else {
+                return false;
+            };
+        }).filter((item) => {
+            return item.active == true;
+        });
 
         return collection;
     }

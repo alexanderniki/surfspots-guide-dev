@@ -1,8 +1,12 @@
 /**
- * CommunicationsDAO implementation for data located in plain JS file
+ * communications_dao_js.js
  */
 
 
+/**
+ * CommunicationsDAOJS - implementation for data located in plain JS file
+ * @extends CommunicationsDAO
+ */
 class CommunicationsDaoJS extends CommunicationsDAO {
 
     constructor() {
@@ -39,8 +43,31 @@ class CommunicationsDaoJS extends CommunicationsDAO {
         return collection;
     }
 
+    communications() {
+        let collection = this.select();
+
+        collection.filter((item) => {
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    return true;
+                }
+            }
+            if (item.country.code) {  // !TODO == app.country
+                return true
+            }
+            else {
+                return false;
+            };
+        }).filter((item) => {
+            return item.active == true;
+        });
+
+        return collection;
+    }
+
     test() {
         console.log("select() -> Collection: ", this.select());
+        console.log("communications() -> Collection: ", this.communications());
     }
 
 
