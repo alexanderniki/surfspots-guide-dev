@@ -6,11 +6,13 @@ const gulp = require('gulp');
 
 gulp.task('code', function() {
     return gulp.src([
-        './src/app/components/**/*.js',
         './src/app/*.js',
+        './src/app/components/*.js',
+        './src/app/components/**/*.js',
         './src/app/utils/**/*.js',
         './src/app/utils/*.js',
         './src/app/models/*.js',  // Delete if doesn't work
+        './src/app/models/**/*.js',
     ])
     .pipe(concat('app.js'))
     .pipe(dest('./dist/app'));
