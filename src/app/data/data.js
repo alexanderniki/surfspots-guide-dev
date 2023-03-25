@@ -2989,7 +2989,7 @@
         },
         {
             id: 1,
-            is_active: false,
+            is_active: true,
             is_popular: false,
             name: "Shepka Boards",
             code: "shepkaboards",

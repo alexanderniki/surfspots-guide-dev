@@ -3172,6 +3172,189 @@ class BaseReferenceEntry extends BaseModel {
         this.value = null;
     }
 }
+class Place extends BaseModel {
+    constructor() {
+        super();
+
+        this._id = 0;
+        this.active = false;
+        this.popular = false;
+        this.code = "";
+        this.name = "";
+        this.lat = 0.0;
+        this.long = 0.0;
+        this.address = "";
+    }
+}
+class Country extends Place {
+    
+    constructor() {
+        super();
+
+        this.cities = [];
+    }
+}
+/**
+ * city.js
+ */
+
+/**
+ * City
+ * @extends {Place}
+ */
+class City extends Place {
+    constructor() {
+        super();
+
+        /** @type {Country} */
+        this.country = new Country();
+    }
+}
+/**
+ * shop.js
+ */
+
+/**
+ * Shop model
+ * @extends BaseModel
+ */
+class Shop extends BaseModel {
+    constructor() {
+        super();
+
+        this.id = 0;
+        this.popular = false;
+        this.active = true;
+        this.type = "";
+        this.name = "";
+        this.summary = "";
+        this.homepage = "";
+        this.city = new City();
+        this.country = new Country();
+    }
+
+    new() {
+        return this;
+    }
+
+}
+/**
+ * shops_provider.js
+ */
+
+/**
+ * ShopsProvider
+ */
+class ShopsProvider {  // !TODO extends DataProvider
+
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {ShopsProvider} datasource 
+     * @returns {ShopsProvider} New ShopsProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    shops() {
+        return this.datasource.shops();
+    }
+
+    test() {
+        return this.datasource.test();
+    }
+
+}
+/**
+ * shops_provider_script.js
+ */
+
+
+/**
+ * Shops - provided by in-app javascript file
+ * @extends ShopsProvider
+ */
+class ShopsProviderScript extends ShopsProvider {
+
+    constructor() {
+        super();
+        this.data = data;  // Connecting to JS file
+        //this.test();  // Debugging purpose
+    }
+
+    select() {
+        let rawdata = this.data.stores;
+        let collection = new Collection();
+
+        for (let item in rawdata) {
+            let shop = new Shop();
+            shop.id = rawdata[item].id;
+            shop.active = rawdata[item].is_active;
+            shop.popular = rawdata[item].is_popular;
+            shop.type = rawdata[item].metadata.type;
+            shop.name = rawdata[item].name;
+            shop.summary = rawdata[item].metadata.summary;
+            shop.homepage = rawdata[item].metadata.homepage;
+            if (rawdata[item].metadata.location.city) {
+                shop.city.code = rawdata[item].metadata.location.city.code;
+            }
+            if (rawdata[item].metadata.location.country) {
+                shop.country.code = rawdata[item].metadata.location.country.code;
+            }
+            
+            collection.add(shop);
+        }
+
+        return collection;
+    }
+
+    shops() {
+        let collection = this.select();
+
+        collection.filter((item) => {
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    return true;
+                }
+            }
+            if (item.country.code) {  // !TODO == app.country
+                return true
+            }
+            else {
+                return false;
+            };
+        }).filter((item) => {
+            return item.active == true;
+        });
+        
+        return collection;
+    }
+
+    test() {
+        console.log("ShopsProviderScript.select() -> Collection: ", this.select());
+        console.log("ShopsProviderScript.shops() -> Collection: ", this.shops());
+    }
+
+
+}
 /**
  * CommunicationWay.js
  */
@@ -3480,7 +3663,7 @@ class Person extends BaseModel {
         this.id = 0;
         this.active = false;
         this.popular = false;
-        this.type = "";
+        this.type = [];
 
         this.code = "";
         this.name = "";
@@ -3574,7 +3757,33 @@ class PersonProviderScript extends PersonProvider {
             person.name = rawdata[item].name;
             person.summary = rawdata[item].summary;
             person.description = rawdata[item].metadata.description;
-            //person.type = rawdata[item].
+            person.userpicUrl = rawdata[item].metadata.userpicUrl;
+            if (rawdata[item].type) {  // Getting person's type(s)
+                for (let i in rawdata[item].type) {
+                    let persontype = new BaseReferenceEntry();
+                    persontype.id = rawdata[item].type[i].id;
+                    persontype.code = rawdata[item].type[i].code;
+                    persontype.name = rawdata[item].type[i].name;
+                    person.type.push(persontype);
+                }
+            }
+            if (rawdata[item].metadata.location.cities) {
+                for (let i in rawdata[item].metadata.location.cities) {
+                    let city = new City();
+                    city.id = rawdata[item].metadata.location.cities[i].id;
+                    city.code = rawdata[item].metadata.location.cities[i].code;
+                    city.name = rawdata[item].metadata.location.cities[i].name;
+                    person.cities.push(city);
+                }
+            }
+            if (rawdata[item].metadata.contacts) {
+                for (let i in rawdata[item].metadata.contacts) {
+                    let contact = new PersonContact();
+                    contact.name = rawdata[item].metadata.contacts[i].name;
+                    contact.value = rawdata[item].metadata.contacts[i].value;
+                    person.contacts.push(contact);
+                }
+            }
 
             collection.add(person);
         }
@@ -3582,16 +3791,71 @@ class PersonProviderScript extends PersonProvider {
         return collection;
     }
 
+    /**
+     * Get shapers
+     * @returns {Collection} collection of shapers
+     */
     shapers() {
         let collection = this.select();
         collection.filter((item) => {
             return item.active;
+        }).filter((item) => {
+            for (let i in item.type) {
+                if (item.type[i].code == "shaper") {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).filter((item) => {  // Take only people for current city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
         });
+
+        return collection;
+    }
+
+    /**
+     * Get instructors
+     * @returns {Collection} collection of instructors
+     */
+    instructors() {
+        let collection = this.select();
+        collection.filter((item) => {  // Take only active
+            return item.active;
+        }).filter((item) => {  // Take only instructors
+            for (let i in item.type) {
+                if (item.type[i].code == "instructor") {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).filter((item) => {  // Take only people for current city
+            for (let i in item.metadata.location.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
+
         return collection;
     }
 
     test() {
-        console.log("PERSONS: ", this.shapers());
+        console.log("SHAPERS: ", this.shapers());
+        console.log("INSTRUCTORS: ", this.instructors());
     }
 }
 /**
@@ -3607,187 +3871,4 @@ class PersonContact extends BaseReferenceEntry {
     constructor() {
         super();
     }
-}
-class Place extends BaseModel {
-    constructor() {
-        super();
-
-        this._id = 0;
-        this.active = false;
-        this.popular = false;
-        this.code = "";
-        this.name = "";
-        this.lat = 0.0;
-        this.long = 0.0;
-        this.address = "";
-    }
-}
-class Country extends Place {
-    
-    constructor() {
-        super();
-
-        this.cities = [];
-    }
-}
-/**
- * city.js
- */
-
-/**
- * City
- * @extends {Place}
- */
-class City extends Place {
-    constructor() {
-        super();
-
-        /** @type {Country} */
-        this.country = new Country();
-    }
-}
-/**
- * shop.js
- */
-
-/**
- * Shop model
- * @extends BaseModel
- */
-class Shop extends BaseModel {
-    constructor() {
-        super();
-
-        this.id = 0;
-        this.popular = false;
-        this.active = true;
-        this.type = "";
-        this.name = "";
-        this.summary = "";
-        this.homepage = "";
-        this.city = new City();
-        this.country = new Country();
-    }
-
-    new() {
-        return this;
-    }
-
-}
-/**
- * shops_provider.js
- */
-
-/**
- * ShopsProvider
- */
-class ShopsProvider {  // !TODO extends DataProvider
-
-    /**
-     * Constructor
-     * @param {DataSource} datasource
-     */
-    constructor(datasource) {
-        this.datasource = datasource;
-    }
-
-    /**
-     * 
-     * @param {ShopsProvider} datasource 
-     * @returns {ShopsProvider} New ShopsProvider instance
-     */
-    new(datasource) {
-        if (datasource) {
-            this.datasource = datasource;
-            return this;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    select() {
-        return this.datasource.select();
-    }
-
-    shops() {
-        return this.datasource.shops();
-    }
-
-    test() {
-        return this.datasource.test();
-    }
-
-}
-/**
- * shops_provider_script.js
- */
-
-
-/**
- * Shops - provided by in-app javascript file
- * @extends ShopsProvider
- */
-class ShopsProviderScript extends ShopsProvider {
-
-    constructor() {
-        super();
-        this.data = data;  // Connecting to JS file
-        //this.test();  // Debugging purpose
-    }
-
-    select() {
-        let rawdata = this.data.stores;
-        let collection = new Collection();
-
-        for (let item in rawdata) {
-            let shop = new Shop();
-            shop.id = rawdata[item].id;
-            shop.active = rawdata[item].is_active;
-            shop.popular = rawdata[item].is_popular;
-            shop.type = rawdata[item].metadata.type;
-            shop.name = rawdata[item].name;
-            shop.summary = rawdata[item].metadata.summary;
-            shop.homepage = rawdata[item].metadata.homepage;
-            if (rawdata[item].metadata.location.city) {
-                shop.city.code = rawdata[item].metadata.location.city.code;
-            }
-            if (rawdata[item].metadata.location.country) {
-                shop.country.code = rawdata[item].metadata.location.country.code;
-            }
-            
-            collection.add(shop);
-        }
-
-        return collection;
-    }
-
-    shops() {
-        let collection = this.select();
-
-        collection.filter((item) => {
-            if (item.city) {
-                if (item.city.code == app.city) {
-                    return true;
-                }
-            }
-            if (item.country.code) {  // !TODO == app.country
-                return true
-            }
-            else {
-                return false;
-            };
-        }).filter((item) => {
-            return item.active == true;
-        });
-        
-        return collection;
-    }
-
-    test() {
-        console.log("ShopsProviderScript.select() -> Collection: ", this.select());
-        console.log("ShopsProviderScript.shops() -> Collection: ", this.shops());
-    }
-
-
 }

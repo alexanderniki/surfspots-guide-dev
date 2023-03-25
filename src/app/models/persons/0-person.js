@@ -14,7 +14,7 @@ class Person extends BaseModel {
         this.id = 0;
         this.active = false;
         this.popular = false;
-        this.type = "";
+        this.type = [];
 
         this.code = "";
         this.name = "";

@@ -27,7 +27,33 @@ class PersonProviderScript extends PersonProvider {
             person.name = rawdata[item].name;
             person.summary = rawdata[item].summary;
             person.description = rawdata[item].metadata.description;
-            //person.type = rawdata[item].
+            person.userpicUrl = rawdata[item].metadata.userpicUrl;
+            if (rawdata[item].type) {  // Getting person's type(s)
+                for (let i in rawdata[item].type) {
+                    let persontype = new BaseReferenceEntry();
+                    persontype.id = rawdata[item].type[i].id;
+                    persontype.code = rawdata[item].type[i].code;
+                    persontype.name = rawdata[item].type[i].name;
+                    person.type.push(persontype);
+                }
+            }
+            if (rawdata[item].metadata.location.cities) {
+                for (let i in rawdata[item].metadata.location.cities) {
+                    let city = new City();
+                    city.id = rawdata[item].metadata.location.cities[i].id;
+                    city.code = rawdata[item].metadata.location.cities[i].code;
+                    city.name = rawdata[item].metadata.location.cities[i].name;
+                    person.cities.push(city);
+                }
+            }
+            if (rawdata[item].metadata.contacts) {
+                for (let i in rawdata[item].metadata.contacts) {
+                    let contact = new PersonContact();
+                    contact.name = rawdata[item].metadata.contacts[i].name;
+                    contact.value = rawdata[item].metadata.contacts[i].value;
+                    person.contacts.push(contact);
+                }
+            }
 
             collection.add(person);
         }
@@ -35,15 +61,70 @@ class PersonProviderScript extends PersonProvider {
         return collection;
     }
 
+    /**
+     * Get shapers
+     * @returns {Collection} collection of shapers
+     */
     shapers() {
         let collection = this.select();
         collection.filter((item) => {
             return item.active;
+        }).filter((item) => {
+            for (let i in item.type) {
+                if (item.type[i].code == "shaper") {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).filter((item) => {  // Take only people for current city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
         });
+
+        return collection;
+    }
+
+    /**
+     * Get instructors
+     * @returns {Collection} collection of instructors
+     */
+    instructors() {
+        let collection = this.select();
+        collection.filter((item) => {  // Take only active
+            return item.active;
+        }).filter((item) => {  // Take only instructors
+            for (let i in item.type) {
+                if (item.type[i].code == "instructor") {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).filter((item) => {  // Take only people for current city
+            for (let i in item.metadata.location.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
+
         return collection;
     }
 
     test() {
-        console.log("PERSONS: ", this.shapers());
+        console.log("SHAPERS: ", this.shapers());
+        console.log("INSTRUCTORS: ", this.instructors());
     }
 }
