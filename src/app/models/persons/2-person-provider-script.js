@@ -48,7 +48,7 @@ class PersonProviderScript extends PersonProvider {
             }
             if (rawdata[item].metadata.contacts) {
                 for (let i in rawdata[item].metadata.contacts) {
-                    let contact = new PersonContact();
+                    let contact = new Contact();
                     contact.name = rawdata[item].metadata.contacts[i].name;
                     contact.value = rawdata[item].metadata.contacts[i].value;
                     person.contacts.push(contact);
@@ -110,7 +110,7 @@ class PersonProviderScript extends PersonProvider {
                 }
             }
         }).filter((item) => {  // Take only people for current city
-            for (let i in item.metadata.location.cities) {
+            for (let i in item.cities) {
                 if (item.cities[i].code == app.city) {
                     return true;
                 }

@@ -2530,6 +2530,38 @@ class UISpotTabbar extends HTMLElement{
 
 customElements.define("ui-tabbar-spot", UISpotTabbar);
 /*
+ * label.js
+ * UILabel
+ */
+
+
+class UILabelSimple extends HTMLElement {
+
+    constructor() {
+        super();
+        this._text = "";
+    }
+
+    get text() {
+        return this._text;
+    }
+
+    set text(str) {
+        if (str) {
+            this._text = str;
+        }
+        else {
+            console.log("UILabelSimple: ", "No text given");
+        }
+    }
+
+    render() {
+        
+    }
+}
+
+customElements.define("ui-label--simple", UILabelSimple);
+/*
  * card.js
  * Generic card component
  */
@@ -2785,38 +2817,6 @@ class UICardSimple extends UICard {
 }
 
 customElements.define("ui-card--simple", UICardSimple);
-/*
- * label.js
- * UILabel
- */
-
-
-class UILabelSimple extends HTMLElement {
-
-    constructor() {
-        super();
-        this._text = "";
-    }
-
-    get text() {
-        return this._text;
-    }
-
-    set text(str) {
-        if (str) {
-            this._text = str;
-        }
-        else {
-            console.log("UILabelSimple: ", "No text given");
-        }
-    }
-
-    render() {
-        
-    }
-}
-
-customElements.define("ui-label--simple", UILabelSimple);
 /** Class representing collection of items. */
 class CollectionOne {
 
@@ -3172,189 +3172,6 @@ class BaseReferenceEntry extends BaseModel {
         this.value = null;
     }
 }
-class Place extends BaseModel {
-    constructor() {
-        super();
-
-        this._id = 0;
-        this.active = false;
-        this.popular = false;
-        this.code = "";
-        this.name = "";
-        this.lat = 0.0;
-        this.long = 0.0;
-        this.address = "";
-    }
-}
-class Country extends Place {
-    
-    constructor() {
-        super();
-
-        this.cities = [];
-    }
-}
-/**
- * city.js
- */
-
-/**
- * City
- * @extends {Place}
- */
-class City extends Place {
-    constructor() {
-        super();
-
-        /** @type {Country} */
-        this.country = new Country();
-    }
-}
-/**
- * shop.js
- */
-
-/**
- * Shop model
- * @extends BaseModel
- */
-class Shop extends BaseModel {
-    constructor() {
-        super();
-
-        this.id = 0;
-        this.popular = false;
-        this.active = true;
-        this.type = "";
-        this.name = "";
-        this.summary = "";
-        this.homepage = "";
-        this.city = new City();
-        this.country = new Country();
-    }
-
-    new() {
-        return this;
-    }
-
-}
-/**
- * shops_provider.js
- */
-
-/**
- * ShopsProvider
- */
-class ShopsProvider {  // !TODO extends DataProvider
-
-    /**
-     * Constructor
-     * @param {DataSource} datasource
-     */
-    constructor(datasource) {
-        this.datasource = datasource;
-    }
-
-    /**
-     * 
-     * @param {ShopsProvider} datasource 
-     * @returns {ShopsProvider} New ShopsProvider instance
-     */
-    new(datasource) {
-        if (datasource) {
-            this.datasource = datasource;
-            return this;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    select() {
-        return this.datasource.select();
-    }
-
-    shops() {
-        return this.datasource.shops();
-    }
-
-    test() {
-        return this.datasource.test();
-    }
-
-}
-/**
- * shops_provider_script.js
- */
-
-
-/**
- * Shops - provided by in-app javascript file
- * @extends ShopsProvider
- */
-class ShopsProviderScript extends ShopsProvider {
-
-    constructor() {
-        super();
-        this.data = data;  // Connecting to JS file
-        //this.test();  // Debugging purpose
-    }
-
-    select() {
-        let rawdata = this.data.stores;
-        let collection = new Collection();
-
-        for (let item in rawdata) {
-            let shop = new Shop();
-            shop.id = rawdata[item].id;
-            shop.active = rawdata[item].is_active;
-            shop.popular = rawdata[item].is_popular;
-            shop.type = rawdata[item].metadata.type;
-            shop.name = rawdata[item].name;
-            shop.summary = rawdata[item].metadata.summary;
-            shop.homepage = rawdata[item].metadata.homepage;
-            if (rawdata[item].metadata.location.city) {
-                shop.city.code = rawdata[item].metadata.location.city.code;
-            }
-            if (rawdata[item].metadata.location.country) {
-                shop.country.code = rawdata[item].metadata.location.country.code;
-            }
-            
-            collection.add(shop);
-        }
-
-        return collection;
-    }
-
-    shops() {
-        let collection = this.select();
-
-        collection.filter((item) => {
-            if (item.city) {
-                if (item.city.code == app.city) {
-                    return true;
-                }
-            }
-            if (item.country.code) {  // !TODO == app.country
-                return true
-            }
-            else {
-                return false;
-            };
-        }).filter((item) => {
-            return item.active == true;
-        });
-        
-        return collection;
-    }
-
-    test() {
-        console.log("ShopsProviderScript.select() -> Collection: ", this.select());
-        console.log("ShopsProviderScript.shops() -> Collection: ", this.shops());
-    }
-
-
-}
 /**
  * CommunicationWay.js
  */
@@ -3648,6 +3465,240 @@ class CommunicationProviderScript extends CommunicationProvider {
 
 }
 /**
+ * person_contact.js
+ */
+
+/**
+ * Person contact
+ * @extends {BaseReferenceEntry}
+ */
+class Contact extends BaseReferenceEntry {
+
+    constructor() {
+        super();
+    }
+}
+class Place extends BaseModel {
+    constructor() {
+        super();
+
+        this._id = 0;
+        this.active = false;
+        this.popular = false;
+        this.code = "";
+        this.name = "";
+        this.lat = 0.0;
+        this.long = 0.0;
+        this.address = "";
+    }
+}
+class Country extends Place {
+    
+    constructor() {
+        super();
+
+        this.cities = [];
+    }
+}
+/**
+ * city.js
+ */
+
+/**
+ * City
+ * @extends {Place}
+ */
+class City extends Place {
+    constructor() {
+        super();
+
+        /** @type {Country} */
+        this.country = new Country();
+    }
+}
+/**
+ * organisation.js
+ */
+
+/**
+ * Organisation
+ * @extends {BaseModel}
+ */
+class Organisation extends BaseModel {
+
+    constructor() {
+        super();
+
+        this.id = 0;
+        this.active = false;
+        this.popular = false;
+
+        /** @type {BaseReferenceEntry[]} */
+        this.type = [];
+
+        this.code = "";
+        this.name = "";
+        this.summary = "",
+        this.description = ``,  // Multiline string
+        this.homepage = "";
+
+        /** @type {City[]} */
+        this.cities = [];
+        /** @type {Country[]} */
+        this.countries = [];
+        /** @type {Contact[]} */
+        this.contacts = [];
+
+    }
+}
+
+
+/**
+ * shop.js
+ */
+
+/**
+ * Shop model
+ * @extends BaseModel
+ */
+class Shop extends BaseModel {
+    constructor() {
+        super();
+
+        this.id = 0;
+        this.popular = false;
+        this.active = true;
+        this.type = "";
+        this.name = "";
+        this.summary = "";
+        this.homepage = "";
+        this.city = new City();
+        this.country = new Country();
+    }
+
+    new() {
+        return this;
+    }
+
+}
+/**
+ * shops_provider.js
+ */
+
+/**
+ * ShopsProvider
+ */
+class ShopsProvider {  // !TODO extends DataProvider
+
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {ShopsProvider} datasource 
+     * @returns {ShopsProvider} New ShopsProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    shops() {
+        return this.datasource.shops();
+    }
+
+    test() {
+        return this.datasource.test();
+    }
+
+}
+/**
+ * shops_provider_script.js
+ */
+
+
+/**
+ * Shops - provided by in-app javascript file
+ * @extends ShopsProvider
+ */
+class ShopsProviderScript extends ShopsProvider {
+
+    constructor() {
+        super();
+        this.data = data;  // Connecting to JS file
+        //this.test();  // Debugging purpose
+    }
+
+    select() {
+        let rawdata = this.data.stores;
+        let collection = new Collection();
+
+        for (let item in rawdata) {
+            let shop = new Shop();
+            shop.id = rawdata[item].id;
+            shop.active = rawdata[item].is_active;
+            shop.popular = rawdata[item].is_popular;
+            shop.type = rawdata[item].metadata.type;
+            shop.name = rawdata[item].name;
+            shop.summary = rawdata[item].metadata.summary;
+            shop.homepage = rawdata[item].metadata.homepage;
+            if (rawdata[item].metadata.location.city) {
+                shop.city.code = rawdata[item].metadata.location.city.code;
+            }
+            if (rawdata[item].metadata.location.country) {
+                shop.country.code = rawdata[item].metadata.location.country.code;
+            }
+            
+            collection.add(shop);
+        }
+
+        return collection;
+    }
+
+    shops() {
+        let collection = this.select();
+
+        collection.filter((item) => {
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    return true;
+                }
+            }
+            if (item.country.code) {  // !TODO == app.country
+                return true
+            }
+            else {
+                return false;
+            };
+        }).filter((item) => {
+            return item.active == true;
+        });
+        
+        return collection;
+    }
+
+    test() {
+        console.log("ShopsProviderScript.select() -> Collection: ", this.select());
+        console.log("ShopsProviderScript.shops() -> Collection: ", this.shops());
+    }
+
+
+}
+/**
  * person.js
  */
 
@@ -3663,6 +3714,8 @@ class Person extends BaseModel {
         this.id = 0;
         this.active = false;
         this.popular = false;
+        
+        /** @type {BaseReferenceEntry[]} */
         this.type = [];
 
         this.code = "";
@@ -3675,7 +3728,7 @@ class Person extends BaseModel {
         this.cities = [];
         /** @type {Country[]} */
         this.countries = [];
-        /** @type {PersonContact[]} */
+        /** @type {Contact[]} */
         this.contacts = [];
     }
 
@@ -3778,7 +3831,7 @@ class PersonProviderScript extends PersonProvider {
             }
             if (rawdata[item].metadata.contacts) {
                 for (let i in rawdata[item].metadata.contacts) {
-                    let contact = new PersonContact();
+                    let contact = new Contact();
                     contact.name = rawdata[item].metadata.contacts[i].name;
                     contact.value = rawdata[item].metadata.contacts[i].value;
                     person.contacts.push(contact);
@@ -3840,7 +3893,7 @@ class PersonProviderScript extends PersonProvider {
                 }
             }
         }).filter((item) => {  // Take only people for current city
-            for (let i in item.metadata.location.cities) {
+            for (let i in item.cities) {
                 if (item.cities[i].code == app.city) {
                     return true;
                 }
@@ -3856,19 +3909,5 @@ class PersonProviderScript extends PersonProvider {
     test() {
         console.log("SHAPERS: ", this.shapers());
         console.log("INSTRUCTORS: ", this.instructors());
-    }
-}
-/**
- * person_contact.js
- */
-
-/**
- * Person contact
- * @extends {BaseReferenceEntry}
- */
-class PersonContact extends BaseReferenceEntry {
-
-    constructor() {
-        super();
     }
 }

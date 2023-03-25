@@ -6,7 +6,7 @@
  * Person contact
  * @extends {BaseReferenceEntry}
  */
-class PersonContact extends BaseReferenceEntry {
+class Contact extends BaseReferenceEntry {
 
     constructor() {
         super();

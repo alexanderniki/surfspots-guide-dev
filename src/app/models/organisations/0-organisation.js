@@ -1,12 +1,12 @@
 /**
- * person.js
+ * organisation.js
  */
 
 /**
- * class Person
- * @extends BaseModel
+ * Organisation
+ * @extends {BaseModel}
  */
-class Person extends BaseModel {
+class Organisation extends BaseModel {
 
     constructor() {
         super();
@@ -14,25 +14,22 @@ class Person extends BaseModel {
         this.id = 0;
         this.active = false;
         this.popular = false;
-        
+
         /** @type {BaseReferenceEntry[]} */
         this.type = [];
 
         this.code = "";
         this.name = "";
+        this.summary = "",
+        this.description = ``,  // Multiline string
+        this.homepage = "";
 
-        this.summary = "";
-        this.description = ``;
-        this.userpicUrl = "";
         /** @type {City[]} */
         this.cities = [];
         /** @type {Country[]} */
         this.countries = [];
         /** @type {Contact[]} */
         this.contacts = [];
-    }
 
-    isPerson() {
-        return true;
     }
 }

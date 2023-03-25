@@ -6,9 +6,9 @@
 
     config: {
         home_url: "https://surfl.guide",
-        app_ver: "0.3.3",
-        app_revision: 6,
-        data_revision: 8,
+        app_ver: "0.4.1",
+        app_revision: 7,
+        data_revision: 9,
     },
 
     // REFERENCES
@@ -366,6 +366,33 @@
             parent_id: null,
             code: "instructor",
             name: "Инструктор",
+        },
+    ],
+
+    r_organisation_types: [
+        {
+            id: 0,
+            parent_id: null,
+            code: "workshop",
+            name: "Мастерская (фабрика)",
+        },
+        {
+            id: 1,
+            parent_id: null,
+            code: "shop",
+            name: "Магазин",
+        },
+        {
+            id: 3,
+            parent_id: null,
+            code: "repair",
+            name: "Ремонтная мастерская",
+        },
+        {
+            id: 4,
+            parent_id: null,
+            code: "rent",
+            name: "Прокат",
         },
     ],
 
@@ -2923,113 +2950,6 @@
         },
     ],
 
-    persons2: [
-        {
-            id: 0,
-            is_active: true,
-            is_popular: false,
-            name: "Михаил Смолин",
-            code: "mishasmolin",
-            userpic_url: "",
-            summary: "",
-            type: [
-                {
-                    id: 0,
-                    code: "shaper",
-                    name: "Шейпер",
-                },
-                {
-                    id: 1,
-                    code: "instructor",
-                    name: "Инструктор",
-                },
-            ],
-            metadata: {
-                description: `Обучение классическому серфингу.
-                Обучение серфингу на искусственной волне.
-                Ремонт и изготовление досок.`,
-                location: {
-                    cities: [
-                        {
-                            id: 1,
-                            code: "spb",
-                            name: "Санкт-Петербург",
-                        },
-                        {
-                            id: 6,
-                            code: "vietnhatrang",
-                            name: "Нячанг",
-                        }
-                    ],
-                    countries: [
-                        {
-                            id: 1,
-                            code: "ru",
-                            name: "Россия",
-                        },
-                        {
-                            id: 4,
-                            code: "viet",
-                            name: "Вьетнам",
-                        },
-                    ],
-                },
-                job: [],  // organisations
-                contacts: [
-                    {
-                        name: "Telegram",
-                        value: "https://t.me/surfshkola",
-                    },
-                    {
-                        name: "Instagram",
-                        value: "@mishasmolin",
-                    },
-                ],
-            },
-        },
-        {
-            id: 1,
-            is_active: true,
-            is_popular: false,
-            name: "Shepka Boards",
-            code: "shepkaboards",
-            userpic_url: "",
-            summary: "",
-            type: [
-                {
-                    id: 0,
-                    code: "shaper",
-                    name: "Шейпер",
-                },
-            ],
-            metadata: {
-                location: {
-                    cities: [
-                        {
-                            id: 1,
-                            code: "spb",
-                            name: "Санкт-Петербург",
-                        },
-                    ],
-                    countries: [
-                        {
-                            id: 1,
-                            code: "ru",
-                            name: "Россия",
-                        },
-                    ],
-                },
-                job: [],  // organisations
-                contacts: [
-                    {
-                        name: "Instagram",
-                        value: "https://www.instagram.com/shepka_boards/",
-                    },
-                ],
-            },
-        },
-    ],
-
     service_data: {
 
         donations: [
@@ -3146,4 +3066,186 @@
 
     },
 
+    /**
+     * NEW DATA FORMAT
+     */
+
+    persons2: [
+        {
+            id: 0,
+            is_active: true,
+            is_popular: false,
+            name: "Михаил Смолин",
+            code: "mishasmolin",
+            userpic_url: "",
+            summary: "",
+            type: [
+                {
+                    id: 0,
+                    code: "shaper",
+                    name: "Шейпер",
+                },
+                {
+                    id: 1,
+                    code: "instructor",
+                    name: "Инструктор",
+                },
+            ],
+            metadata: {
+                description: `Обучение классическому серфингу.
+                Обучение серфингу на искусственной волне.
+                Ремонт и изготовление досок.`,
+                location: {
+                    cities: [
+                        {
+                            id: 1,
+                            code: "spb",
+                            name: "Санкт-Петербург",
+                        },
+                        {
+                            id: 6,
+                            code: "vietnhatrang",
+                            name: "Нячанг",
+                        }
+                    ],
+                    countries: [
+                        {
+                            id: 1,
+                            code: "ru",
+                            name: "Россия",
+                        },
+                        {
+                            id: 4,
+                            code: "viet",
+                            name: "Вьетнам",
+                        },
+                    ],
+                },
+                job: [],  // organisations
+                contacts: [
+                    {
+                        name: "Telegram",
+                        value: "https://t.me/surfshkola",
+                    },
+                    {
+                        name: "Instagram",
+                        value: "@mishasmolin",
+                    },
+                ],
+            },
+        },
+        {
+            id: 1,
+            is_active: true,
+            is_popular: false,
+            name: "Shepka Boards",
+            code: "shepkaboards",
+            userpic_url: "",
+            summary: "Производство досок",
+            type: [
+                {
+                    id: 0,
+                    code: "shaper",
+                    name: "Шейпер",
+                },
+            ],
+            metadata: {
+                description: ``,
+                location: {
+                    cities: [
+                        {
+                            id: 1,
+                            code: "spb",
+                            name: "Санкт-Петербург",
+                        },
+                    ],
+                    countries: [
+                        {
+                            id: 1,
+                            code: "ru",
+                            name: "Россия",
+                        },
+                    ],
+                },
+                job: [],  // organisations
+                contacts: [
+                    {
+                        name: "Instagram",
+                        value: "https://www.instagram.com/shepka_boards/",
+                    },
+                ],
+            },
+        },
+        {
+            id: 2,
+            is_active: true,
+            is_popular: false,
+            name: "Леонид Литвинов",
+            code: "litvinovleonid",
+            userpic_url: "",
+            summary: "Обучение классическому серфингу и бодибордингу.",
+            type: [
+                {
+                    id: 1,
+                    code: "instructor",
+                    name: "Инструктор",
+                },
+            ],
+            metadata: {
+                description: `Знаменитый инструктор - один из первых в Санкт-Петербурге.
+                Обучение классическому серфингу и бодибордингу.`,
+                location: {
+                    cities: [
+                        {
+                            id: 1,
+                            code: "spb",
+                            name: "Санкт-Петербург",
+                        },
+                    ],
+                    countries: [
+                        {
+                            id: 1,
+                            code: "ru",
+                            name: "Россия",
+                        },
+                    ],
+                },
+                job: [],  // organisations
+                contacts: [
+                    {
+                        name: "Telegram",
+                        value: "https://t.me/pitersurf",
+                    },
+                    {
+                        name: "Телефон",
+                        value: "+79219361361",
+                    },
+                ],
+            },
+        },
+    ],
+
+    organisations: [
+        {
+            id: 0,
+            is_active: true,
+            is_popular: false,
+            name: "Onego Surfing",
+            code: "",
+            summary: "Доски (софт, хард), гидрокостюмы, лиши",
+            metadata: {
+                description: ``,
+                type: "Прокат",
+                homepage: "",
+                link: "",
+                location: {
+                    address: "",
+                    city: {
+                        id: 1,
+                        name: "Санкт-Петербург",
+                    },
+                },
+            },
+        },
+    ]
 }
