@@ -94,25 +94,6 @@ class IndexPage extends Page {
     /* 
      * Get and display Schools, Rents and Instructors
      */
-    /*orgs2() {
-        let collection = data.orgs;
-        let uicontainer = document.getElementById("collection-orgs");
-    
-        for (let item in collection) {
-            if (collection[item].is_active == true) {
-    
-                let uicard = new UICardSimple();
-    
-                uicard.overline = collection[item].metadata.type;
-                uicard.primaryText = collection[item].name;
-                uicard.secondaryText = collection[item].metadata.summary;
-                uicard.openURL = collection[item].metadata.homepage;
-    
-                uicontainer.appendChild(uicard);
-            }
-        }
-    }*/
-
     orgs() {
         let collection = this.data.orgs();
         let uicontainer = document.getElementById("collection-orgs");
