@@ -36,12 +36,9 @@ class IndexPage extends Page {
         // let spots = data.spots;
         let spots = this.data.spots2();
         let groups = [];
-        console.log("WATER TYPES:", waterTypes);
-        console.log("SPOTS TO GROUP:", spots);
     
         // For every water type
         for(let water in waterTypes) {
-            console.log("water.id: ", waterTypes[water].id);
             let spotGroup = {};
             spotGroup.name = waterTypes[water].water;
             spotGroup.spots = [];
@@ -97,7 +94,7 @@ class IndexPage extends Page {
     /* 
      * Get and display Schools, Rents and Instructors
      */
-    orgs2() {
+    /*orgs2() {
         let collection = data.orgs;
         let uicontainer = document.getElementById("collection-orgs");
     
@@ -114,7 +111,7 @@ class IndexPage extends Page {
                 uicontainer.appendChild(uicard);
             }
         }
-    }
+    }*/
 
     orgs() {
         let collection = this.data.orgs();
@@ -162,9 +159,7 @@ class IndexPage extends Page {
     }
 
     popularSpots() {
-        // let collection = this.data.spots;
         let collection = this.data.spots();
-        console.log("POPULAR SPOTS: ", collection);
         let uicontainer = document.getElementById("spots-popular");
     
         for (let item in collection) {

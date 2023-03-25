@@ -64,7 +64,7 @@ class DataProvider {
     }
 
     by(key, value) {
-        // @TODO: make generic search function. Something like reference(this.data.cities().by(id, 1));
+        // !TODO: make generic search function. Something like reference(this.data.cities().by(id, 1));
     }
 
     getReferenceItemById(reference, id) {
@@ -113,7 +113,6 @@ class DataProvider {
         let currentCity = this._getCityByCode(this.citycode);
         
         for (let item in spots) {
-            console.log("SPOTS: ", spots[item]);
             if (spots[item].metadata.location.city_id == currentCity.id) {
                 result.push(spots[item]);
             }
@@ -121,7 +120,6 @@ class DataProvider {
                 // do nothing
             }
         }
-        console.log("SPOTS IN CITY: ", result);
         return result;
     }
 
@@ -138,7 +136,6 @@ class DataProvider {
                 }
             }
         }
-        //console.log("POPULAR SPOTS: ", spots);
         return spots;
     }
 
@@ -191,7 +188,7 @@ class DataProvider {
                 }
             }
         }
-        //console.log("DataProvider.stores() :: result", result);
+
         return result;
     }
 
@@ -218,7 +215,7 @@ class DataProvider {
                 }
             }
         }
-        //console.log("DataProvider.workshops() :: result", result);
+        
         return result;
     }
 
@@ -249,16 +246,13 @@ class DataProvider {
             }
         }
 
-        console.log("DataProvider.communications() :: result", result);
         return result;
     }
 
     persons() {
 
         let currentCity = this._getCityByCode(this.citycode);
-        console.log("CityCode: ", this.citycode);
         let cityPersons = currentCity.persons_ids;
-        console.log("City persons: ", cityPersons);
 
         let collection = data.persons;
         let result = [];
@@ -266,7 +260,6 @@ class DataProvider {
         for (let personId in cityPersons) {
             for (let item in collection) {
                 if (cityPersons[personId] == collection[item].id) {
-                    console.log("Personnnn: ", collection[item]);
                     if (collection[item].is_active == true) {
                         result.push(collection[item]);
                     }
@@ -279,16 +272,6 @@ class DataProvider {
                 }
             }
         }
-
-        /*for(let item in collection) {
-            if (collection[item].is_active == true) {
-                console.log("Person: ", collection[item].code);
-                result.push(collection[item]);
-            }
-            else {
-                // do nothing
-            }
-        }*/
 
         return result;
     }

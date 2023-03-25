@@ -34,7 +34,6 @@ class PersonPage extends Page {
 
         let collection = this.data.persons();
         for (let item in collection) {
-            console.log("collection item code: ", collection[item].code);
             if (collection[item].code == this.personcode) {
                 result = collection[item];
             }
@@ -189,9 +188,6 @@ class PersonPage extends Page {
         console.log("persons' cities: ", result);
         let uilistcontainer = document.createElement("ul");
         for (let i in result) {
-            /*let uiitem = document.createElement("li");
-            uiitem.innerText = result[i];
-            uilistcontainer.appendChild(uiitem);*/
 
             let uilistitem = new UIListItem();
             uilistitem.primaryText = result[i].name;

@@ -93,7 +93,6 @@ class SpotForecast {
                 }
             }
         }
-        console.log("WORKING SPOTS: ", this.workingSpots);
         this.prepareForecast();
     }
 
@@ -105,7 +104,6 @@ class SpotForecast {
         for (let i = 0; i < result.daily.time.length; i++) {
             this.days.push(result.daily.time[i]);
         }
-        //console.log("DAYS: ", result.daily.time.length, this.days);
     }
 
     groupBy(array, key) {
@@ -155,8 +153,6 @@ class SpotForecast {
                 uispotcontainer.appendChild(uispotitem);
                 spotlist.appendChild(uispotcontainer);
             }
-            /*let uidelimiter = document.createElement("hr");
-            spotlist.appendChild(uidelimiter);*/
         }
         UIForecastView.appendChild(spotlist);
 

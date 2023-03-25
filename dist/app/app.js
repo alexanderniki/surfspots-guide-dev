@@ -174,7 +174,6 @@ class Spotlist extends HTMLElement {
         this.appendChild(this.buildList());
     }
 
-
 }
 
 
@@ -803,7 +802,7 @@ class DataProvider {
     }
 
     by(key, value) {
-        // @TODO: make generic search function. Something like reference(this.data.cities().by(id, 1));
+        // !TODO: make generic search function. Something like reference(this.data.cities().by(id, 1));
     }
 
     getReferenceItemById(reference, id) {
@@ -852,7 +851,6 @@ class DataProvider {
         let currentCity = this._getCityByCode(this.citycode);
         
         for (let item in spots) {
-            console.log("SPOTS: ", spots[item]);
             if (spots[item].metadata.location.city_id == currentCity.id) {
                 result.push(spots[item]);
             }
@@ -860,7 +858,6 @@ class DataProvider {
                 // do nothing
             }
         }
-        console.log("SPOTS IN CITY: ", result);
         return result;
     }
 
@@ -877,7 +874,6 @@ class DataProvider {
                 }
             }
         }
-        //console.log("POPULAR SPOTS: ", spots);
         return spots;
     }
 
@@ -930,7 +926,7 @@ class DataProvider {
                 }
             }
         }
-        //console.log("DataProvider.stores() :: result", result);
+
         return result;
     }
 
@@ -957,7 +953,7 @@ class DataProvider {
                 }
             }
         }
-        //console.log("DataProvider.workshops() :: result", result);
+        
         return result;
     }
 
@@ -988,16 +984,13 @@ class DataProvider {
             }
         }
 
-        console.log("DataProvider.communications() :: result", result);
         return result;
     }
 
     persons() {
 
         let currentCity = this._getCityByCode(this.citycode);
-        console.log("CityCode: ", this.citycode);
         let cityPersons = currentCity.persons_ids;
-        console.log("City persons: ", cityPersons);
 
         let collection = data.persons;
         let result = [];
@@ -1005,7 +998,6 @@ class DataProvider {
         for (let personId in cityPersons) {
             for (let item in collection) {
                 if (cityPersons[personId] == collection[item].id) {
-                    console.log("Personnnn: ", collection[item]);
                     if (collection[item].is_active == true) {
                         result.push(collection[item]);
                     }
@@ -1018,16 +1010,6 @@ class DataProvider {
                 }
             }
         }
-
-        /*for(let item in collection) {
-            if (collection[item].is_active == true) {
-                console.log("Person: ", collection[item].code);
-                result.push(collection[item]);
-            }
-            else {
-                // do nothing
-            }
-        }*/
 
         return result;
     }
@@ -1288,12 +1270,9 @@ class IndexPage extends Page {
         // let spots = data.spots;
         let spots = this.data.spots2();
         let groups = [];
-        console.log("WATER TYPES:", waterTypes);
-        console.log("SPOTS TO GROUP:", spots);
     
         // For every water type
         for(let water in waterTypes) {
-            console.log("water.id: ", waterTypes[water].id);
             let spotGroup = {};
             spotGroup.name = waterTypes[water].water;
             spotGroup.spots = [];
@@ -1349,7 +1328,7 @@ class IndexPage extends Page {
     /* 
      * Get and display Schools, Rents and Instructors
      */
-    orgs2() {
+    /*orgs2() {
         let collection = data.orgs;
         let uicontainer = document.getElementById("collection-orgs");
     
@@ -1366,7 +1345,7 @@ class IndexPage extends Page {
                 uicontainer.appendChild(uicard);
             }
         }
-    }
+    }*/
 
     orgs() {
         let collection = this.data.orgs();
@@ -1414,9 +1393,7 @@ class IndexPage extends Page {
     }
 
     popularSpots() {
-        // let collection = this.data.spots;
         let collection = this.data.spots();
-        console.log("POPULAR SPOTS: ", collection);
         let uicontainer = document.getElementById("spots-popular");
     
         for (let item in collection) {
@@ -1579,7 +1556,6 @@ class PersonPage extends Page {
 
         let collection = this.data.persons();
         for (let item in collection) {
-            console.log("collection item code: ", collection[item].code);
             if (collection[item].code == this.personcode) {
                 result = collection[item];
             }
@@ -1734,9 +1710,6 @@ class PersonPage extends Page {
         console.log("persons' cities: ", result);
         let uilistcontainer = document.createElement("ul");
         for (let i in result) {
-            /*let uiitem = document.createElement("li");
-            uiitem.innerText = result[i];
-            uilistcontainer.appendChild(uiitem);*/
 
             let uilistitem = new UIListItem();
             uilistitem.primaryText = result[i].name;
@@ -2234,7 +2207,6 @@ class SpotForecast {
                 }
             }
         }
-        console.log("WORKING SPOTS: ", this.workingSpots);
         this.prepareForecast();
     }
 
@@ -2246,7 +2218,6 @@ class SpotForecast {
         for (let i = 0; i < result.daily.time.length; i++) {
             this.days.push(result.daily.time[i]);
         }
-        //console.log("DAYS: ", result.daily.time.length, this.days);
     }
 
     groupBy(array, key) {
@@ -2296,8 +2267,6 @@ class SpotForecast {
                 uispotcontainer.appendChild(uispotitem);
                 spotlist.appendChild(uispotcontainer);
             }
-            /*let uidelimiter = document.createElement("hr");
-            spotlist.appendChild(uidelimiter);*/
         }
         UIForecastView.appendChild(spotlist);
 
@@ -2583,7 +2552,6 @@ function setCity(city) {
 
 
 function setPreviousPage(pageLink) {
-    console.log("setPreviousPage()");
     sessionStorage.setItem('prevPage', pageLink);
     appInstanceState.prevPage = pageLink;
 }

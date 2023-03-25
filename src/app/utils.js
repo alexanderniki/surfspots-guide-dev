@@ -67,7 +67,6 @@ function setCity(city) {
 
 
 function setPreviousPage(pageLink) {
-    console.log("setPreviousPage()");
     sessionStorage.setItem('prevPage', pageLink);
     appInstanceState.prevPage = pageLink;
 }

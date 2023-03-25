@@ -54,7 +54,6 @@ class Spotlist extends HTMLElement {
         this.appendChild(this.buildList());
     }
 
-
 }
 
 
