@@ -1328,25 +1328,6 @@ class IndexPage extends Page {
     /* 
      * Get and display Schools, Rents and Instructors
      */
-    /*orgs2() {
-        let collection = data.orgs;
-        let uicontainer = document.getElementById("collection-orgs");
-    
-        for (let item in collection) {
-            if (collection[item].is_active == true) {
-    
-                let uicard = new UICardSimple();
-    
-                uicard.overline = collection[item].metadata.type;
-                uicard.primaryText = collection[item].name;
-                uicard.secondaryText = collection[item].metadata.summary;
-                uicard.openURL = collection[item].metadata.homepage;
-    
-                uicontainer.appendChild(uicard);
-            }
-        }
-    }*/
-
     orgs() {
         let collection = this.data.orgs();
         let uicontainer = document.getElementById("collection-orgs");
@@ -1518,6 +1499,12 @@ class IndexPage extends Page {
                 // do nothing
             }
         }
+    }
+
+    /* DEVELOPMENT PURPOSE ONLY */
+    shapers() {
+        let collection = new PersonProvider(new PersonProviderScript()).select();
+        let uicontainer = document.getElementById("collection-workshops");
     }
 }
 /*
@@ -3043,9 +3030,20 @@ class Place extends BaseModel {
         this.address = "";
     }
 }
+/**
+ * city.js
+ */
+
+/**
+ * City
+ * @extends {Place}
+ */
 class City extends Place {
     constructor() {
         super();
+
+        /** @type {Country} */
+        this.country = new Country();
     }
 }
 /**
@@ -3164,6 +3162,31 @@ class Country extends Place {
         super();
 
         this.cities = [];
+    }
+}
+/**
+ * base_reference_entry.js
+ */
+
+/**
+ * Base reference entry
+ * @extends {BaseModel}
+ */
+class BaseReferenceEntry extends BaseModel {
+
+    constructor() {
+        super();
+
+        /** @type {Number} — Internal ID */
+        this.id = 0;
+        /** @type {Number} — Parent ID. For hierarchy */
+        this.parentId = 0;
+        /** @type {String} — Internal code */
+        this.code = "";
+        /** @type {String} — Entry's name */
+        this.name = "";
+        /** @type {Any} — Entry's value */
+        this.value = null;
     }
 }
 /**
@@ -3456,6 +3479,150 @@ class CommunicationWay extends BaseModel {
         else {
             // do nothing
         }
+    }
+}
+/**
+ * person.js
+ */
+
+/**
+ * class Person
+ * @extends BaseModel
+ */
+class Person extends BaseModel {
+
+    constructor() {
+        super();
+
+        this.id = 0;
+        this.active = false;
+        this.popular = false;
+        this.type = "";
+
+        this.code = "";
+        this.name = "";
+
+        this.summary = "";
+        this.description = ``;
+        this.userpicUrl = "";
+        /** @type {City[]} */
+        this.cities = [];
+        /** @type {Country[]} */
+        this.countries = [];
+        /** @type {PersonContact[]} */
+        this.contacts = [];
+    }
+
+    isPerson() {
+        return true;
+    }
+}
+
+/**
+ * person_contact.js
+ */
+
+/**
+ * Person contact
+ * @extends {BaseReferenceEntry}
+ */
+class PersonContact extends BaseReferenceEntry {
+
+    constructor() {
+        super();
+    }
+}
+/**
+ * person_provider.js
+ */
+
+/**
+ * Person provider
+ */
+class PersonProvider {  // !TODO: extends DataProvider
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {CommunicationProvider} datasource 
+     * @returns {CommunicationProvider} New CommunicationProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    shapers() {
+        return this.datasource.shapers();
+    }
+
+    instructors() {
+        return this.datasource.instructors();
+    }
+
+}
+/**
+ * person_provider_script.js
+ */
+
+/**
+ * PersonProviderScript - provided by in-app JavaScript file
+ */
+class PersonProviderScript extends PersonProvider {
+
+    constructor() {
+        super();
+
+        this.data = data;
+
+        this.test();
+    }
+
+    select() {
+        let rawdata = this.data.persons2;
+        let collection = new Collection();
+
+        for (let item in rawdata) {
+            let person = new Person();
+            person.id = rawdata[item].id;
+            person.active = rawdata[item].is_active;
+            person.popular = rawdata[item].is_popular;
+            person.name = rawdata[item].name;
+            person.summary = rawdata[item].summary;
+            person.description = rawdata[item].metadata.description;
+            //person.type = rawdata[item].
+
+            collection.add(person);
+        }
+
+        return collection;
+    }
+
+    shapers() {
+        let collection = this.select();
+        collection.filter((item) => {
+            return item.active;
+        });
+        return collection;
+    }
+
+    test() {
+        console.log("PERSONS: ", this.shapers());
     }
 }
 /**

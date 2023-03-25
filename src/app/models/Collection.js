@@ -73,14 +73,42 @@ class Collection {
         }
     }
 
+    /**
+     * Perform some action for every element
+     * @param {function} callback - callback
+     * @returns {Collection} modified collection
+     */
     each(callback) {
         for (let item in this.items) {
             callback(this.items[item]);
         }
+        return this;
     }
 
     /**
-     * FUTURE API
+     * Filter collection
+     * @param {function} callback - callback
+     * @returns {Collection} modified (filtered) collection
+     */
+    filter(callback) {
+        this.items = this.items.filter(callback);
+        return this;
+    }
+
+    /**
+     * Union current collection with another one
+     * @param {Collection} collection - new collection
+     * @returns {Collection} modified collection
+     */
+    union(collection) {
+        for (let item in collection) {
+            this.items.add(item);
+        }
+        return this;
+    }
+
+    /**
+     * !TODO: future API
      */
 
     select() {}
@@ -91,14 +119,7 @@ class Collection {
 
     group() {}
 
-    filter(callback) {
-        this.items = this.items.filter(callback);
-        return this;
-    }
-
     update() {}
-
-    union(collection) {}
 
     where(key, value) {}
 

@@ -2931,7 +2931,23 @@
             name: "Михаил Смолин",
             code: "mishasmolin",
             userpic_url: "",
+            summary: "",
+            type: [
+                {
+                    id: 0,
+                    code: "shaper",
+                    name: "Шейпер",
+                },
+                {
+                    id: 1,
+                    code: "instructor",
+                    name: "Инструктор",
+                },
+            ],
             metadata: {
+                description: `Обучение классическому серфингу.
+                Обучение серфингу на искусственной волне.
+                Ремонт и изготовление досок.`,
                 location: {
                     cities: [
                         {
@@ -2948,7 +2964,7 @@
                     countries: [
                         {
                             id: 1,
-                            code: ru,
+                            code: "ru",
                             name: "Россия",
                         },
                         {
@@ -2967,6 +2983,47 @@
                     {
                         name: "Instagram",
                         value: "@mishasmolin",
+                    },
+                ],
+            },
+        },
+        {
+            id: 1,
+            is_active: false,
+            is_popular: false,
+            name: "Shepka Boards",
+            code: "shepkaboards",
+            userpic_url: "",
+            summary: "",
+            type: [
+                {
+                    id: 0,
+                    code: "shaper",
+                    name: "Шейпер",
+                },
+            ],
+            metadata: {
+                location: {
+                    cities: [
+                        {
+                            id: 1,
+                            code: "spb",
+                            name: "Санкт-Петербург",
+                        },
+                    ],
+                    countries: [
+                        {
+                            id: 1,
+                            code: "ru",
+                            name: "Россия",
+                        },
+                    ],
+                },
+                job: [],  // organisations
+                contacts: [
+                    {
+                        name: "Instagram",
+                        value: "https://www.instagram.com/shepka_boards/",
                     },
                 ],
             },

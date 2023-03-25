@@ -266,4 +266,10 @@ class IndexPage extends Page {
             }
         }
     }
+
+    /* DEVELOPMENT PURPOSE ONLY */
+    shapers() {
+        let collection = new PersonProvider(new PersonProviderScript()).select();
+        let uicontainer = document.getElementById("collection-workshops");
+    }
 }
