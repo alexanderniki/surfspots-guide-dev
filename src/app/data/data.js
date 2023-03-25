@@ -36,6 +36,12 @@
             code: "ge",
             city_ids: [],
         },
+        {
+            id: 4,
+            name: "Вьетнам",
+            code: "viet",
+            city_ids: [],
+        },
     ],
 
     cities: [
@@ -103,6 +109,17 @@
             country_id: 2,
             name: "Пафос",
             code: "pahpos",
+            spot_ids: [],
+            org_ids: [],
+            store_ids: [],
+            workshop_ids: [],
+        },
+        {
+            id: 6,
+            is_active: false,
+            country_id: 4,
+            name: "Нячанг",
+            code: "vietnhatrang",
             spot_ids: [],
             org_ids: [],
             store_ids: [],
@@ -334,6 +351,21 @@
             code: "subscription",
             name: "Подписка",
 
+        },
+    ],
+
+    r_person_types: [
+        {
+            id: 0,
+            parent_id: null,
+            code: "shaper",
+            name: "Шейпер",
+        },
+        {
+            id: 1,
+            parent_id: null,
+            code: "instructor",
+            name: "Инструктор",
         },
     ],
 
@@ -2877,6 +2909,56 @@
                 ],
                 city_ids: [1],
                 job_ids: [],
+                contacts: [
+                    {
+                        name: "Telegram",
+                        value: "https://t.me/surfshkola",
+                    },
+                    {
+                        name: "Instagram",
+                        value: "@mishasmolin",
+                    },
+                ],
+            },
+        },
+    ],
+
+    persons2: [
+        {
+            id: 0,
+            is_active: true,
+            is_popular: false,
+            name: "Михаил Смолин",
+            code: "mishasmolin",
+            userpic_url: "",
+            metadata: {
+                location: {
+                    cities: [
+                        {
+                            id: 1,
+                            code: "spb",
+                            name: "Санкт-Петербург",
+                        },
+                        {
+                            id: 6,
+                            code: "vietnhatrang",
+                            name: "Нячанг",
+                        }
+                    ],
+                    countries: [
+                        {
+                            id: 1,
+                            code: ru,
+                            name: "Россия",
+                        },
+                        {
+                            id: 4,
+                            code: "viet",
+                            name: "Вьетнам",
+                        },
+                    ],
+                },
+                job: [],  // organisations
                 contacts: [
                     {
                         name: "Telegram",
