@@ -22,7 +22,7 @@ class Organisation extends BaseModel {
         this.name = "";
         this.summary = "",
         this.description = ``,  // Multiline string
-        this.homepage = "";
+        this.link = "";
 
         /** @type {City[]} */
         this.cities = [];

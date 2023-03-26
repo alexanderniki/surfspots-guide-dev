@@ -394,6 +394,12 @@
             code: "rent",
             name: "Прокат",
         },
+        {
+            id: 5,
+            parent_id: null,
+            code: "school",
+            name: "Школа",
+        },
     ],
 
     notifications: [
@@ -3231,20 +3237,46 @@
             is_active: true,
             is_popular: false,
             name: "Onego Surfing",
-            code: "",
+            code: "onegosurfing",
             summary: "Доски (софт, хард), гидрокостюмы, лиши",
-            metadata: {
-                description: ``,
-                type: "Прокат",
-                homepage: "",
-                link: "",
-                location: {
-                    address: "",
-                    city: {
-                        id: 1,
-                        name: "Санкт-Петербург",
-                    },
+            type: [
+                {
+                    id: 4,
+                    code: "rent",
+                    name: "Прокат", 
                 },
+                {
+                    id: 5,
+                    code: "school",
+                    name: "Школа",
+                },
+            ],
+            metadata: {
+                description: `Прокат досок (софт, хард), гидрокостюмы, лиши.
+                Обучение классическому серфингу.`,
+                link: "https://onego.surf/",
+                location: {
+                    cities: [ 
+                        {
+                            id: 1,
+                            code: "spb",
+                            name: "Санкт-Петербург",
+                        },
+                    ],
+                    counries: [
+                        {
+                            id: 1,
+                            code: "ru",
+                            name: "Россия",
+                        },
+                    ],
+                },
+                contacts: [
+                    {
+                        name: "Сайт",
+                        value: "https://onego.surf/",
+                    }
+                ]
             },
         },
     ]

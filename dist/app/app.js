@@ -1009,6 +1009,10 @@ class IndexPage extends Page {
         let collection = new PersonProvider(new PersonProviderScript()).select();
         let uicontainer = document.getElementById("collection-workshops");
     }
+
+    organisations() {
+        let collection = new OrganisationsProvider(new OrganisationsProviderScript().test());
+    }
 }
 /*
  * pageperson.js 
@@ -3148,31 +3152,6 @@ class Collection {
 
 }
 /**
- * base_reference_entry.js
- */
-
-/**
- * Base reference entry
- * @extends {BaseModel}
- */
-class BaseReferenceEntry extends BaseModel {
-
-    constructor() {
-        super();
-
-        /** @type {Number} — Internal ID */
-        this.id = 0;
-        /** @type {Number} — Parent ID. For hierarchy */
-        this.parentId = 0;
-        /** @type {String} — Internal code */
-        this.code = "";
-        /** @type {String} — Entry's name */
-        this.name = "";
-        /** @type {Any} — Entry's value */
-        this.value = null;
-    }
-}
-/**
  * CommunicationWay.js
  */
 
@@ -3465,55 +3444,28 @@ class CommunicationProviderScript extends CommunicationProvider {
 
 }
 /**
- * person_contact.js
+ * base_reference_entry.js
  */
 
 /**
- * Person contact
- * @extends {BaseReferenceEntry}
+ * Base reference entry
+ * @extends {BaseModel}
  */
-class Contact extends BaseReferenceEntry {
+class BaseReferenceEntry extends BaseModel {
 
     constructor() {
         super();
-    }
-}
-class Place extends BaseModel {
-    constructor() {
-        super();
 
-        this._id = 0;
-        this.active = false;
-        this.popular = false;
+        /** @type {Number} — Internal ID */
+        this.id = 0;
+        /** @type {Number} — Parent ID. For hierarchy */
+        this.parentId = 0;
+        /** @type {String} — Internal code */
         this.code = "";
+        /** @type {String} — Entry's name */
         this.name = "";
-        this.lat = 0.0;
-        this.long = 0.0;
-        this.address = "";
-    }
-}
-class Country extends Place {
-    
-    constructor() {
-        super();
-
-        this.cities = [];
-    }
-}
-/**
- * city.js
- */
-
-/**
- * City
- * @extends {Place}
- */
-class City extends Place {
-    constructor() {
-        super();
-
-        /** @type {Country} */
-        this.country = new Country();
+        /** @type {Any} — Entry's value */
+        this.value = null;
     }
 }
 /**
@@ -3540,7 +3492,7 @@ class Organisation extends BaseModel {
         this.name = "";
         this.summary = "",
         this.description = ``,  // Multiline string
-        this.homepage = "";
+        this.link = "";
 
         /** @type {City[]} */
         this.cities = [];
@@ -3551,8 +3503,197 @@ class Organisation extends BaseModel {
 
     }
 }
+/**
+ * organisations-provider.js
+ */
 
+/**
+ * OrganisationsProvider
+ */
+class OrganisationsProvider {  // !TODO: extends data provider
 
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {CommunicationProvider} datasource 
+     * @returns {CommunicationProvider} New CommunicationProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    rents() {
+        return this.datasource.rents();
+    }
+
+    schools() {
+        return this.datasource.schools();
+    }
+
+    workshops() {
+        return this.datasource.workshops();
+    }
+
+    test() {
+        return this.datasource.test();
+    }
+}
+/**
+ * organisations-provider-script.js
+ */
+
+/**
+ * OrganisationsProviderScript
+ * @extends {OrganisationsProvider}
+ */
+class OrganisationsProviderScript extends OrganisationsProvider {
+
+    constructor() {
+        super();
+
+        this.data = data;  // Connecting to internal JS file
+
+        this.test();  // DEBUGGIG
+    }
+
+    select() {
+        let rawdata = this.data.organisations;
+        let collection = new Collection();
+
+        for (let item in rawdata) {
+            let org = new Organisation();
+            org.id = rawdata[item].id;
+            org.active = rawdata[item].is_active;
+            org.popular = rawdata[item].is_popular;
+            org.code = rawdata[item].code;
+            org.summary = rawdata[item].summary;
+            org.description = rawdata[item].metadata.description;
+            org.link = rawdata[item].metadata.link;
+
+            // Getting types:
+            if (rawdata[item].type) {
+                for (let i in rawdata[item].type) {
+                    let orgtype = new BaseReferenceEntry();
+                    orgtype.id = rawdata[item].type[i].id;
+                    orgtype.code = rawdata[item].type[i].code;
+                    orgtype.name = rawdata[item].type[i].name;
+                    org.type.push(orgtype);
+                }
+            }
+            
+            // Getting cities:
+            if (rawdata[item].metadata.location.cities) {
+                for (let i in rawdata[item].metadata.location.cities) {
+                    let city = new City();
+                    city.id = rawdata[item].metadata.location.cities[i].id;
+                    city.code = rawdata[item].metadata.location.cities[i].code;
+                    city.name = rawdata[item].metadata.location.cities[i].name;
+                    org.cities.push(city);
+                }
+            }
+
+            // Getting countries:
+            if (rawdata[item].metadata.location.countries) {
+                for (let i in rawdata[item].metadata.location.countries) {
+                    let country = new Country();
+                    country.id = rawdata[item].metadata.location.countries[i].id;
+                    country.code = rawdata[item].metadata.location.countries[i].code;
+                    country.name = rawdata[item].metadata.location.countries[i].name;
+                    org.counries.push(country);
+                }
+            }
+
+            // Getting contacts
+            if (rawdata[item].metadata.contacts) {
+                for (let i in rawdata[item].metadata.contacts) {
+                    let contact = new Contact();
+                    contact.name = rawdata[item].metadata.contacts[i].name;
+                    contact.value = rawdata[item].metadata.contacts[i].value;
+                    org.contacts.push(contact);
+                }
+            }
+
+            collection.add(org);
+        }
+
+        return collection;
+    }
+
+    rents() {
+        let collection = this.select();
+
+        collection.filter((item) => {  // Active
+            return item.active;
+        }).filter((item) => { // City
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    console.log("RENT.CITY",collection);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).filter((item) => {  // Type
+            for (let i in item.type) {
+                console.log("TYPE", collection);
+                if (item.type[i].code == "rent") {
+                    console.log("RENT.TYPE", collection);
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        });
+
+        return collection;
+    }
+
+    schools() {
+
+    }
+
+    workshops() {
+        
+    }
+
+    test() {
+        console.log("ORGANISATIONS: ", this.select());
+        console.log("RENTS: ", this.rents());
+    }
+}
+/**
+ * person_contact.js
+ */
+
+/**
+ * Person contact
+ * @extends {BaseReferenceEntry}
+ */
+class Contact extends BaseReferenceEntry {
+
+    constructor() {
+        super();
+    }
+}
 /**
  * shop.js
  */
@@ -3909,5 +4050,43 @@ class PersonProviderScript extends PersonProvider {
     test() {
         console.log("SHAPERS: ", this.shapers());
         console.log("INSTRUCTORS: ", this.instructors());
+    }
+}
+class Place extends BaseModel {
+    constructor() {
+        super();
+
+        this._id = 0;
+        this.active = false;
+        this.popular = false;
+        this.code = "";
+        this.name = "";
+        this.lat = 0.0;
+        this.long = 0.0;
+        this.address = "";
+    }
+}
+class Country extends Place {
+    
+    constructor() {
+        super();
+
+        this.cities = [];
+    }
+}
+/**
+ * city.js
+ */
+
+/**
+ * City
+ * @extends {Place}
+ */
+class City extends Place {
+    constructor() {
+        super();
+
+        /** @type {Country} */
+        this.country = new Country();
     }
 }

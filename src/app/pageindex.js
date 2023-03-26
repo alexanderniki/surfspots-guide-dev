@@ -272,4 +272,8 @@ class IndexPage extends Page {
         let collection = new PersonProvider(new PersonProviderScript()).select();
         let uicontainer = document.getElementById("collection-workshops");
     }
+
+    organisations() {
+        let collection = new OrganisationsProvider(new OrganisationsProviderScript().test());
+    }
 }
