@@ -12,7 +12,7 @@ class PersonProviderScript extends PersonProvider {
 
         this.data = data;
 
-        this.test();
+        // this.test();  // !DEBUGGING
     }
 
     select() {
@@ -24,6 +24,7 @@ class PersonProviderScript extends PersonProvider {
             person.id = rawdata[item].id;
             person.active = rawdata[item].is_active;
             person.popular = rawdata[item].is_popular;
+            person.hasLink = rawdata[item].has_link;
             person.name = rawdata[item].name;
             person.summary = rawdata[item].summary;
             person.description = rawdata[item].metadata.description;

@@ -14,6 +14,7 @@ class Person extends BaseModel {
         this.id = 0;
         this.active = false;
         this.popular = false;
+        this.hasLink = false;
         
         /** @type {BaseReferenceEntry[]} */
         this.type = [];
