@@ -314,4 +314,21 @@ class IndexPage extends Page {
 
         }
     }
+
+    stores2() {
+        let collection = new Collection();
+        let organisations = new OrganisationsProvider(new OrganisationsProviderScript());
+        collection = organisations.shops();
+
+        let uicontainer = document.getElementById("collection-stores");
+        collection.each((item) => {
+            let uicard = new UICardSimple();
+            uicard.primaryText = item.name;
+            uicard.secondaryText = item.summary;
+            uicard.overline = item.activeType;
+            //uicard.openURL = item.homepage;
+            //uicard.openNewPage = true;
+            uicontainer.appendChild(uicard);
+        });
+    }
 }

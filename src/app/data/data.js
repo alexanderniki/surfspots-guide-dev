@@ -3407,16 +3407,22 @@
             is_popular: false,
             name: "WSGS",
             code: "wsgs",
-            summary: "Школа серфинга Максима Фомина.",
+            summary: "Школа серфинга Максима Фомина. Серф-снаряжение, аксесуары, гидроодежда",
             type: [
                 {
                     id: 5,
                     code: "school",
                     name: "Школа",
                 },
+                {
+                    id: 1,
+                    code: "shop",
+                    name: "Магазин",
+                },
             ],
             metadata: {
-                description: `Обучение классическому серфингу.`,
+                description: `Обучение классическому серфингу. 
+                Серф-снаряжение, аксесуары, гидроодежда`,
                 link: "",
                 location: {
                     cities: [ 
@@ -3708,16 +3714,21 @@
             is_popular: false,
             name: "König Surf Club",
             code: "konigsurfclub",
-            summary: "Обучение классическому серфингу и SUP-серфингу",
+            summary: "Обучение классическому серфингу и SUP-серфингу. Одежда, аксесуары",
             type: [
                 {
                     id: 5,
                     code: "school",
                     name: "Школа",
                 },
+                {
+                    id: 1,
+                    code: "shop",
+                    name: "Магазин",
+                },
             ],
             metadata: {
-                description: `Обучение классическому серфингу и SUP-серфингу`,
+                description: `Обучение классическому серфингу и SUP-серфингу. Одежда, аксесуары`,
                 link: "",
                 location: {
                     cities: [ 
@@ -3780,6 +3791,182 @@
                     {
                         name: "Сайт",
                         value: "https://balticsupsurf.ru/",
+                    },
+                ]
+            },
+        },
+        {
+            id: 10,
+            is_active: true,
+            is_popular: false,
+            name: "GOODRIDER",
+            code: "spbstoregoodrider",
+            summary: "Серф-снаряжение и гидроодежда",
+            type: [
+                {
+                    id: 1,
+                    code: "shop",
+                    name: "Магазин",
+                },
+            ],
+            metadata: {
+                description: `Серф-снаряжение и гидроодежда`,
+                link: "",
+                location: {
+                    cities: [ 
+                        {
+                            id: 1,
+                            code: "spb",
+                            name: "Санкт-Петербург",
+                        },
+                    ],
+                    counries: [
+                        {
+                            id: 1,
+                            code: "ru",
+                            name: "Россия",
+                        },
+                    ],
+                },
+                contacts: [
+                    {
+                        name: "Сайт",
+                        value: "https://goodrider.ru/",
+                    },
+                ]
+            },
+        },
+        {
+            id: 10,
+            is_active: true,
+            is_popular: false,
+            name: "ANKERCOMPANY",
+            code: "ruspbstoreankercompany",
+            summary: "Доски, аксесуары, гидроодежда",
+            type: [
+                {
+                    id: 1,
+                    code: "shop",
+                    name: "Магазин",
+                },
+            ],
+            metadata: {
+                description: `Серф-снаряжение и гидроодежда`,
+                link: "",
+                location: {
+                    cities: [ 
+                        {
+                            id: 1,
+                            code: "spb",
+                            name: "Санкт-Петербург",
+                        },
+                    ],
+                    counries: [
+                        {
+                            id: 1,
+                            code: "ru",
+                            name: "Россия",
+                        },
+                    ],
+                },
+                contacts: [
+                    {
+                        name: "Сайт",
+                        value: "https://ankercompany.store/",
+                    },
+                ]
+            },
+        },
+        {
+            id: 11,
+            is_active: true,
+            is_popular: false,
+            name: "Траектория",
+            code: "ruspbstoretraektoria",
+            summary: "Доски, аксесуары, гидроодежда",
+            type: [
+                {
+                    id: 1,
+                    code: "shop",
+                    name: "Магазин",
+                },
+            ],
+            metadata: {
+                description: `Серф-снаряжение и гидроодежда`,
+                link: "",
+                location: {
+                    cities: [ 
+                        {
+                            id: 1,
+                            code: "spb",
+                            name: "Санкт-Петербург",
+                        },
+                    ],
+                    counries: [
+                        {
+                            id: 1,
+                            code: "ru",
+                            name: "Россия",
+                        },
+                    ],
+                },
+                contacts: [
+                    {
+                        name: "Сайт",
+                        value: "https://www.traektoria.ru/",
+                    },
+                ]
+            },
+        },
+        {
+            id: 12,
+            is_active: true,
+            is_popular: false,
+            name: "SUP Shop",
+            code: "ruspbstoresupshop",
+            summary: "Гидроодежда, аксессуары и доски (SUP)",
+            type: [
+                {
+                    id: 1,
+                    code: "shop",
+                    name: "Магазин",
+                },
+            ],
+            metadata: {
+                description: `Гидроодежда, аксессуары и доски (SUP)`,
+                link: "",
+                location: {  // address: "Санкт-Петербург, ул. Кораблестроителей 30",
+                    cities: [ 
+                        {
+                            id: 1,
+                            code: "spb",
+                            name: "Санкт-Петербург",
+                        },
+                    ],
+                    counries: [
+                        {
+                            id: 1,
+                            code: "ru",
+                            name: "Россия",
+                        },
+                    ],
+                },
+                contacts: [
+                    {
+                        name: "Сайт",
+                        value: "https://sup-shop.ru/",
+                    },
+                    {
+                        type: "phone",
+                        value: "+78124256488",
+                    },
+                    {
+                        type: "phone",
+                        value: "88005551469",
+                    },
+                    {
+                        type: "email",
+                        value: "ask@sup-shop.ru",
                     },
                 ]
             },

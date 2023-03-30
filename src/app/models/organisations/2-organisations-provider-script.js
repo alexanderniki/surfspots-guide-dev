@@ -157,10 +157,37 @@ class OrganisationsProviderScript extends OrganisationsProvider {
         return collection;
     }
 
+    shops() {
+        let collection = this.select();
+
+        collection.filter((item) => {  // Active
+            return item.active;
+        }).filter((item) => {  // In selected city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Type
+            console.log("Item: ", item.type);
+            for (let i in item.type) {
+                console.log("Item type: ", item.type[i].code);
+                if (item.type[i].code == "shop") {
+                    return true;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Магазин";
+        });
+
+        return collection;
+    }
+
     test() {
         console.log("ORGANISATIONS: ", this.select());
         console.log("RENTS: ", this.rents());
         console.log("WORKSHOPS: ", this.workshops());
         console.log("SCHOOLS: ", this.schools());
+        console.log("SHOPS: ", this.shops());
     }
 }

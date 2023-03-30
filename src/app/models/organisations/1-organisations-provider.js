@@ -46,6 +46,10 @@ class OrganisationsProvider {  // !TODO: extends data provider
         return this.datasource.workshops();
     }
 
+    shops() {
+        return this.datasource.shops();
+    }
+
     test() {
         return this.datasource.test();
     }
