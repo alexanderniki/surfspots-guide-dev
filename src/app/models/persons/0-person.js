@@ -17,6 +17,7 @@ class Person extends BaseModel {
         
         /** @type {BaseReferenceEntry[]} */
         this.type = [];
+        this.activeType = "";
 
         this.code = "";
         this.name = "";

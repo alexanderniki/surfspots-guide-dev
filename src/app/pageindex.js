@@ -24,6 +24,9 @@ class IndexPage extends Page {
         if(app.country) {
             // !TODO
         }
+
+        this.collection = new Collection();
+        console.log("collection in constructor", this.collection);
         
     }
 
@@ -268,12 +271,47 @@ class IndexPage extends Page {
     }
 
     /* DEVELOPMENT PURPOSE ONLY */
-    shapers() {
-        let collection = new PersonProvider(new PersonProviderScript()).select();
+    persons2() {  // Шейперы и мастерские
+        let collection = new Collection();
+        let persons = new PersonProvider(new PersonProviderScript());
+        let workshops = new OrganisationsProvider(new OrganisationsProviderScript());
+        collection = persons.shapers().union(workshops.workshops());
+        
         let uicontainer = document.getElementById("collection-workshops");
+        for (let item in collection.items) {
+            let uicard = new UICardSimple();
+                
+            uicard.primaryText = collection.items[item].name;
+            uicard.secondaryText = collection.items[item].summary;
+            uicard.overline = collection.items[item].activeType;
+            if (collection.items[item].has_link == true) {
+                uicard.openURL = "person.html#" + collection[item].code;
+            }
+            else {
+                // do nothing
+            }
+
+            uicontainer.appendChild(uicard);
+        }
     }
 
-    organisations() {
-        let collection = new OrganisationsProvider(new OrganisationsProviderScript().test());
+    organisations() {  // Прокаты, школы, инструкторы
+        let collection = new Collection();
+        let organisations = new OrganisationsProvider(new OrganisationsProviderScript());
+        let persons = new PersonProvider(new PersonProviderScript());
+        collection = organisations.rents().union(organisations.schools()).union(persons.instructors());
+        
+        let uicontainer = document.getElementById("collection-orgs");
+        for (let item in collection.items) {
+            let uicard = new UICardSimple();
+    
+            uicard.overline = collection.items[item].activeType;
+            uicard.primaryText = collection.items[item].name;
+            uicard.secondaryText = collection.items[item].summary;
+            //uicard.openURL = collection[item].metadata.homepage;
+
+            uicontainer.appendChild(uicard);
+
+        }
     }
 }

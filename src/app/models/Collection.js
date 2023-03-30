@@ -38,6 +38,7 @@ class Collection {
         else {
             // do nothing
         }
+        return this;
     }
 
     /**
@@ -101,8 +102,8 @@ class Collection {
      * @returns {Collection} modified collection
      */
     union(collection) {
-        for (let item in collection) {
-            this.items.add(item);
+        for (let item in collection.items) {
+            this.add(collection.items[item]);
         }
         return this;
     }

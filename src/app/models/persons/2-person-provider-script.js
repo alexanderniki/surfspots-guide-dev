@@ -74,9 +74,6 @@ class PersonProviderScript extends PersonProvider {
                 if (item.type[i].code == "shaper") {
                     return true;
                 }
-                else {
-                    return false;
-                }
             }
         }).filter((item) => {  // Take only people for current city
             for (let i in item.cities) {
@@ -87,6 +84,8 @@ class PersonProviderScript extends PersonProvider {
                     return false;
                 }
             }
+        }).each((item) => {
+            item.activeType = "Шейпер";
         });
 
         return collection;
@@ -103,10 +102,8 @@ class PersonProviderScript extends PersonProvider {
         }).filter((item) => {  // Take only instructors
             for (let i in item.type) {
                 if (item.type[i].code == "instructor") {
+                    //item.activeType = item.type[i].name;
                     return true;
-                }
-                else {
-                    return false;
                 }
             }
         }).filter((item) => {  // Take only people for current city
@@ -118,6 +115,8 @@ class PersonProviderScript extends PersonProvider {
                     return false;
                 }
             }
+        }).each((item) => {
+            item.activeType = "Инструктор";
         });
 
         return collection;

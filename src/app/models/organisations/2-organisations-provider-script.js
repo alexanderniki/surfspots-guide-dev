@@ -25,6 +25,7 @@ class OrganisationsProviderScript extends OrganisationsProvider {
             org.id = rawdata[item].id;
             org.active = rawdata[item].is_active;
             org.popular = rawdata[item].is_popular;
+            org.name = rawdata[item].name;
             org.code = rawdata[item].code;
             org.summary = rawdata[item].summary;
             org.description = rawdata[item].metadata.description;
@@ -87,7 +88,56 @@ class OrganisationsProviderScript extends OrganisationsProvider {
         }).filter((item) => { // City
             for (let i in item.cities) {
                 if (item.cities[i].code == app.city) {
-                    console.log("RENT.CITY",collection);
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Type
+            for (let i in item.type) {
+                if (item.type[i].code == "rent") {
+                    return true;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Прокат";
+        });
+
+        return collection;
+    }
+
+    schools() {
+        let collection = this.select();
+
+        collection.filter((item) => {  // Active
+            return item.active;
+        }).filter((item) => {  // In selected city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Type
+            console.log("Item: ", item.type);
+            for (let i in item.type) {
+                console.log("Item type: ", item.type[i].code);
+                if (item.type[i].code == "school") {
+                    return true;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Школа";
+        });
+
+        return collection;
+    }
+
+    workshops() {
+        let collection = this.select();
+
+        collection.filter((item) => {  // Active
+            return item.active;
+        }).filter((item) => {  // In selected city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
                     return true;
                 }
                 else {
@@ -96,30 +146,21 @@ class OrganisationsProviderScript extends OrganisationsProvider {
             }
         }).filter((item) => {  // Type
             for (let i in item.type) {
-                console.log("TYPE", collection);
-                if (item.type[i].code == "rent") {
-                    console.log("RENT.TYPE", collection);
+                if (item.type[i].code == "workshop") {
                     return true;
                 }
-                else {
-                    return false;
-                }
             }
+        }).each((item) => {
+            item.activeType = "Мастерская";
         });
 
         return collection;
     }
 
-    schools() {
-
-    }
-
-    workshops() {
-        
-    }
-
     test() {
         console.log("ORGANISATIONS: ", this.select());
         console.log("RENTS: ", this.rents());
+        console.log("WORKSHOPS: ", this.workshops());
+        console.log("SCHOOLS: ", this.schools());
     }
 }
