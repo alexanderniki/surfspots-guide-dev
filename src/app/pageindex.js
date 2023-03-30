@@ -326,8 +326,8 @@ class IndexPage extends Page {
             uicard.primaryText = item.name;
             uicard.secondaryText = item.summary;
             uicard.overline = item.activeType;
-            //uicard.openURL = item.homepage;
-            //uicard.openNewPage = true;
+            uicard.openURL = item.externalUrl;
+            uicard.openNewPage = true;
             uicontainer.appendChild(uicard);
         });
     }

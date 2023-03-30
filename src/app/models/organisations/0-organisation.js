@@ -14,11 +14,12 @@ class Organisation extends BaseModel {
         this.id = 0;
         this.active = false;
         this.popular = false;
+        this.code = "";
+        this.hasLink = false;
 
         /** @type {BaseReferenceEntry[]} */
         this.type = [];
 
-        this.code = "";
         this.name = "";
         this.summary = "",
         this.description = ``,  // Multiline string

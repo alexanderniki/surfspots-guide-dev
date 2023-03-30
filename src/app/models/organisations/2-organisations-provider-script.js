@@ -74,6 +74,10 @@ class OrganisationsProviderScript extends OrganisationsProvider {
                 }
             }
 
+            if (rawdata[item].external_url) {
+                org.externalUrl = rawdata[item].external_url;
+            }
+
             collection.add(org);
         }
 

@@ -3408,6 +3408,7 @@
             name: "WSGS",
             code: "wsgs",
             summary: "Школа серфинга Максима Фомина. Серф-снаряжение, аксесуары, гидроодежда",
+            external_url: "https://wsgs.ru/",
             type: [
                 {
                     id: 5,
@@ -3715,6 +3716,7 @@
             name: "König Surf Club",
             code: "konigsurfclub",
             summary: "Обучение классическому серфингу и SUP-серфингу. Одежда, аксесуары",
+            external_url: "https://konigsurf.club/",
             type: [
                 {
                     id: 5,
@@ -3802,6 +3804,7 @@
             name: "GOODRIDER",
             code: "spbstoregoodrider",
             summary: "Серф-снаряжение и гидроодежда",
+            external_url: "https://goodrider.ru/",
             type: [
                 {
                     id: 1,
@@ -3843,6 +3846,7 @@
             name: "ANKERCOMPANY",
             code: "ruspbstoreankercompany",
             summary: "Доски, аксесуары, гидроодежда",
+            external_url: "https://ankercompany.store/",
             type: [
                 {
                     id: 1,
@@ -3884,6 +3888,7 @@
             name: "Траектория",
             code: "ruspbstoretraektoria",
             summary: "Доски, аксесуары, гидроодежда",
+            external_url: "https://www.traektoria.ru/",
             type: [
                 {
                     id: 1,
@@ -3925,6 +3930,7 @@
             name: "SUP Shop",
             code: "ruspbstoresupshop",
             summary: "Гидроодежда, аксессуары и доски (SUP)",
+            external_url: "https://sup-shop.ru/",
             type: [
                 {
                     id: 1,
