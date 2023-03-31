@@ -137,6 +137,14 @@ Table r_wave_types {
     name varchar
 }
 
+Table r_contact_types {
+    // Site, Social network, Messenger, Phone
+    id integer [pk]
+    parent_id integer
+    code varchar
+    name varchar
+}
+
 
 /* MAIN TABLES */
 
