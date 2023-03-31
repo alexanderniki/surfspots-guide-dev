@@ -284,7 +284,6 @@ class IndexPage extends Page {
             uicard.secondaryText = collection.items[item].summary;
             uicard.overline = collection.items[item].activeType;
             if (collection.items[item].hasLink == true) {
-                console.log("person.html#", collection.items[item].code);
                 uicard.openURL = "person.html#" + collection.items[item].code;
             }
             else {
@@ -308,7 +307,11 @@ class IndexPage extends Page {
             uicard.overline = collection.items[item].activeType;
             uicard.primaryText = collection.items[item].name;
             uicard.secondaryText = collection.items[item].summary;
-            //uicard.openURL = collection[item].metadata.homepage;
+            if (collection.items[item].hasLink == true) {
+                if (collection.items[item].activeType == "Инструктор") {
+                    uicard.openURL = "person.html#" + collection.items[item].code;
+                }
+            }
 
             uicontainer.appendChild(uicard);
 

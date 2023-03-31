@@ -1021,7 +1021,6 @@ class IndexPage extends Page {
             uicard.secondaryText = collection.items[item].summary;
             uicard.overline = collection.items[item].activeType;
             if (collection.items[item].hasLink == true) {
-                console.log("person.html#", collection.items[item].code);
                 uicard.openURL = "person.html#" + collection.items[item].code;
             }
             else {
@@ -1045,7 +1044,11 @@ class IndexPage extends Page {
             uicard.overline = collection.items[item].activeType;
             uicard.primaryText = collection.items[item].name;
             uicard.secondaryText = collection.items[item].summary;
-            //uicard.openURL = collection[item].metadata.homepage;
+            if (collection.items[item].hasLink == true) {
+                if (collection.items[item].activeType == "Инструктор") {
+                    uicard.openURL = "person.html#" + collection.items[item].code;
+                }
+            }
 
             uicontainer.appendChild(uicard);
 
@@ -1089,14 +1092,9 @@ class PersonPage extends Page {
             app.city = "spb";
             this.data = new DataProvider().fromCity(app.city);
         }
-
-        console.log("data collection: ", this.data);
         this._parseurl();
-        console.log("personcode: ", this.personcode);
         this.currentPerson = this._getCurrentPerson();
-        console.log("current person: ", this.currentPerson);
-
-        return this;
+        this.currentPerson2 = this._getCurrentPerson2();
     }
 
     _getCurrentPerson() {
@@ -1117,12 +1115,34 @@ class PersonPage extends Page {
         return result;
     }
 
+    _getCurrentPerson2() {
+        let collection = new PersonProvider().new(new PersonProviderScript()).select();
+        let result = new Person();
+        collection.filter((item) => {
+            return item.active;
+        }).filter((item) => {
+            if (item.code == this.personcode) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
+
+        result = collection.items[0];
+
+        return result;
+    }
+
     _parseurl() {
         let currentURL = window.location.href;
         let suffix = currentURL.split("#");
         if (suffix.length == 1) {  // If there is no #code in URL
             window.location.href = "index.html";  // Go to index page
         }
+        /* else if (suffix == "") {  // Go to index page
+            window.location.href = "index.html";
+        } */
         else {
             let personcode = suffix[suffix.length - 1];  // Take code
             instanceState.personcode = personcode;
@@ -1153,17 +1173,17 @@ class PersonPage extends Page {
         return this;
     }
     
-    title() {
-        // Page title
-        let uicontainer = document.getElementById("place-title");
-        uicontainer.innerHTML = this.currentPerson.name;
-    }
-
     breadcrumbs() {
         // Page breadcrumbs
         let uicontainer = document.getElementById("place-breadcrumbs");
         let strBreadcrumbs = `<a class="uix-link--header" href="index.html">SURFL</a>&nbsp; › &nbsp;Инструкторы, шейперы`;
         uicontainer.innerHTML = strBreadcrumbs;
+    }
+
+    title() {
+        // Page title
+        let uicontainer = document.getElementById("place-title");
+        uicontainer.innerHTML = this.currentPerson2.name;
     }
 
     name() {
@@ -1178,23 +1198,20 @@ class PersonPage extends Page {
         // Persons' description
         let uicontainer = document.getElementById("collection-description");
 
-        let collection = this.currentPerson.metadata.description;
-        for (let item in collection) {
-            let uiitem = document.createElement("p");
-            uiitem.innerText = collection[item];
-            uicontainer.appendChild(uiitem);
-        }
+        let uiitem = document.createElement("p");
+        uiitem.innerText = this.currentPerson2.description;
+        uicontainer.appendChild(uiitem);
+
     }
 
     contacts() {
         // Persons' contacts
-
         let uicontainer = document.getElementById("collection-contacts");
 
-        let collection = this.currentPerson.metadata.contacts;
+        let collection = this.currentPerson2.contacts;
         for (let item in collection) {
             let uilistitem = new UIListItem();
-            uilistitem.primaryText = collection[item].value;
+            uilistitem.primaryText = `<a href=${collection[item].value}>${collection[item].displayedText}</a>`;
             uilistitem.overline = collection[item].name;
 
             uicontainer.appendChild(uilistitem);
@@ -1205,65 +1222,27 @@ class PersonPage extends Page {
         // Persons' location
         let uicontainer = document.getElementById("collection-cities");
 
-        let collection = this.currentPerson.metadata.city_ids;
-        let cities = data.cities;
-
-        let result = [];
+        let collection = this.currentPerson2.cities;
 
         for (let item in collection) {
-            let currentItem = collection[item];  // City ID
-            console.log("current city id: ", currentItem);
-            for (let city in cities) {
-                if (cities[city].id == currentItem) {
-                    result.push(cities[city].name);
-                    break;
-                }
-                else {
-                    // do nothing
-                }
-            }
-        }
-        console.log("persons' cities: ", result);
-        let uilistcontainer = document.createElement("ul");
-        for (let i in result) {
+            let uilistcontainer = document.createElement("ul");
             let uiitem = document.createElement("li");
-            uiitem.innerText = result[i];
+            uiitem.innerText = collection[item].name;
             uilistcontainer.appendChild(uiitem);
+            
+            uicontainer.appendChild(uilistcontainer);
         }
-        
-        uicontainer.appendChild(uilistcontainer);
     }
 
     jobs() {
         // Persons's jobs: schools, rentals, etc.
         let uicontainer = document.getElementById("collection-jobs");
-
-        let collection = this.currentPerson.metadata.job_ids;
-        let orgs = data.orgs;
-
-        let result = [];
-
-        for (let item in collection) {
-            let currentItem = collection[item];  // City ID
-            console.log("current city id: ", currentItem);
-            for (let org in orgs) {
-                if (orgs[org].id == currentItem) {
-                    result.push(orgs[org]);
-                    break;
-                }
-                else {
-                    // do nothing
-                }
-            }
-        }
-        console.log("persons' cities: ", result);
+        let collection = this.currentPerson2.jobs;
         let uilistcontainer = document.createElement("ul");
-        for (let i in result) {
-
+        for (let item in collection) {
             let uilistitem = new UIListItem();
-            uilistitem.primaryText = result[i].name;
-            uilistitem.overline = result[i].metadata.type;
-
+            uilistitem.primaryText = collection[item].name;
+            //uilistitem.overline = collection[item].type;  // !TODO
             uicontainer.appendChild(uilistitem);
         }
         
@@ -2589,38 +2568,6 @@ class UISpotTabbar extends HTMLElement{
 
 customElements.define("ui-tabbar-spot", UISpotTabbar);
 /*
- * label.js
- * UILabel
- */
-
-
-class UILabelSimple extends HTMLElement {
-
-    constructor() {
-        super();
-        this._text = "";
-    }
-
-    get text() {
-        return this._text;
-    }
-
-    set text(str) {
-        if (str) {
-            this._text = str;
-        }
-        else {
-            console.log("UILabelSimple: ", "No text given");
-        }
-    }
-
-    render() {
-        
-    }
-}
-
-customElements.define("ui-label--simple", UILabelSimple);
-/*
  * card.js
  * Generic card component
  */
@@ -2876,6 +2823,38 @@ class UICardSimple extends UICard {
 }
 
 customElements.define("ui-card--simple", UICardSimple);
+/*
+ * label.js
+ * UILabel
+ */
+
+
+class UILabelSimple extends HTMLElement {
+
+    constructor() {
+        super();
+        this._text = "";
+    }
+
+    get text() {
+        return this._text;
+    }
+
+    set text(str) {
+        if (str) {
+            this._text = str;
+        }
+        else {
+            console.log("UILabelSimple: ", "No text given");
+        }
+    }
+
+    render() {
+        
+    }
+}
+
+customElements.define("ui-label--simple", UILabelSimple);
 /** Class representing collection of items. */
 class CollectionOne {
 
@@ -3233,106 +3212,193 @@ class BaseReferenceEntry extends BaseModel {
     }
 }
 /**
- * person_contact.js
+ * CommunicationWay.js
  */
+
 
 /**
- * Person contact
- * @extends {BaseReferenceEntry}
+ * Communication way model.
+ * @extends BaseModel
  */
-class Contact extends BaseReferenceEntry {
+class CommunicationWay extends BaseModel {
 
-    constructor() {
-        super();
-    }
-}
-class Place extends BaseModel {
     constructor() {
         super();
 
         this._id = 0;
-        this.active = false;
-        this.popular = false;
-        this.code = "";
-        this.name = "";
-        this.lat = 0.0;
-        this.long = 0.0;
-        this.address = "";
-    }
-}
-class Country extends Place {
-    
-    constructor() {
-        super();
-
-        this.cities = [];
-    }
-}
-/**
- * city.js
- */
-
-/**
- * City
- * @extends {Place}
- */
-class City extends Place {
-    constructor() {
-        super();
-
-        /** @type {Country} */
+        this._active = false;
+        this._popular = false;
+        this._name = "";
+        this._type = "";
+        this._platform = "";
+        this._link = "";
+        this._linktext = "";
+        this._summary = "";
         this.country = new Country();
+        this.city = new City();
+    }
+
+    /**
+     * Create new communication way
+     * @return {CommunicationWay} New communication way
+     */
+    new() {
+        return this;
+    }
+
+    /**
+     * Get id
+     * @return {Number} Name
+     */
+    get id() {
+        return this._id;
+    }
+
+    /**
+     * Set id
+     * @param {Number} value - New value
+     */
+    set id(value) {
+        if (value) {  // !TODO: check id type - MUST be integer
+            this._id = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get name
+     * @return {string} Name
+     */
+    get name() {
+        return this._name;
+    }
+
+    /**
+     * Set name
+     * @param {string} value - new name
+     */
+    set name(value) {
+        if (value) {
+            this._name = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get type
+     * @returns {string} Type
+     */
+    get type() {
+        return this._type
+    }
+
+    /**
+     * Set type
+     * @param {string} value - new type
+     */
+    set type(value) {
+        if (value) {
+            this._type = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get platform
+     * @returns {string} Platform
+     */
+    get platform() {
+        return this._platform;
+    }
+
+    /**
+     * Set platform
+     * @param {string} value - New value
+     */
+    set platform(value) {
+        if (value) {
+            this._platform = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get link
+     * @returns {string} Link
+     */
+    get link() {
+        return this._link;
+    }
+
+    /**
+     * Set link
+     * @param {string} value - New value
+     */
+    set link(value) {
+        if (value) {
+            this._link = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get link text
+     * @returns {string} Link
+     */
+    get link() {
+        return this._linktext;
+    }
+
+    /**
+     * Set link text
+     * @param {string} value - New value
+     */
+    set link(value) {
+        if (value) {
+            this._linktext = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get summary
+     * @returns {string} Summary
+     */
+    get summary() {
+        return this._summary;
+    }
+
+    /**
+     * Set summary
+     * @param {string} value - New value
+     */
+    set summary(value) {
+        if (value) {
+            this._summary = value;
+        }
+        else {
+            // do nothing
+        }
     }
 }
 /**
- * person.js
+ * communication_provider.js
  */
 
-/**
- * class Person
- * @extends BaseModel
- */
-class Person extends BaseModel {
+class CommunicationProvider {  // !TODO extends DataProvider
 
-    constructor() {
-        super();
-
-        this.id = 0;
-        this.active = false;
-        this.popular = false;
-        this.hasLink = false;
-        
-        /** @type {BaseReferenceEntry[]} */
-        this.type = [];
-        this.activeType = "";
-
-        this.code = "";
-        this.name = "";
-
-        this.summary = "";
-        this.description = ``;
-        this.userpicUrl = "";
-        /** @type {City[]} */
-        this.cities = [];
-        /** @type {Country[]} */
-        this.countries = [];
-        /** @type {Contact[]} */
-        this.contacts = [];
-    }
-
-    isPerson() {
-        return true;
-    }
-}
-
-/**
- * person_provider.js
- */
-
-/**
- * Person provider
- */
-class PersonProvider {  // !TODO: extends DataProvider
     /**
      * Constructor
      * @param {DataSource} datasource
@@ -3360,143 +3426,101 @@ class PersonProvider {  // !TODO: extends DataProvider
         return this.datasource.select();
     }
 
-    shapers() {
-        return this.datasource.shapers();
+    communications() {
+        return this.datasource.communications();
     }
-
-    instructors() {
-        return this.datasource.instructors();
-    }
-
 }
-/**
- * person_provider_script.js
- */
 
 /**
- * PersonProviderScript - provided by in-app JavaScript file
+ * communication_provider_script.js
  */
-class PersonProviderScript extends PersonProvider {
+
+
+/**
+ * Communications - provided by in-app javascript file
+ * @extends CommunicationProvider
+ */
+class CommunicationProviderScript extends CommunicationProvider {
 
     constructor() {
         super();
-
-        this.data = data;
-
-        // this.test();  // !DEBUGGING
+        this.data = data;  // Connecting to JS file
+        //this.test();  // Debugging purpose
     }
 
     select() {
-        let rawdata = this.data.persons2;
+        let rawData = this.data.communications;
         let collection = new Collection();
 
-        for (let item in rawdata) {
-            let person = new Person();
-            person.id = rawdata[item].id;
-            person.active = rawdata[item].is_active;
-            person.popular = rawdata[item].is_popular;
-            person.hasLink = rawdata[item].has_link;
-            person.name = rawdata[item].name;
-            person.summary = rawdata[item].summary;
-            person.description = rawdata[item].metadata.description;
-            person.userpicUrl = rawdata[item].metadata.userpicUrl;
-            if (rawdata[item].type) {  // Getting person's type(s)
-                for (let i in rawdata[item].type) {
-                    let persontype = new BaseReferenceEntry();
-                    persontype.id = rawdata[item].type[i].id;
-                    persontype.code = rawdata[item].type[i].code;
-                    persontype.name = rawdata[item].type[i].name;
-                    person.type.push(persontype);
-                }
+        for (let item in rawData) {
+            let way = new CommunicationWay();
+            way.id = rawData[item].id;
+            way.active = rawData[item].is_active;
+            way.popular = rawData[item].is_popular;
+            way.name = rawData[item].name;
+            way.type = rawData[item].metadata.type;
+            way.platform = rawData[item].metadata.channel_type;
+            way.link = rawData[item].metadata.link;
+            way.summary = rawData[item].metadata.summary;
+            if (rawData[item].metadata.location.country) {
+                way.country.code = rawData[item].metadata.location.country.code;
             }
-            if (rawdata[item].metadata.location.cities) {
-                for (let i in rawdata[item].metadata.location.cities) {
-                    let city = new City();
-                    city.id = rawdata[item].metadata.location.cities[i].id;
-                    city.code = rawdata[item].metadata.location.cities[i].code;
-                    city.name = rawdata[item].metadata.location.cities[i].name;
-                    person.cities.push(city);
-                }
+            if (rawData[item].metadata.location.city) {
+                way.city.code = rawData[item].metadata.location.city.code;
             }
-            if (rawdata[item].metadata.contacts) {
-                for (let i in rawdata[item].metadata.contacts) {
-                    let contact = new Contact();
-                    contact.name = rawdata[item].metadata.contacts[i].name;
-                    contact.value = rawdata[item].metadata.contacts[i].value;
-                    person.contacts.push(contact);
-                }
-            }
-
-            collection.add(person);
+            collection.add(way);
         }
 
         return collection;
     }
 
-    /**
-     * Get shapers
-     * @returns {Collection} collection of shapers
-     */
-    shapers() {
+    communications() {
         let collection = this.select();
+
         collection.filter((item) => {
-            return item.active;
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    return true;
+                }
+            }
+            if (item.country.code) {  // !TODO == app.country
+                return true
+            }
+            else {
+                return false;
+            };
         }).filter((item) => {
-            for (let i in item.type) {
-                if (item.type[i].code == "shaper") {
-                    return true;
-                }
-            }
-        }).filter((item) => {  // Take only people for current city
-            for (let i in item.cities) {
-                if (item.cities[i].code == app.city) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        }).each((item) => {
-            item.activeType = "Шейпер";
-        });
-
-        return collection;
-    }
-
-    /**
-     * Get instructors
-     * @returns {Collection} collection of instructors
-     */
-    instructors() {
-        let collection = this.select();
-        collection.filter((item) => {  // Take only active
-            return item.active;
-        }).filter((item) => {  // Take only instructors
-            for (let i in item.type) {
-                if (item.type[i].code == "instructor") {
-                    //item.activeType = item.type[i].name;
-                    return true;
-                }
-            }
-        }).filter((item) => {  // Take only people for current city
-            for (let i in item.cities) {
-                if (item.cities[i].code == app.city) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        }).each((item) => {
-            item.activeType = "Инструктор";
+            return item.active == true;
         });
 
         return collection;
     }
 
     test() {
-        console.log("SHAPERS: ", this.shapers());
-        console.log("INSTRUCTORS: ", this.instructors());
+        console.log("select() -> Collection: ", this.select());
+        console.log("communications() -> Collection: ", this.communications());
+    }
+
+
+}
+/**
+ * person_contact.js
+ */
+
+/**
+ * Person contact
+ * @extends {BaseReferenceEntry}
+ */
+class Contact extends BaseReferenceEntry {
+
+    constructor() {
+        super();
+
+        this.displayedText = "";
+    }
+
+    isContact() {
+        return true;
     }
 }
 /**
@@ -3785,6 +3809,272 @@ class OrganisationsProviderScript extends OrganisationsProvider {
     }
 }
 /**
+ * person.js
+ */
+
+/**
+ * class Person
+ * @extends BaseModel
+ */
+class Person extends BaseModel {
+
+    constructor() {
+        super();
+
+        this.id = 0;
+        this.active = false;
+        this.popular = false;
+        this.hasLink = false;
+        
+        /** @type {BaseReferenceEntry[]} */
+        this.type = [];
+        this.activeType = "";
+
+        this.code = "";
+        this.name = "";
+
+        this.summary = "";
+        this.description = ``;
+        this.userpicUrl = "";
+        /** @type {City[]} */
+        this.cities = [];
+        /** @type {Country[]} */
+        this.countries = [];
+        /** @type {Contact[]} */
+        this.contacts = [];
+        /** @type {Organisation[]} */
+        this.jobs = [];
+    }
+
+    isPerson() {
+        return true;
+    }
+}
+
+/**
+ * person_provider.js
+ */
+
+/**
+ * Person provider
+ */
+class PersonProvider {  // !TODO: extends DataProvider
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {CommunicationProvider} datasource 
+     * @returns {CommunicationProvider} New CommunicationProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    shapers() {
+        return this.datasource.shapers();
+    }
+
+    instructors() {
+        return this.datasource.instructors();
+    }
+
+}
+/**
+ * person_provider_script.js
+ */
+
+/**
+ * PersonProviderScript - provided by in-app JavaScript file
+ */
+class PersonProviderScript extends PersonProvider {
+
+    constructor() {
+        super();
+
+        this.data = data;
+
+        // this.test();  // !DEBUGGING
+    }
+
+    select() {
+        let rawdata = this.data.persons2;
+        let collection = new Collection();
+
+        for (let item in rawdata) {
+            let person = new Person();
+            person.id = rawdata[item].id;
+            person.active = rawdata[item].is_active;
+            person.popular = rawdata[item].is_popular;
+            person.hasLink = rawdata[item].has_link;
+            person.name = rawdata[item].name;
+            person.code = rawdata[item].code;
+            person.summary = rawdata[item].summary;
+            person.description = rawdata[item].metadata.description;
+            person.userpicUrl = rawdata[item].metadata.userpicUrl;
+            if (rawdata[item].type) {  // Getting person's type(s)
+                for (let i in rawdata[item].type) {
+                    let persontype = new BaseReferenceEntry();
+                    persontype.id = rawdata[item].type[i].id;
+                    persontype.code = rawdata[item].type[i].code;
+                    persontype.name = rawdata[item].type[i].name;
+                    person.type.push(persontype);
+                }
+            }
+            if (rawdata[item].metadata.location.cities) {
+                for (let i in rawdata[item].metadata.location.cities) {
+                    let city = new City();
+                    city.id = rawdata[item].metadata.location.cities[i].id;
+                    city.code = rawdata[item].metadata.location.cities[i].code;
+                    city.name = rawdata[item].metadata.location.cities[i].name;
+                    person.cities.push(city);
+                }
+            }
+            if (rawdata[item].metadata.contacts) {
+                for (let i in rawdata[item].metadata.contacts) {
+                    let contact = new Contact();
+                    contact.name = rawdata[item].metadata.contacts[i].name;
+                    contact.value = rawdata[item].metadata.contacts[i].value;
+                    contact.displayedText = rawdata[item].metadata.contacts[i].displayed_text;
+                    person.contacts.push(contact);
+                }
+            }
+            if (rawdata[item].metadata.job) {
+                for (let i in rawdata[item].metadata.job) {
+                    let job = new Organisation();
+                    job.id = rawdata[item].metadata.job[i].id;
+                    job.code = rawdata[item].metadata.job[i].code;
+                    job.name = rawdata[item].metadata.job[i].name;
+                    person.jobs.push(job);
+                }
+            }
+
+            collection.add(person);
+        }
+
+        return collection;
+    }
+
+    /**
+     * Get shapers
+     * @returns {Collection} collection of shapers
+     */
+    shapers() {
+        let collection = this.select();
+        collection.filter((item) => {
+            return item.active;
+        }).filter((item) => {
+            for (let i in item.type) {
+                if (item.type[i].code == "shaper") {
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Take only people for current city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Шейпер";
+        });
+
+        return collection;
+    }
+
+    /**
+     * Get instructors
+     * @returns {Collection} collection of instructors
+     */
+    instructors() {
+        let collection = this.select();
+        collection.filter((item) => {  // Take only active
+            return item.active;
+        }).filter((item) => {  // Take only instructors
+            for (let i in item.type) {
+                if (item.type[i].code == "instructor") {
+                    //item.activeType = item.type[i].name;
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Take only people for current city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Инструктор";
+        });
+
+        return collection;
+    }
+
+    test() {
+        console.log("SHAPERS: ", this.shapers());
+        console.log("INSTRUCTORS: ", this.instructors());
+    }
+}
+class Place extends BaseModel {
+    constructor() {
+        super();
+
+        this._id = 0;
+        this.active = false;
+        this.popular = false;
+        this.code = "";
+        this.name = "";
+        this.lat = 0.0;
+        this.long = 0.0;
+        this.address = "";
+    }
+}
+class Country extends Place {
+    
+    constructor() {
+        super();
+
+        this.cities = [];
+    }
+}
+/**
+ * city.js
+ */
+
+/**
+ * City
+ * @extends {Place}
+ */
+class City extends Place {
+    constructor() {
+        super();
+
+        /** @type {Country} */
+        this.country = new Country();
+    }
+}
+/**
  * shop.js
  */
 
@@ -3925,298 +4215,6 @@ class ShopsProviderScript extends ShopsProvider {
     test() {
         console.log("ShopsProviderScript.select() -> Collection: ", this.select());
         console.log("ShopsProviderScript.shops() -> Collection: ", this.shops());
-    }
-
-
-}
-/**
- * CommunicationWay.js
- */
-
-
-/**
- * Communication way model.
- * @extends BaseModel
- */
-class CommunicationWay extends BaseModel {
-
-    constructor() {
-        super();
-
-        this._id = 0;
-        this._active = false;
-        this._popular = false;
-        this._name = "";
-        this._type = "";
-        this._platform = "";
-        this._link = "";
-        this._linktext = "";
-        this._summary = "";
-        this.country = new Country();
-        this.city = new City();
-    }
-
-    /**
-     * Create new communication way
-     * @return {CommunicationWay} New communication way
-     */
-    new() {
-        return this;
-    }
-
-    /**
-     * Get id
-     * @return {Number} Name
-     */
-    get id() {
-        return this._id;
-    }
-
-    /**
-     * Set id
-     * @param {Number} value - New value
-     */
-    set id(value) {
-        if (value) {  // !TODO: check id type - MUST be integer
-            this._id = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get name
-     * @return {string} Name
-     */
-    get name() {
-        return this._name;
-    }
-
-    /**
-     * Set name
-     * @param {string} value - new name
-     */
-    set name(value) {
-        if (value) {
-            this._name = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get type
-     * @returns {string} Type
-     */
-    get type() {
-        return this._type
-    }
-
-    /**
-     * Set type
-     * @param {string} value - new type
-     */
-    set type(value) {
-        if (value) {
-            this._type = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get platform
-     * @returns {string} Platform
-     */
-    get platform() {
-        return this._platform;
-    }
-
-    /**
-     * Set platform
-     * @param {string} value - New value
-     */
-    set platform(value) {
-        if (value) {
-            this._platform = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get link
-     * @returns {string} Link
-     */
-    get link() {
-        return this._link;
-    }
-
-    /**
-     * Set link
-     * @param {string} value - New value
-     */
-    set link(value) {
-        if (value) {
-            this._link = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get link text
-     * @returns {string} Link
-     */
-    get link() {
-        return this._linktext;
-    }
-
-    /**
-     * Set link text
-     * @param {string} value - New value
-     */
-    set link(value) {
-        if (value) {
-            this._linktext = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get summary
-     * @returns {string} Summary
-     */
-    get summary() {
-        return this._summary;
-    }
-
-    /**
-     * Set summary
-     * @param {string} value - New value
-     */
-    set summary(value) {
-        if (value) {
-            this._summary = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-}
-/**
- * communication_provider.js
- */
-
-class CommunicationProvider {  // !TODO extends DataProvider
-
-    /**
-     * Constructor
-     * @param {DataSource} datasource
-     */
-    constructor(datasource) {
-        this.datasource = datasource;
-    }
-
-    /**
-     * 
-     * @param {CommunicationProvider} datasource 
-     * @returns {CommunicationProvider} New CommunicationProvider instance
-     */
-    new(datasource) {
-        if (datasource) {
-            this.datasource = datasource;
-            return this;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    select() {
-        return this.datasource.select();
-    }
-
-    communications() {
-        return this.datasource.communications();
-    }
-}
-
-/**
- * communication_provider_script.js
- */
-
-
-/**
- * Communications - provided by in-app javascript file
- * @extends CommunicationProvider
- */
-class CommunicationProviderScript extends CommunicationProvider {
-
-    constructor() {
-        super();
-        this.data = data;  // Connecting to JS file
-        //this.test();  // Debugging purpose
-    }
-
-    select() {
-        let rawData = this.data.communications;
-        let collection = new Collection();
-
-        for (let item in rawData) {
-            let way = new CommunicationWay();
-            way.id = rawData[item].id;
-            way.active = rawData[item].is_active;
-            way.popular = rawData[item].is_popular;
-            way.name = rawData[item].name;
-            way.type = rawData[item].metadata.type;
-            way.platform = rawData[item].metadata.channel_type;
-            way.link = rawData[item].metadata.link;
-            way.summary = rawData[item].metadata.summary;
-            if (rawData[item].metadata.location.country) {
-                way.country.code = rawData[item].metadata.location.country.code;
-            }
-            if (rawData[item].metadata.location.city) {
-                way.city.code = rawData[item].metadata.location.city.code;
-            }
-            collection.add(way);
-        }
-
-        return collection;
-    }
-
-    communications() {
-        let collection = this.select();
-
-        collection.filter((item) => {
-            if (item.city) {
-                if (item.city.code == app.city) {
-                    return true;
-                }
-            }
-            if (item.country.code) {  // !TODO == app.country
-                return true
-            }
-            else {
-                return false;
-            };
-        }).filter((item) => {
-            return item.active == true;
-        });
-
-        return collection;
-    }
-
-    test() {
-        console.log("select() -> Collection: ", this.select());
-        console.log("communications() -> Collection: ", this.communications());
     }
 
 

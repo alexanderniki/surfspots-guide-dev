@@ -32,6 +32,8 @@ class Person extends BaseModel {
         this.countries = [];
         /** @type {Contact[]} */
         this.contacts = [];
+        /** @type {Organisation[]} */
+        this.jobs = [];
     }
 
     isPerson() {

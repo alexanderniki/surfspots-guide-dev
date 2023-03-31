@@ -18,14 +18,9 @@ class PersonPage extends Page {
             app.city = "spb";
             this.data = new DataProvider().fromCity(app.city);
         }
-
-        console.log("data collection: ", this.data);
         this._parseurl();
-        console.log("personcode: ", this.personcode);
         this.currentPerson = this._getCurrentPerson();
-        console.log("current person: ", this.currentPerson);
-
-        return this;
+        this.currentPerson2 = this._getCurrentPerson2();
     }
 
     _getCurrentPerson() {
@@ -46,12 +41,34 @@ class PersonPage extends Page {
         return result;
     }
 
+    _getCurrentPerson2() {
+        let collection = new PersonProvider().new(new PersonProviderScript()).select();
+        let result = new Person();
+        collection.filter((item) => {
+            return item.active;
+        }).filter((item) => {
+            if (item.code == this.personcode) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        });
+
+        result = collection.items[0];
+
+        return result;
+    }
+
     _parseurl() {
         let currentURL = window.location.href;
         let suffix = currentURL.split("#");
         if (suffix.length == 1) {  // If there is no #code in URL
             window.location.href = "index.html";  // Go to index page
         }
+        /* else if (suffix == "") {  // Go to index page
+            window.location.href = "index.html";
+        } */
         else {
             let personcode = suffix[suffix.length - 1];  // Take code
             instanceState.personcode = personcode;
@@ -82,17 +99,17 @@ class PersonPage extends Page {
         return this;
     }
     
-    title() {
-        // Page title
-        let uicontainer = document.getElementById("place-title");
-        uicontainer.innerHTML = this.currentPerson.name;
-    }
-
     breadcrumbs() {
         // Page breadcrumbs
         let uicontainer = document.getElementById("place-breadcrumbs");
         let strBreadcrumbs = `<a class="uix-link--header" href="index.html">SURFL</a>&nbsp; › &nbsp;Инструкторы, шейперы`;
         uicontainer.innerHTML = strBreadcrumbs;
+    }
+
+    title() {
+        // Page title
+        let uicontainer = document.getElementById("place-title");
+        uicontainer.innerHTML = this.currentPerson2.name;
     }
 
     name() {
@@ -107,23 +124,20 @@ class PersonPage extends Page {
         // Persons' description
         let uicontainer = document.getElementById("collection-description");
 
-        let collection = this.currentPerson.metadata.description;
-        for (let item in collection) {
-            let uiitem = document.createElement("p");
-            uiitem.innerText = collection[item];
-            uicontainer.appendChild(uiitem);
-        }
+        let uiitem = document.createElement("p");
+        uiitem.innerText = this.currentPerson2.description;
+        uicontainer.appendChild(uiitem);
+
     }
 
     contacts() {
         // Persons' contacts
-
         let uicontainer = document.getElementById("collection-contacts");
 
-        let collection = this.currentPerson.metadata.contacts;
+        let collection = this.currentPerson2.contacts;
         for (let item in collection) {
             let uilistitem = new UIListItem();
-            uilistitem.primaryText = collection[item].value;
+            uilistitem.primaryText = `<a href=${collection[item].value}>${collection[item].displayedText}</a>`;
             uilistitem.overline = collection[item].name;
 
             uicontainer.appendChild(uilistitem);
@@ -134,65 +148,27 @@ class PersonPage extends Page {
         // Persons' location
         let uicontainer = document.getElementById("collection-cities");
 
-        let collection = this.currentPerson.metadata.city_ids;
-        let cities = data.cities;
-
-        let result = [];
+        let collection = this.currentPerson2.cities;
 
         for (let item in collection) {
-            let currentItem = collection[item];  // City ID
-            console.log("current city id: ", currentItem);
-            for (let city in cities) {
-                if (cities[city].id == currentItem) {
-                    result.push(cities[city].name);
-                    break;
-                }
-                else {
-                    // do nothing
-                }
-            }
-        }
-        console.log("persons' cities: ", result);
-        let uilistcontainer = document.createElement("ul");
-        for (let i in result) {
+            let uilistcontainer = document.createElement("ul");
             let uiitem = document.createElement("li");
-            uiitem.innerText = result[i];
+            uiitem.innerText = collection[item].name;
             uilistcontainer.appendChild(uiitem);
+            
+            uicontainer.appendChild(uilistcontainer);
         }
-        
-        uicontainer.appendChild(uilistcontainer);
     }
 
     jobs() {
         // Persons's jobs: schools, rentals, etc.
         let uicontainer = document.getElementById("collection-jobs");
-
-        let collection = this.currentPerson.metadata.job_ids;
-        let orgs = data.orgs;
-
-        let result = [];
-
-        for (let item in collection) {
-            let currentItem = collection[item];  // City ID
-            console.log("current city id: ", currentItem);
-            for (let org in orgs) {
-                if (orgs[org].id == currentItem) {
-                    result.push(orgs[org]);
-                    break;
-                }
-                else {
-                    // do nothing
-                }
-            }
-        }
-        console.log("persons' cities: ", result);
+        let collection = this.currentPerson2.jobs;
         let uilistcontainer = document.createElement("ul");
-        for (let i in result) {
-
+        for (let item in collection) {
             let uilistitem = new UIListItem();
-            uilistitem.primaryText = result[i].name;
-            uilistitem.overline = result[i].metadata.type;
-
+            uilistitem.primaryText = collection[item].name;
+            //uilistitem.overline = collection[item].type;  // !TODO
             uicontainer.appendChild(uilistitem);
         }
         

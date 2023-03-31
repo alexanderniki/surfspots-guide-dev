@@ -26,6 +26,7 @@ class PersonProviderScript extends PersonProvider {
             person.popular = rawdata[item].is_popular;
             person.hasLink = rawdata[item].has_link;
             person.name = rawdata[item].name;
+            person.code = rawdata[item].code;
             person.summary = rawdata[item].summary;
             person.description = rawdata[item].metadata.description;
             person.userpicUrl = rawdata[item].metadata.userpicUrl;
@@ -52,7 +53,17 @@ class PersonProviderScript extends PersonProvider {
                     let contact = new Contact();
                     contact.name = rawdata[item].metadata.contacts[i].name;
                     contact.value = rawdata[item].metadata.contacts[i].value;
+                    contact.displayedText = rawdata[item].metadata.contacts[i].displayed_text;
                     person.contacts.push(contact);
+                }
+            }
+            if (rawdata[item].metadata.job) {
+                for (let i in rawdata[item].metadata.job) {
+                    let job = new Organisation();
+                    job.id = rawdata[item].metadata.job[i].id;
+                    job.code = rawdata[item].metadata.job[i].code;
+                    job.name = rawdata[item].metadata.job[i].name;
+                    person.jobs.push(job);
                 }
             }
 

@@ -10,5 +10,11 @@ class Contact extends BaseReferenceEntry {
 
     constructor() {
         super();
+
+        this.displayedText = "";
+    }
+
+    isContact() {
+        return true;
     }
 }
