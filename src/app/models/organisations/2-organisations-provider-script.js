@@ -13,7 +13,7 @@ class OrganisationsProviderScript extends OrganisationsProvider {
 
         this.data = data;  // Connecting to internal JS file
 
-        this.test();  // DEBUGGIG
+        // this.test();  // !DEBUGGING
     }
 
     select() {
@@ -120,9 +120,7 @@ class OrganisationsProviderScript extends OrganisationsProvider {
                 }
             }
         }).filter((item) => {  // Type
-            console.log("Item: ", item.type);
             for (let i in item.type) {
-                console.log("Item type: ", item.type[i].code);
                 if (item.type[i].code == "school") {
                     return true;
                 }
@@ -173,9 +171,7 @@ class OrganisationsProviderScript extends OrganisationsProvider {
                 }
             }
         }).filter((item) => {  // Type
-            console.log("Item: ", item.type);
             for (let i in item.type) {
-                console.log("Item type: ", item.type[i].code);
                 if (item.type[i].code == "shop") {
                     return true;
                 }

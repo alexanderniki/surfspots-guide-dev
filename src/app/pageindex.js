@@ -25,8 +25,7 @@ class IndexPage extends Page {
             // !TODO
         }
 
-        this.collection = new Collection();
-        console.log("collection in constructor", this.collection);
+        //this.collection = new Collection();
         
     }
 
@@ -284,8 +283,8 @@ class IndexPage extends Page {
             uicard.primaryText = collection.items[item].name;
             uicard.secondaryText = collection.items[item].summary;
             uicard.overline = collection.items[item].activeType;
-            if (collection.items[item].has_link == true) {
-                uicard.openURL = "person.html#" + collection[item].code;
+            if (collection.items[item].hasLink == true) {
+                uicard.openURL = "person.html#" + collection.items[item].code;
             }
             else {
                 // do nothing
@@ -308,7 +307,11 @@ class IndexPage extends Page {
             uicard.overline = collection.items[item].activeType;
             uicard.primaryText = collection.items[item].name;
             uicard.secondaryText = collection.items[item].summary;
-            //uicard.openURL = collection[item].metadata.homepage;
+            if (collection.items[item].hasLink == true) {
+                if (collection.items[item].activeType == "Инструктор") {
+                    uicard.openURL = "person.html#" + collection.items[item].code;
+                }
+            }
 
             uicontainer.appendChild(uicard);
 

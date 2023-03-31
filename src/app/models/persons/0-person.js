@@ -14,6 +14,7 @@ class Person extends BaseModel {
         this.id = 0;
         this.active = false;
         this.popular = false;
+        this.hasLink = false;
         
         /** @type {BaseReferenceEntry[]} */
         this.type = [];
@@ -31,6 +32,8 @@ class Person extends BaseModel {
         this.countries = [];
         /** @type {Contact[]} */
         this.contacts = [];
+        /** @type {Organisation[]} */
+        this.jobs = [];
     }
 
     isPerson() {
