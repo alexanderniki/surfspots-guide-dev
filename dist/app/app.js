@@ -3187,6 +3187,747 @@ class BaseModel {
     }
 }
 /**
+ * base_reference_entry.js
+ */
+
+/**
+ * Base reference entry
+ * @extends {BaseModel}
+ */
+class BaseReferenceEntry extends BaseModel {
+
+    constructor() {
+        super();
+
+        /** @type {Number} — Internal ID */
+        this.id = 0;
+        /** @type {Number} — Parent ID. For hierarchy */
+        this.parentId = 0;
+        /** @type {String} — Internal code */
+        this.code = "";
+        /** @type {String} — Entry's name */
+        this.name = "";
+        /** @type {Any} — Entry's value */
+        this.value = null;
+    }
+}
+class Place extends BaseModel {
+    constructor() {
+        super();
+
+        this._id = 0;
+        this.active = false;
+        this.popular = false;
+        this.code = "";
+        this.name = "";
+        this.lat = 0.0;
+        this.long = 0.0;
+        this.address = "";
+    }
+}
+class Country extends Place {
+    
+    constructor() {
+        super();
+
+        this.cities = [];
+    }
+}
+/**
+ * city.js
+ */
+
+/**
+ * City
+ * @extends {Place}
+ */
+class City extends Place {
+    constructor() {
+        super();
+
+        /** @type {Country} */
+        this.country = new Country();
+    }
+}
+/**
+ * person_contact.js
+ */
+
+/**
+ * Person contact
+ * @extends {BaseReferenceEntry}
+ */
+class Contact extends BaseReferenceEntry {
+
+    constructor() {
+        super();
+
+        this.displayedText = "";
+    }
+
+    isContact() {
+        return true;
+    }
+}
+/**
+ * organisation.js
+ */
+
+/**
+ * Organisation
+ * @extends {BaseModel}
+ */
+class Organisation extends BaseModel {
+
+    constructor() {
+        super();
+
+        this.id = 0;
+        this.active = false;
+        this.popular = false;
+        this.code = "";
+        this.hasLink = false;
+
+        /** @type {BaseReferenceEntry[]} */
+        this.type = [];
+
+        this.name = "";
+        this.summary = "",
+        this.description = ``,  // Multiline string
+        this.link = "";
+
+        /** @type {City[]} */
+        this.cities = [];
+        /** @type {Country[]} */
+        this.countries = [];
+        /** @type {Contact[]} */
+        this.contacts = [];
+
+    }
+}
+/**
+ * organisations-provider.js
+ */
+
+/**
+ * OrganisationsProvider
+ */
+class OrganisationsProvider {  // !TODO: extends data provider
+
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {CommunicationProvider} datasource 
+     * @returns {CommunicationProvider} New CommunicationProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    rents() {
+        return this.datasource.rents();
+    }
+
+    schools() {
+        return this.datasource.schools();
+    }
+
+    workshops() {
+        return this.datasource.workshops();
+    }
+
+    shops() {
+        return this.datasource.shops();
+    }
+
+    test() {
+        return this.datasource.test();
+    }
+}
+/**
+ * organisations-provider-script.js
+ */
+
+/**
+ * OrganisationsProviderScript
+ * @extends {OrganisationsProvider}
+ */
+class OrganisationsProviderScript extends OrganisationsProvider {
+
+    constructor() {
+        super();
+
+        this.data = data;  // Connecting to internal JS file
+
+        // this.test();  // !DEBUGGING
+    }
+
+    select() {
+        let rawdata = this.data.organisations;
+        let collection = new Collection();
+
+        for (let item in rawdata) {
+            let org = new Organisation();
+            org.id = rawdata[item].id;
+            org.active = rawdata[item].is_active;
+            org.popular = rawdata[item].is_popular;
+            org.name = rawdata[item].name;
+            org.code = rawdata[item].code;
+            org.summary = rawdata[item].summary;
+            org.description = rawdata[item].metadata.description;
+            org.link = rawdata[item].metadata.link;
+
+            // Getting types:
+            if (rawdata[item].type) {
+                for (let i in rawdata[item].type) {
+                    let orgtype = new BaseReferenceEntry();
+                    orgtype.id = rawdata[item].type[i].id;
+                    orgtype.code = rawdata[item].type[i].code;
+                    orgtype.name = rawdata[item].type[i].name;
+                    org.type.push(orgtype);
+                }
+            }
+            
+            // Getting cities:
+            if (rawdata[item].metadata.location.cities) {
+                for (let i in rawdata[item].metadata.location.cities) {
+                    let city = new City();
+                    city.id = rawdata[item].metadata.location.cities[i].id;
+                    city.code = rawdata[item].metadata.location.cities[i].code;
+                    city.name = rawdata[item].metadata.location.cities[i].name;
+                    org.cities.push(city);
+                }
+            }
+
+            // Getting countries:
+            if (rawdata[item].metadata.location.countries) {
+                for (let i in rawdata[item].metadata.location.countries) {
+                    let country = new Country();
+                    country.id = rawdata[item].metadata.location.countries[i].id;
+                    country.code = rawdata[item].metadata.location.countries[i].code;
+                    country.name = rawdata[item].metadata.location.countries[i].name;
+                    org.counries.push(country);
+                }
+            }
+
+            // Getting contacts
+            if (rawdata[item].metadata.contacts) {
+                for (let i in rawdata[item].metadata.contacts) {
+                    let contact = new Contact();
+                    contact.name = rawdata[item].metadata.contacts[i].name;
+                    contact.value = rawdata[item].metadata.contacts[i].value;
+                    org.contacts.push(contact);
+                }
+            }
+
+            if (rawdata[item].external_url) {
+                org.externalUrl = rawdata[item].external_url;
+            }
+
+            collection.add(org);
+        }
+
+        return collection;
+    }
+
+    rents() {
+        let collection = this.select();
+
+        collection.filter((item) => {  // Active
+            return item.active;
+        }).filter((item) => { // City
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Type
+            for (let i in item.type) {
+                if (item.type[i].code == "rent") {
+                    return true;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Прокат";
+        });
+
+        return collection;
+    }
+
+    schools() {
+        let collection = this.select();
+
+        collection.filter((item) => {  // Active
+            return item.active;
+        }).filter((item) => {  // In selected city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Type
+            for (let i in item.type) {
+                if (item.type[i].code == "school") {
+                    return true;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Школа";
+        });
+
+        return collection;
+    }
+
+    workshops() {
+        let collection = this.select();
+
+        collection.filter((item) => {  // Active
+            return item.active;
+        }).filter((item) => {  // In selected city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).filter((item) => {  // Type
+            for (let i in item.type) {
+                if (item.type[i].code == "workshop") {
+                    return true;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Мастерская";
+        });
+
+        return collection;
+    }
+
+    shops() {
+        let collection = this.select();
+
+        collection.filter((item) => {  // Active
+            return item.active;
+        }).filter((item) => {  // In selected city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Type
+            for (let i in item.type) {
+                if (item.type[i].code == "shop") {
+                    return true;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Магазин";
+        });
+
+        return collection;
+    }
+
+    test() {
+        console.log("ORGANISATIONS: ", this.select());
+        console.log("RENTS: ", this.rents());
+        console.log("WORKSHOPS: ", this.workshops());
+        console.log("SCHOOLS: ", this.schools());
+        console.log("SHOPS: ", this.shops());
+    }
+}
+/**
+ * person.js
+ */
+
+/**
+ * class Person
+ * @extends BaseModel
+ */
+class Person extends BaseModel {
+
+    constructor() {
+        super();
+
+        this.id = 0;
+        this.active = false;
+        this.popular = false;
+        this.hasLink = false;
+        
+        /** @type {BaseReferenceEntry[]} */
+        this.type = [];
+        this.activeType = "";
+
+        this.code = "";
+        this.name = "";
+
+        this.summary = "";
+        this.description = ``;
+        this.userpicUrl = "";
+        /** @type {City[]} */
+        this.cities = [];
+        /** @type {Country[]} */
+        this.countries = [];
+        /** @type {Contact[]} */
+        this.contacts = [];
+        /** @type {Organisation[]} */
+        this.jobs = [];
+    }
+
+    isPerson() {
+        return true;
+    }
+}
+
+/**
+ * person_provider.js
+ */
+
+/**
+ * Person provider
+ */
+class PersonProvider {  // !TODO: extends DataProvider
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {CommunicationProvider} datasource 
+     * @returns {CommunicationProvider} New CommunicationProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    shapers() {
+        return this.datasource.shapers();
+    }
+
+    instructors() {
+        return this.datasource.instructors();
+    }
+
+}
+/**
+ * person_provider_script.js
+ */
+
+/**
+ * PersonProviderScript - provided by in-app JavaScript file
+ */
+class PersonProviderScript extends PersonProvider {
+
+    constructor() {
+        super();
+
+        this.data = data;
+
+        // this.test();  // !DEBUGGING
+    }
+
+    select() {
+        let rawdata = this.data.persons2;
+        let collection = new Collection();
+
+        for (let item in rawdata) {
+            let person = new Person();
+            person.id = rawdata[item].id;
+            person.active = rawdata[item].is_active;
+            person.popular = rawdata[item].is_popular;
+            person.hasLink = rawdata[item].has_link;
+            person.name = rawdata[item].name;
+            person.code = rawdata[item].code;
+            person.summary = rawdata[item].summary;
+            person.description = rawdata[item].metadata.description;
+            person.userpicUrl = rawdata[item].metadata.userpicUrl;
+            if (rawdata[item].type) {  // Getting person's type(s)
+                for (let i in rawdata[item].type) {
+                    let persontype = new BaseReferenceEntry();
+                    persontype.id = rawdata[item].type[i].id;
+                    persontype.code = rawdata[item].type[i].code;
+                    persontype.name = rawdata[item].type[i].name;
+                    person.type.push(persontype);
+                }
+            }
+            if (rawdata[item].metadata.location.cities) {
+                for (let i in rawdata[item].metadata.location.cities) {
+                    let city = new City();
+                    city.id = rawdata[item].metadata.location.cities[i].id;
+                    city.code = rawdata[item].metadata.location.cities[i].code;
+                    city.name = rawdata[item].metadata.location.cities[i].name;
+                    person.cities.push(city);
+                }
+            }
+            if (rawdata[item].metadata.contacts) {
+                for (let i in rawdata[item].metadata.contacts) {
+                    let contact = new Contact();
+                    contact.name = rawdata[item].metadata.contacts[i].name;
+                    contact.value = rawdata[item].metadata.contacts[i].value;
+                    contact.displayedText = rawdata[item].metadata.contacts[i].displayed_text;
+                    person.contacts.push(contact);
+                }
+            }
+            if (rawdata[item].metadata.job) {
+                for (let i in rawdata[item].metadata.job) {
+                    let job = new Organisation();
+                    job.id = rawdata[item].metadata.job[i].id;
+                    job.code = rawdata[item].metadata.job[i].code;
+                    job.name = rawdata[item].metadata.job[i].name;
+                    person.jobs.push(job);
+                }
+            }
+
+            collection.add(person);
+        }
+
+        return collection;
+    }
+
+    /**
+     * Get shapers
+     * @returns {Collection} collection of shapers
+     */
+    shapers() {
+        let collection = this.select();
+        collection.filter((item) => {
+            return item.active;
+        }).filter((item) => {
+            for (let i in item.type) {
+                if (item.type[i].code == "shaper") {
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Take only people for current city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Шейпер";
+        });
+
+        return collection;
+    }
+
+    /**
+     * Get instructors
+     * @returns {Collection} collection of instructors
+     */
+    instructors() {
+        let collection = this.select();
+        collection.filter((item) => {  // Take only active
+            return item.active;
+        }).filter((item) => {  // Take only instructors
+            for (let i in item.type) {
+                if (item.type[i].code == "instructor") {
+                    //item.activeType = item.type[i].name;
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Take only people for current city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Инструктор";
+        });
+
+        return collection;
+    }
+
+    test() {
+        console.log("SHAPERS: ", this.shapers());
+        console.log("INSTRUCTORS: ", this.instructors());
+    }
+}
+/**
+ * shop.js
+ */
+
+/**
+ * Shop model
+ * @extends Organisation
+ */
+class Shop extends Organisation {
+    constructor() {
+        super();
+
+        /* this.id = 0;
+        this.popular = false;
+        this.active = true;
+        this.type = "";
+        this.name = "";
+        this.summary = ""; */
+        this.externalUrl = "";
+        this.city = new City();
+        this.country = new Country();
+    }
+
+    new() {
+        return this;
+    }
+
+}
+/**
+ * shops_provider.js
+ */
+
+/**
+ * ShopsProvider
+ */
+class ShopsProvider {  // !TODO extends DataProvider
+
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {ShopsProvider} datasource 
+     * @returns {ShopsProvider} New ShopsProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    shops() {
+        return this.datasource.shops();
+    }
+
+    test() {
+        return this.datasource.test();
+    }
+
+}
+/**
+ * shops_provider_script.js
+ */
+
+
+/**
+ * Shops - provided by in-app javascript file
+ * @extends ShopsProvider
+ */
+class ShopsProviderScript extends ShopsProvider {
+
+    constructor() {
+        super();
+        this.data = data;  // Connecting to JS file
+        //this.test();  // Debugging purpose
+    }
+
+    select() {
+        let rawdata = this.data.stores;
+        let collection = new Collection();
+
+        for (let item in rawdata) {
+            let shop = new Shop();
+            shop.id = rawdata[item].id;
+            shop.active = rawdata[item].is_active;
+            shop.popular = rawdata[item].is_popular;
+            shop.type = rawdata[item].metadata.type;
+            shop.name = rawdata[item].name;
+            shop.summary = rawdata[item].metadata.summary;
+            shop.homepage = rawdata[item].metadata.homepage;
+            if (rawdata[item].metadata.location.city) {
+                shop.city.code = rawdata[item].metadata.location.city.code;
+            }
+            if (rawdata[item].metadata.location.country) {
+                shop.country.code = rawdata[item].metadata.location.country.code;
+            }
+            
+            collection.add(shop);
+        }
+
+        return collection;
+    }
+
+    shops() {
+        let collection = this.select();
+
+        collection.filter((item) => {
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    return true;
+                }
+            }
+            if (item.country.code) {  // !TODO == app.country
+                return true
+            }
+            else {
+                return false;
+            };
+        }).filter((item) => {
+            return item.active == true;
+        });
+        
+        return collection;
+    }
+
+    test() {
+        console.log("ShopsProviderScript.select() -> Collection: ", this.select());
+        console.log("ShopsProviderScript.shops() -> Collection: ", this.shops());
+    }
+
+
+}
+/**
  * CommunicationWay.js
  */
 
@@ -3477,745 +4218,4 @@ class CommunicationProviderScript extends CommunicationProvider {
     }
 
 
-}
-/**
- * base_reference_entry.js
- */
-
-/**
- * Base reference entry
- * @extends {BaseModel}
- */
-class BaseReferenceEntry extends BaseModel {
-
-    constructor() {
-        super();
-
-        /** @type {Number} — Internal ID */
-        this.id = 0;
-        /** @type {Number} — Parent ID. For hierarchy */
-        this.parentId = 0;
-        /** @type {String} — Internal code */
-        this.code = "";
-        /** @type {String} — Entry's name */
-        this.name = "";
-        /** @type {Any} — Entry's value */
-        this.value = null;
-    }
-}
-/**
- * person_contact.js
- */
-
-/**
- * Person contact
- * @extends {BaseReferenceEntry}
- */
-class Contact extends BaseReferenceEntry {
-
-    constructor() {
-        super();
-
-        this.displayedText = "";
-    }
-
-    isContact() {
-        return true;
-    }
-}
-class Place extends BaseModel {
-    constructor() {
-        super();
-
-        this._id = 0;
-        this.active = false;
-        this.popular = false;
-        this.code = "";
-        this.name = "";
-        this.lat = 0.0;
-        this.long = 0.0;
-        this.address = "";
-    }
-}
-class Country extends Place {
-    
-    constructor() {
-        super();
-
-        this.cities = [];
-    }
-}
-/**
- * city.js
- */
-
-/**
- * City
- * @extends {Place}
- */
-class City extends Place {
-    constructor() {
-        super();
-
-        /** @type {Country} */
-        this.country = new Country();
-    }
-}
-/**
- * organisation.js
- */
-
-/**
- * Organisation
- * @extends {BaseModel}
- */
-class Organisation extends BaseModel {
-
-    constructor() {
-        super();
-
-        this.id = 0;
-        this.active = false;
-        this.popular = false;
-        this.code = "";
-        this.hasLink = false;
-
-        /** @type {BaseReferenceEntry[]} */
-        this.type = [];
-
-        this.name = "";
-        this.summary = "",
-        this.description = ``,  // Multiline string
-        this.link = "";
-
-        /** @type {City[]} */
-        this.cities = [];
-        /** @type {Country[]} */
-        this.countries = [];
-        /** @type {Contact[]} */
-        this.contacts = [];
-
-    }
-}
-/**
- * organisations-provider.js
- */
-
-/**
- * OrganisationsProvider
- */
-class OrganisationsProvider {  // !TODO: extends data provider
-
-    /**
-     * Constructor
-     * @param {DataSource} datasource
-     */
-    constructor(datasource) {
-        this.datasource = datasource;
-    }
-
-    /**
-     * 
-     * @param {CommunicationProvider} datasource 
-     * @returns {CommunicationProvider} New CommunicationProvider instance
-     */
-    new(datasource) {
-        if (datasource) {
-            this.datasource = datasource;
-            return this;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    select() {
-        return this.datasource.select();
-    }
-
-    rents() {
-        return this.datasource.rents();
-    }
-
-    schools() {
-        return this.datasource.schools();
-    }
-
-    workshops() {
-        return this.datasource.workshops();
-    }
-
-    shops() {
-        return this.datasource.shops();
-    }
-
-    test() {
-        return this.datasource.test();
-    }
-}
-/**
- * organisations-provider-script.js
- */
-
-/**
- * OrganisationsProviderScript
- * @extends {OrganisationsProvider}
- */
-class OrganisationsProviderScript extends OrganisationsProvider {
-
-    constructor() {
-        super();
-
-        this.data = data;  // Connecting to internal JS file
-
-        // this.test();  // !DEBUGGING
-    }
-
-    select() {
-        let rawdata = this.data.organisations;
-        let collection = new Collection();
-
-        for (let item in rawdata) {
-            let org = new Organisation();
-            org.id = rawdata[item].id;
-            org.active = rawdata[item].is_active;
-            org.popular = rawdata[item].is_popular;
-            org.name = rawdata[item].name;
-            org.code = rawdata[item].code;
-            org.summary = rawdata[item].summary;
-            org.description = rawdata[item].metadata.description;
-            org.link = rawdata[item].metadata.link;
-
-            // Getting types:
-            if (rawdata[item].type) {
-                for (let i in rawdata[item].type) {
-                    let orgtype = new BaseReferenceEntry();
-                    orgtype.id = rawdata[item].type[i].id;
-                    orgtype.code = rawdata[item].type[i].code;
-                    orgtype.name = rawdata[item].type[i].name;
-                    org.type.push(orgtype);
-                }
-            }
-            
-            // Getting cities:
-            if (rawdata[item].metadata.location.cities) {
-                for (let i in rawdata[item].metadata.location.cities) {
-                    let city = new City();
-                    city.id = rawdata[item].metadata.location.cities[i].id;
-                    city.code = rawdata[item].metadata.location.cities[i].code;
-                    city.name = rawdata[item].metadata.location.cities[i].name;
-                    org.cities.push(city);
-                }
-            }
-
-            // Getting countries:
-            if (rawdata[item].metadata.location.countries) {
-                for (let i in rawdata[item].metadata.location.countries) {
-                    let country = new Country();
-                    country.id = rawdata[item].metadata.location.countries[i].id;
-                    country.code = rawdata[item].metadata.location.countries[i].code;
-                    country.name = rawdata[item].metadata.location.countries[i].name;
-                    org.counries.push(country);
-                }
-            }
-
-            // Getting contacts
-            if (rawdata[item].metadata.contacts) {
-                for (let i in rawdata[item].metadata.contacts) {
-                    let contact = new Contact();
-                    contact.name = rawdata[item].metadata.contacts[i].name;
-                    contact.value = rawdata[item].metadata.contacts[i].value;
-                    org.contacts.push(contact);
-                }
-            }
-
-            if (rawdata[item].external_url) {
-                org.externalUrl = rawdata[item].external_url;
-            }
-
-            collection.add(org);
-        }
-
-        return collection;
-    }
-
-    rents() {
-        let collection = this.select();
-
-        collection.filter((item) => {  // Active
-            return item.active;
-        }).filter((item) => { // City
-            for (let i in item.cities) {
-                if (item.cities[i].code == app.city) {
-                    return true;
-                }
-            }
-        }).filter((item) => {  // Type
-            for (let i in item.type) {
-                if (item.type[i].code == "rent") {
-                    return true;
-                }
-            }
-        }).each((item) => {
-            item.activeType = "Прокат";
-        });
-
-        return collection;
-    }
-
-    schools() {
-        let collection = this.select();
-
-        collection.filter((item) => {  // Active
-            return item.active;
-        }).filter((item) => {  // In selected city
-            for (let i in item.cities) {
-                if (item.cities[i].code == app.city) {
-                    return true;
-                }
-            }
-        }).filter((item) => {  // Type
-            for (let i in item.type) {
-                if (item.type[i].code == "school") {
-                    return true;
-                }
-            }
-        }).each((item) => {
-            item.activeType = "Школа";
-        });
-
-        return collection;
-    }
-
-    workshops() {
-        let collection = this.select();
-
-        collection.filter((item) => {  // Active
-            return item.active;
-        }).filter((item) => {  // In selected city
-            for (let i in item.cities) {
-                if (item.cities[i].code == app.city) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        }).filter((item) => {  // Type
-            for (let i in item.type) {
-                if (item.type[i].code == "workshop") {
-                    return true;
-                }
-            }
-        }).each((item) => {
-            item.activeType = "Мастерская";
-        });
-
-        return collection;
-    }
-
-    shops() {
-        let collection = this.select();
-
-        collection.filter((item) => {  // Active
-            return item.active;
-        }).filter((item) => {  // In selected city
-            for (let i in item.cities) {
-                if (item.cities[i].code == app.city) {
-                    return true;
-                }
-            }
-        }).filter((item) => {  // Type
-            for (let i in item.type) {
-                if (item.type[i].code == "shop") {
-                    return true;
-                }
-            }
-        }).each((item) => {
-            item.activeType = "Магазин";
-        });
-
-        return collection;
-    }
-
-    test() {
-        console.log("ORGANISATIONS: ", this.select());
-        console.log("RENTS: ", this.rents());
-        console.log("WORKSHOPS: ", this.workshops());
-        console.log("SCHOOLS: ", this.schools());
-        console.log("SHOPS: ", this.shops());
-    }
-}
-/**
- * shop.js
- */
-
-/**
- * Shop model
- * @extends Organisation
- */
-class Shop extends Organisation {
-    constructor() {
-        super();
-
-        /* this.id = 0;
-        this.popular = false;
-        this.active = true;
-        this.type = "";
-        this.name = "";
-        this.summary = ""; */
-        this.externalUrl = "";
-        this.city = new City();
-        this.country = new Country();
-    }
-
-    new() {
-        return this;
-    }
-
-}
-/**
- * shops_provider.js
- */
-
-/**
- * ShopsProvider
- */
-class ShopsProvider {  // !TODO extends DataProvider
-
-    /**
-     * Constructor
-     * @param {DataSource} datasource
-     */
-    constructor(datasource) {
-        this.datasource = datasource;
-    }
-
-    /**
-     * 
-     * @param {ShopsProvider} datasource 
-     * @returns {ShopsProvider} New ShopsProvider instance
-     */
-    new(datasource) {
-        if (datasource) {
-            this.datasource = datasource;
-            return this;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    select() {
-        return this.datasource.select();
-    }
-
-    shops() {
-        return this.datasource.shops();
-    }
-
-    test() {
-        return this.datasource.test();
-    }
-
-}
-/**
- * shops_provider_script.js
- */
-
-
-/**
- * Shops - provided by in-app javascript file
- * @extends ShopsProvider
- */
-class ShopsProviderScript extends ShopsProvider {
-
-    constructor() {
-        super();
-        this.data = data;  // Connecting to JS file
-        //this.test();  // Debugging purpose
-    }
-
-    select() {
-        let rawdata = this.data.stores;
-        let collection = new Collection();
-
-        for (let item in rawdata) {
-            let shop = new Shop();
-            shop.id = rawdata[item].id;
-            shop.active = rawdata[item].is_active;
-            shop.popular = rawdata[item].is_popular;
-            shop.type = rawdata[item].metadata.type;
-            shop.name = rawdata[item].name;
-            shop.summary = rawdata[item].metadata.summary;
-            shop.homepage = rawdata[item].metadata.homepage;
-            if (rawdata[item].metadata.location.city) {
-                shop.city.code = rawdata[item].metadata.location.city.code;
-            }
-            if (rawdata[item].metadata.location.country) {
-                shop.country.code = rawdata[item].metadata.location.country.code;
-            }
-            
-            collection.add(shop);
-        }
-
-        return collection;
-    }
-
-    shops() {
-        let collection = this.select();
-
-        collection.filter((item) => {
-            if (item.city) {
-                if (item.city.code == app.city) {
-                    return true;
-                }
-            }
-            if (item.country.code) {  // !TODO == app.country
-                return true
-            }
-            else {
-                return false;
-            };
-        }).filter((item) => {
-            return item.active == true;
-        });
-        
-        return collection;
-    }
-
-    test() {
-        console.log("ShopsProviderScript.select() -> Collection: ", this.select());
-        console.log("ShopsProviderScript.shops() -> Collection: ", this.shops());
-    }
-
-
-}
-/**
- * person.js
- */
-
-/**
- * class Person
- * @extends BaseModel
- */
-class Person extends BaseModel {
-
-    constructor() {
-        super();
-
-        this.id = 0;
-        this.active = false;
-        this.popular = false;
-        this.hasLink = false;
-        
-        /** @type {BaseReferenceEntry[]} */
-        this.type = [];
-        this.activeType = "";
-
-        this.code = "";
-        this.name = "";
-
-        this.summary = "";
-        this.description = ``;
-        this.userpicUrl = "";
-        /** @type {City[]} */
-        this.cities = [];
-        /** @type {Country[]} */
-        this.countries = [];
-        /** @type {Contact[]} */
-        this.contacts = [];
-        /** @type {Organisation[]} */
-        this.jobs = [];
-    }
-
-    isPerson() {
-        return true;
-    }
-}
-
-/**
- * person_provider.js
- */
-
-/**
- * Person provider
- */
-class PersonProvider {  // !TODO: extends DataProvider
-    /**
-     * Constructor
-     * @param {DataSource} datasource
-     */
-    constructor(datasource) {
-        this.datasource = datasource;
-    }
-
-    /**
-     * 
-     * @param {CommunicationProvider} datasource 
-     * @returns {CommunicationProvider} New CommunicationProvider instance
-     */
-    new(datasource) {
-        if (datasource) {
-            this.datasource = datasource;
-            return this;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    select() {
-        return this.datasource.select();
-    }
-
-    shapers() {
-        return this.datasource.shapers();
-    }
-
-    instructors() {
-        return this.datasource.instructors();
-    }
-
-}
-/**
- * person_provider_script.js
- */
-
-/**
- * PersonProviderScript - provided by in-app JavaScript file
- */
-class PersonProviderScript extends PersonProvider {
-
-    constructor() {
-        super();
-
-        this.data = data;
-
-        // this.test();  // !DEBUGGING
-    }
-
-    select() {
-        let rawdata = this.data.persons2;
-        let collection = new Collection();
-
-        for (let item in rawdata) {
-            let person = new Person();
-            person.id = rawdata[item].id;
-            person.active = rawdata[item].is_active;
-            person.popular = rawdata[item].is_popular;
-            person.hasLink = rawdata[item].has_link;
-            person.name = rawdata[item].name;
-            person.code = rawdata[item].code;
-            person.summary = rawdata[item].summary;
-            person.description = rawdata[item].metadata.description;
-            person.userpicUrl = rawdata[item].metadata.userpicUrl;
-            if (rawdata[item].type) {  // Getting person's type(s)
-                for (let i in rawdata[item].type) {
-                    let persontype = new BaseReferenceEntry();
-                    persontype.id = rawdata[item].type[i].id;
-                    persontype.code = rawdata[item].type[i].code;
-                    persontype.name = rawdata[item].type[i].name;
-                    person.type.push(persontype);
-                }
-            }
-            if (rawdata[item].metadata.location.cities) {
-                for (let i in rawdata[item].metadata.location.cities) {
-                    let city = new City();
-                    city.id = rawdata[item].metadata.location.cities[i].id;
-                    city.code = rawdata[item].metadata.location.cities[i].code;
-                    city.name = rawdata[item].metadata.location.cities[i].name;
-                    person.cities.push(city);
-                }
-            }
-            if (rawdata[item].metadata.contacts) {
-                for (let i in rawdata[item].metadata.contacts) {
-                    let contact = new Contact();
-                    contact.name = rawdata[item].metadata.contacts[i].name;
-                    contact.value = rawdata[item].metadata.contacts[i].value;
-                    contact.displayedText = rawdata[item].metadata.contacts[i].displayed_text;
-                    person.contacts.push(contact);
-                }
-            }
-            if (rawdata[item].metadata.job) {
-                for (let i in rawdata[item].metadata.job) {
-                    let job = new Organisation();
-                    job.id = rawdata[item].metadata.job[i].id;
-                    job.code = rawdata[item].metadata.job[i].code;
-                    job.name = rawdata[item].metadata.job[i].name;
-                    person.jobs.push(job);
-                }
-            }
-
-            collection.add(person);
-        }
-
-        return collection;
-    }
-
-    /**
-     * Get shapers
-     * @returns {Collection} collection of shapers
-     */
-    shapers() {
-        let collection = this.select();
-        collection.filter((item) => {
-            return item.active;
-        }).filter((item) => {
-            for (let i in item.type) {
-                if (item.type[i].code == "shaper") {
-                    return true;
-                }
-            }
-        }).filter((item) => {  // Take only people for current city
-            for (let i in item.cities) {
-                if (item.cities[i].code == app.city) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        }).each((item) => {
-            item.activeType = "Шейпер";
-        });
-
-        return collection;
-    }
-
-    /**
-     * Get instructors
-     * @returns {Collection} collection of instructors
-     */
-    instructors() {
-        let collection = this.select();
-        collection.filter((item) => {  // Take only active
-            return item.active;
-        }).filter((item) => {  // Take only instructors
-            for (let i in item.type) {
-                if (item.type[i].code == "instructor") {
-                    //item.activeType = item.type[i].name;
-                    return true;
-                }
-            }
-        }).filter((item) => {  // Take only people for current city
-            for (let i in item.cities) {
-                if (item.cities[i].code == app.city) {
-                    return true;
-                }
-                else {
-                    return false;
-                }
-            }
-        }).each((item) => {
-            item.activeType = "Инструктор";
-        });
-
-        return collection;
-    }
-
-    test() {
-        console.log("SHAPERS: ", this.shapers());
-        console.log("INSTRUCTORS: ", this.instructors());
-    }
 }
