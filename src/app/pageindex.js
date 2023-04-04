@@ -25,7 +25,27 @@ class IndexPage extends Page {
             // !TODO
         }
 
+        this._parseurl();
+
         //this.collection = new Collection();
+        console.log("SECTION CODE (PAGE CONSTRUCTOR)", this.sectioncode);
+        
+    }
+
+    _parseurl() {
+        let currentURL = window.location.href;
+        let suffix = currentURL.split("#");
+        if (suffix.length == 1) {  // If there is no #code in URL
+            window.location.href = "index.html";  // Go to index page
+        }
+        /* else if (suffix == "") {  // Go to index page
+            window.location.href = "index.html";
+        } */
+        else {
+            let sectioncode = suffix[suffix.length - 1];  // Take code
+            instanceState.sectioncode = sectioncode;
+            this.sectioncode = sectioncode;
+        }
         
     }
 
@@ -74,6 +94,48 @@ class IndexPage extends Page {
 
     _groupSpotsByLocation() {
         
+    }
+
+    openTab(evt, tabID) {
+        // Declare all variables
+        var i, tabcontent, tablinks;
+    
+        let tabMenu = document.getElementById("toolbar-topnav-menu");
+      
+        // Get all elements with class="tabcontent" and hide them
+        tabcontent = document.getElementsByClassName("uix-tabview--tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+      
+        // Get all elements with class="tablinks" and remove the class "active"
+        tablinks = document.getElementsByClassName("uix-tabview--tablink");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+      
+        // Show the current tab, and add an "active" class to the button that opened the tab
+        document.getElementById(tabID).style.display = "flex";
+        evt.currentTarget.className += " active";
+        
+        // Close menu
+        tabMenu.style.display = "none";
+    }
+
+    /**
+     * 
+     * @param {string} sectioncode
+     */
+    openSection(sectioncode) {  // !TODO новый код секции устанавливается только со второго нажатия
+        //console.log("openSection() instancestate.sectioncode", instanceState.sectioncode);
+        //this._parseurl();
+        let sections = document.getElementsByClassName("uix-tabview--tabcontent");
+        let currentSection = document.getElementById(sectioncode);
+        for (let i = 0; i < sections.length; i++) {
+            sections[i].style.display = "none";
+
+        }
+        currentSection.style.display = "flex";
     }
 
     /* 
@@ -214,32 +276,6 @@ class IndexPage extends Page {
             let uicard = new UICardCommunication().new(item);
             uicontainer.appendChild(uicard);
         });
-    }
-
-    openTab(evt, tabID) {
-        // Declare all variables
-        var i, tabcontent, tablinks;
-    
-        let tabMenu = document.getElementById("toolbar-topnav-menu");
-      
-        // Get all elements with class="tabcontent" and hide them
-        tabcontent = document.getElementsByClassName("uix-tabview--tabcontent");
-        for (i = 0; i < tabcontent.length; i++) {
-          tabcontent[i].style.display = "none";
-        }
-      
-        // Get all elements with class="tablinks" and remove the class "active"
-        tablinks = document.getElementsByClassName("uix-tabview--tablink");
-        for (i = 0; i < tablinks.length; i++) {
-            tablinks[i].className = tablinks[i].className.replace(" active", "");
-        }
-      
-        // Show the current tab, and add an "active" class to the button that opened the tab
-        document.getElementById(tabID).style.display = "flex";
-        evt.currentTarget.className += " active";
-        
-        // Close menu
-        tabMenu.style.display = "none";
     }
 
     persons() {
