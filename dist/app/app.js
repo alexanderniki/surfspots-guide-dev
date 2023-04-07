@@ -1448,7 +1448,6 @@ class SpotPage extends Page {
         }
     }
 
-
     async weather() {
         let weatherProvider = new WeatherProvider(this.spotCode);
         let result = await weatherProvider.fetchWeather();
@@ -1460,7 +1459,7 @@ class SpotPage extends Page {
         let maxtemp = result.daily.temperature_2m_max;
     
         // Container
-        let weatherForecast = document.getElementById("weather-data");
+        let uicontainer = document.getElementById("weather-data-card");
     
         for (let i = 0; i < time.length; i++) {
             // Prepare data
@@ -1470,28 +1469,12 @@ class SpotPage extends Page {
             let strdate = `${weekday}, ${newDate.getDate()}`;
             let strwind = `${Math.round(windspeed[i])} м/с • ${Math.round(winddirection[i])}° • ${WeatherUtils.windDirection(winddirection[i])}`;
             let strtemperarure = `${WeatherUtils.temperatureSign(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} ${Math.round(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} °C`;
-    
-            // Card
-            let forecastCard = document.createElement("div");
-            forecastCard.classList.add("uix-layout--vbox-compact");
-            forecastCard.classList.add("uix-card--weather--day");
-    
-            // Items
-            let dateElement = document.createElement("span");
-            dateElement.innerHTML = strdate;
-    
-            let windElement = document.createElement("span");
-            windElement.classList.add("body-2");
-            windElement.innerHTML = strwind;
-    
-            let temperatureElement = document.createElement("span");
-            temperatureElement.innerHTML = strtemperarure;
-            
-            // Layout
-            forecastCard.appendChild(dateElement);
-            forecastCard.appendChild(windElement);
-            forecastCard.appendChild(temperatureElement);
-            weatherForecast.appendChild(forecastCard);
+
+            let uilistitem = new UIListItem();
+            uilistitem.primaryText = strwind;
+            uilistitem.overline = strdate + ", " + strtemperarure;
+
+            uicontainer.appendChild(uilistitem);
         }
     }
 
@@ -1544,16 +1527,27 @@ class SpotPage extends Page {
 
     transport() {
         let uicontainer = document.getElementById("collection-transport");
-        let uilistcontainer = document.createElement("ul");
+        //let uilistcontainer = document.createElement("ul");
+
+        let coordinates = new UIListItem();
+        coordinates.overline = "Координаты";
+        coordinates.primaryText = this.currentSpot.metadata.location.coordinates;
+        uicontainer.appendChild(coordinates);
+
+        let listHeader = new UIListItem();
+        listHeader.overline = "Как добраться:";
+        uicontainer.appendChild(listHeader);
 
         let transport = this.currentSpot.metadata.transport;
         for (let item in transport) {
+            let listitem = new UIListItem();
+            listitem.primaryText = transport[item];
             let uiitem = document.createElement("li");
             uiitem.innerText = transport[item];
-            uilistcontainer.appendChild(uiitem);
+            uicontainer.appendChild(listitem);
         }
 
-        uicontainer.appendChild(uilistcontainer);
+        //uicontainer.appendChild(uilistcontainer);
     }
 
     description() {
@@ -1602,10 +1596,10 @@ class SpotPage extends Page {
         uicontainer.appendChild(uilistcontainer);
     }
 
-    location() {
+    /*location() {
         let uicontainer = document.getElementById("spot-location");
         uicontainer.innerText = this.currentSpot.metadata.location.coordinates;
-    }
+    }*/
 
     mapCode() {
         let uicontainer = document.getElementById("spot-map");
@@ -3223,6 +3217,34 @@ class BaseModel {
     }
 }
 /**
+<<<<<<< HEAD
+=======
+ * base_reference_entry.js
+ */
+
+/**
+ * Base reference entry
+ * @extends {BaseModel}
+ */
+class BaseReferenceEntry extends BaseModel {
+
+    constructor() {
+        super();
+
+        /** @type {Number} — Internal ID */
+        this.id = 0;
+        /** @type {Number} — Parent ID. For hierarchy */
+        this.parentId = 0;
+        /** @type {String} — Internal code */
+        this.code = "";
+        /** @type {String} — Entry's name */
+        this.name = "";
+        /** @type {Any} — Entry's value */
+        this.value = null;
+    }
+}
+/**
+>>>>>>> dev
  * CommunicationWay.js
  */
 
@@ -3515,6 +3537,7 @@ class CommunicationProviderScript extends CommunicationProvider {
 
 }
 /**
+<<<<<<< HEAD
  * base_reference_entry.js
  */
 
@@ -3540,6 +3563,8 @@ class BaseReferenceEntry extends BaseModel {
     }
 }
 /**
+=======
+>>>>>>> dev
  * person_contact.js
  */
 
@@ -3559,6 +3584,7 @@ class Contact extends BaseReferenceEntry {
         return true;
     }
 }
+<<<<<<< HEAD
 class Place extends BaseModel {
     constructor() {
         super();
@@ -3595,6 +3621,234 @@ class City extends Place {
 
         /** @type {Country} */
         this.country = new Country();
+=======
+/**
+ * person.js
+ */
+
+/**
+ * class Person
+ * @extends BaseModel
+ */
+class Person extends BaseModel {
+
+    constructor() {
+        super();
+
+        this.id = 0;
+        this.active = false;
+        this.popular = false;
+        this.hasLink = false;
+        
+        /** @type {BaseReferenceEntry[]} */
+        this.type = [];
+        this.activeType = "";
+
+        this.code = "";
+        this.name = "";
+
+        this.summary = "";
+        this.description = ``;
+        this.userpicUrl = "";
+        /** @type {City[]} */
+        this.cities = [];
+        /** @type {Country[]} */
+        this.countries = [];
+        /** @type {Contact[]} */
+        this.contacts = [];
+        /** @type {Organisation[]} */
+        this.jobs = [];
+    }
+
+    isPerson() {
+        return true;
+    }
+}
+
+/**
+ * person_provider.js
+ */
+
+/**
+ * Person provider
+ */
+class PersonProvider {  // !TODO: extends DataProvider
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {CommunicationProvider} datasource 
+     * @returns {CommunicationProvider} New CommunicationProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    shapers() {
+        return this.datasource.shapers();
+    }
+
+    instructors() {
+        return this.datasource.instructors();
+    }
+
+}
+/**
+ * person_provider_script.js
+ */
+
+/**
+ * PersonProviderScript - provided by in-app JavaScript file
+ */
+class PersonProviderScript extends PersonProvider {
+
+    constructor() {
+        super();
+
+        this.data = data;
+
+        // this.test();  // !DEBUGGING
+    }
+
+    select() {
+        let rawdata = this.data.persons2;
+        let collection = new Collection();
+
+        for (let item in rawdata) {
+            let person = new Person();
+            person.id = rawdata[item].id;
+            person.active = rawdata[item].is_active;
+            person.popular = rawdata[item].is_popular;
+            person.hasLink = rawdata[item].has_link;
+            person.name = rawdata[item].name;
+            person.code = rawdata[item].code;
+            person.summary = rawdata[item].summary;
+            person.description = rawdata[item].metadata.description;
+            person.userpicUrl = rawdata[item].metadata.userpicUrl;
+            if (rawdata[item].type) {  // Getting person's type(s)
+                for (let i in rawdata[item].type) {
+                    let persontype = new BaseReferenceEntry();
+                    persontype.id = rawdata[item].type[i].id;
+                    persontype.code = rawdata[item].type[i].code;
+                    persontype.name = rawdata[item].type[i].name;
+                    person.type.push(persontype);
+                }
+            }
+            if (rawdata[item].metadata.location.cities) {
+                for (let i in rawdata[item].metadata.location.cities) {
+                    let city = new City();
+                    city.id = rawdata[item].metadata.location.cities[i].id;
+                    city.code = rawdata[item].metadata.location.cities[i].code;
+                    city.name = rawdata[item].metadata.location.cities[i].name;
+                    person.cities.push(city);
+                }
+            }
+            if (rawdata[item].metadata.contacts) {
+                for (let i in rawdata[item].metadata.contacts) {
+                    let contact = new Contact();
+                    contact.name = rawdata[item].metadata.contacts[i].name;
+                    contact.value = rawdata[item].metadata.contacts[i].value;
+                    contact.displayedText = rawdata[item].metadata.contacts[i].displayed_text;
+                    person.contacts.push(contact);
+                }
+            }
+            if (rawdata[item].metadata.job) {
+                for (let i in rawdata[item].metadata.job) {
+                    let job = new Organisation();
+                    job.id = rawdata[item].metadata.job[i].id;
+                    job.code = rawdata[item].metadata.job[i].code;
+                    job.name = rawdata[item].metadata.job[i].name;
+                    person.jobs.push(job);
+                }
+            }
+
+            collection.add(person);
+        }
+
+        return collection;
+    }
+
+    /**
+     * Get shapers
+     * @returns {Collection} collection of shapers
+     */
+    shapers() {
+        let collection = this.select();
+        collection.filter((item) => {
+            return item.active;
+        }).filter((item) => {
+            for (let i in item.type) {
+                if (item.type[i].code == "shaper") {
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Take only people for current city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Шейпер";
+        });
+
+        return collection;
+    }
+
+    /**
+     * Get instructors
+     * @returns {Collection} collection of instructors
+     */
+    instructors() {
+        let collection = this.select();
+        collection.filter((item) => {  // Take only active
+            return item.active;
+        }).filter((item) => {  // Take only instructors
+            for (let i in item.type) {
+                if (item.type[i].code == "instructor") {
+                    //item.activeType = item.type[i].name;
+                    return true;
+                }
+            }
+        }).filter((item) => {  // Take only people for current city
+            for (let i in item.cities) {
+                if (item.cities[i].code == app.city) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }).each((item) => {
+            item.activeType = "Инструктор";
+        });
+
+        return collection;
+    }
+
+    test() {
+        console.log("SHAPERS: ", this.shapers());
+        console.log("INSTRUCTORS: ", this.instructors());
+>>>>>>> dev
     }
 }
 /**
@@ -3882,6 +4136,47 @@ class OrganisationsProviderScript extends OrganisationsProvider {
         console.log("SHOPS: ", this.shops());
     }
 }
+<<<<<<< HEAD
+=======
+class Place extends BaseModel {
+    constructor() {
+        super();
+
+        this._id = 0;
+        this.active = false;
+        this.popular = false;
+        this.code = "";
+        this.name = "";
+        this.lat = 0.0;
+        this.long = 0.0;
+        this.address = "";
+    }
+}
+class Country extends Place {
+    
+    constructor() {
+        super();
+
+        this.cities = [];
+    }
+}
+/**
+ * city.js
+ */
+
+/**
+ * City
+ * @extends {Place}
+ */
+class City extends Place {
+    constructor() {
+        super();
+
+        /** @type {Country} */
+        this.country = new Country();
+    }
+}
+>>>>>>> dev
 /**
  * shop.js
  */
@@ -4026,6 +4321,7 @@ class ShopsProviderScript extends ShopsProvider {
     }
 
 
+<<<<<<< HEAD
 }
 /**
  * person.js
@@ -4254,4 +4550,6 @@ class PersonProviderScript extends PersonProvider {
         console.log("SHAPERS: ", this.shapers());
         console.log("INSTRUCTORS: ", this.instructors());
     }
+=======
+>>>>>>> dev
 }

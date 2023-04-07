@@ -159,6 +159,7 @@
     flex-direction: column;
     /*justify-content: space-between;*/
     gap: var(--space-200);
+    flex-wrap: wrap;
     
     min-height: 288px;
 
@@ -167,6 +168,7 @@
     border-color: var(--color-helper-2);
     border-style: solid;
     box-sizing: border-box;
+    overflow: hidden;
 
     padding: var(--space-300);
 
@@ -176,12 +178,13 @@
 
 .uix-card--spot--description-item--compact {
     display: flex;
-    flex: 1 1 192px;
+    flex: 1 1 288px;
     flex-direction: column;
     /*justify-content: space-between;*/
     gap: var(--space-200);
+    flex-wrap: wrap;
     
-    /*min-height: 192px;*/
+    min-height: 192px;
 
     border: 1px;
     border-radius: var(--space-100);
@@ -456,4 +459,8 @@
     display: flex;
     justify-content: center;
     flex-grow: 1;
+}
+
+.card-fullarea {
+    padding: 0px;
 }
