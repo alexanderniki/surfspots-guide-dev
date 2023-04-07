@@ -1413,7 +1413,7 @@ class SpotPage extends Page {
     }
 
 
-    async weather() {
+    async weather2() {
         let weatherProvider = new WeatherProvider(this.spotCode);
         let result = await weatherProvider.fetchWeather();
     
@@ -1456,6 +1456,36 @@ class SpotPage extends Page {
             forecastCard.appendChild(windElement);
             forecastCard.appendChild(temperatureElement);
             weatherForecast.appendChild(forecastCard);
+        }
+    }
+
+    async weather() {
+        let weatherProvider = new WeatherProvider(this.spotCode);
+        let result = await weatherProvider.fetchWeather();
+    
+        let time = result.daily.time;
+        let winddirection = result.daily.winddirection_10m_dominant;
+        let windspeed = result.daily.windspeed_10m_max;
+        let mintemp = result.daily.temperature_2m_min;
+        let maxtemp = result.daily.temperature_2m_max;
+    
+        // Container
+        let uicontainer = document.getElementById("weather-data-card");
+    
+        for (let i = 0; i < time.length; i++) {
+            // Prepare data
+            let parcedDate = Date.parse(time[i]);  // Unix time
+            let newDate = new Date(parcedDate);
+            let weekday = DateUtils.weekday(newDate.getDay());
+            let strdate = `${weekday}, ${newDate.getDate()}`;
+            let strwind = `${Math.round(windspeed[i])} м/с • ${Math.round(winddirection[i])}° • ${WeatherUtils.windDirection(winddirection[i])}`;
+            let strtemperarure = `${WeatherUtils.temperatureSign(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} ${Math.round(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} °C`;
+
+            let uilistitem = new UIListItem();
+            uilistitem.primaryText = strwind;
+            uilistitem.overline = strdate + ", " + strtemperarure;
+
+            uicontainer.appendChild(uilistitem);
         }
     }
 
@@ -3187,87 +3217,296 @@ class BaseModel {
     }
 }
 /**
- * base_reference_entry.js
+ * CommunicationWay.js
  */
+
 
 /**
- * Base reference entry
- * @extends {BaseModel}
+ * Communication way model.
+ * @extends BaseModel
  */
-class BaseReferenceEntry extends BaseModel {
+class CommunicationWay extends BaseModel {
 
-    constructor() {
-        super();
-
-        /** @type {Number} — Internal ID */
-        this.id = 0;
-        /** @type {Number} — Parent ID. For hierarchy */
-        this.parentId = 0;
-        /** @type {String} — Internal code */
-        this.code = "";
-        /** @type {String} — Entry's name */
-        this.name = "";
-        /** @type {Any} — Entry's value */
-        this.value = null;
-    }
-}
-class Place extends BaseModel {
     constructor() {
         super();
 
         this._id = 0;
-        this.active = false;
-        this.popular = false;
-        this.code = "";
-        this.name = "";
-        this.lat = 0.0;
-        this.long = 0.0;
-        this.address = "";
-    }
-}
-class Country extends Place {
-    
-    constructor() {
-        super();
-
-        this.cities = [];
-    }
-}
-/**
- * city.js
- */
-
-/**
- * City
- * @extends {Place}
- */
-class City extends Place {
-    constructor() {
-        super();
-
-        /** @type {Country} */
+        this._active = false;
+        this._popular = false;
+        this._name = "";
+        this._type = "";
+        this._platform = "";
+        this._link = "";
+        this._linktext = "";
+        this._summary = "";
         this.country = new Country();
+        this.city = new City();
+    }
+
+    /**
+     * Create new communication way
+     * @return {CommunicationWay} New communication way
+     */
+    new() {
+        return this;
+    }
+
+    /**
+     * Get id
+     * @return {Number} Name
+     */
+    get id() {
+        return this._id;
+    }
+
+    /**
+     * Set id
+     * @param {Number} value - New value
+     */
+    set id(value) {
+        if (value) {  // !TODO: check id type - MUST be integer
+            this._id = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get name
+     * @return {string} Name
+     */
+    get name() {
+        return this._name;
+    }
+
+    /**
+     * Set name
+     * @param {string} value - new name
+     */
+    set name(value) {
+        if (value) {
+            this._name = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get type
+     * @returns {string} Type
+     */
+    get type() {
+        return this._type
+    }
+
+    /**
+     * Set type
+     * @param {string} value - new type
+     */
+    set type(value) {
+        if (value) {
+            this._type = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get platform
+     * @returns {string} Platform
+     */
+    get platform() {
+        return this._platform;
+    }
+
+    /**
+     * Set platform
+     * @param {string} value - New value
+     */
+    set platform(value) {
+        if (value) {
+            this._platform = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get link
+     * @returns {string} Link
+     */
+    get link() {
+        return this._link;
+    }
+
+    /**
+     * Set link
+     * @param {string} value - New value
+     */
+    set link(value) {
+        if (value) {
+            this._link = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get link text
+     * @returns {string} Link
+     */
+    get link() {
+        return this._linktext;
+    }
+
+    /**
+     * Set link text
+     * @param {string} value - New value
+     */
+    set link(value) {
+        if (value) {
+            this._linktext = value;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    /**
+     * Get summary
+     * @returns {string} Summary
+     */
+    get summary() {
+        return this._summary;
+    }
+
+    /**
+     * Set summary
+     * @param {string} value - New value
+     */
+    set summary(value) {
+        if (value) {
+            this._summary = value;
+        }
+        else {
+            // do nothing
+        }
     }
 }
 /**
- * person_contact.js
+ * communication_provider.js
  */
 
+class CommunicationProvider {  // !TODO extends DataProvider
+
+    /**
+     * Constructor
+     * @param {DataSource} datasource
+     */
+    constructor(datasource) {
+        this.datasource = datasource;
+    }
+
+    /**
+     * 
+     * @param {CommunicationProvider} datasource 
+     * @returns {CommunicationProvider} New CommunicationProvider instance
+     */
+    new(datasource) {
+        if (datasource) {
+            this.datasource = datasource;
+            return this;
+        }
+        else {
+            // do nothing
+        }
+    }
+
+    select() {
+        return this.datasource.select();
+    }
+
+    communications() {
+        return this.datasource.communications();
+    }
+}
+
 /**
- * Person contact
- * @extends {BaseReferenceEntry}
+ * communication_provider_script.js
  */
-class Contact extends BaseReferenceEntry {
+
+
+/**
+ * Communications - provided by in-app javascript file
+ * @extends CommunicationProvider
+ */
+class CommunicationProviderScript extends CommunicationProvider {
 
     constructor() {
         super();
-
-        this.displayedText = "";
+        this.data = data;  // Connecting to JS file
+        //this.test();  // Debugging purpose
     }
 
-    isContact() {
-        return true;
+    select() {
+        let rawData = this.data.communications;
+        let collection = new Collection();
+
+        for (let item in rawData) {
+            let way = new CommunicationWay();
+            way.id = rawData[item].id;
+            way.active = rawData[item].is_active;
+            way.popular = rawData[item].is_popular;
+            way.name = rawData[item].name;
+            way.type = rawData[item].metadata.type;
+            way.platform = rawData[item].metadata.channel_type;
+            way.link = rawData[item].metadata.link;
+            way.summary = rawData[item].metadata.summary;
+            if (rawData[item].metadata.location.country) {
+                way.country.code = rawData[item].metadata.location.country.code;
+            }
+            if (rawData[item].metadata.location.city) {
+                way.city.code = rawData[item].metadata.location.city.code;
+            }
+            collection.add(way);
+        }
+
+        return collection;
     }
+
+    communications() {
+        let collection = this.select();
+
+        collection.filter((item) => {
+            if (item.city) {
+                if (item.city.code == app.city) {
+                    return true;
+                }
+            }
+            if (item.country.code) {  // !TODO == app.country
+                return true
+            }
+            else {
+                return false;
+            };
+        }).filter((item) => {
+            return item.active == true;
+        });
+
+        return collection;
+    }
+
+    test() {
+        console.log("select() -> Collection: ", this.select());
+        console.log("communications() -> Collection: ", this.communications());
+    }
+
+
 }
 /**
  * organisation.js
@@ -3782,6 +4021,89 @@ class PersonProviderScript extends PersonProvider {
         console.log("INSTRUCTORS: ", this.instructors());
     }
 }
+class Place extends BaseModel {
+    constructor() {
+        super();
+
+        this._id = 0;
+        this.active = false;
+        this.popular = false;
+        this.code = "";
+        this.name = "";
+        this.lat = 0.0;
+        this.long = 0.0;
+        this.address = "";
+    }
+}
+class Country extends Place {
+    
+    constructor() {
+        super();
+
+        this.cities = [];
+    }
+}
+/**
+ * city.js
+ */
+
+/**
+ * City
+ * @extends {Place}
+ */
+class City extends Place {
+    constructor() {
+        super();
+
+        /** @type {Country} */
+        this.country = new Country();
+    }
+}
+/**
+ * base_reference_entry.js
+ */
+
+/**
+ * Base reference entry
+ * @extends {BaseModel}
+ */
+class BaseReferenceEntry extends BaseModel {
+
+    constructor() {
+        super();
+
+        /** @type {Number} — Internal ID */
+        this.id = 0;
+        /** @type {Number} — Parent ID. For hierarchy */
+        this.parentId = 0;
+        /** @type {String} — Internal code */
+        this.code = "";
+        /** @type {String} — Entry's name */
+        this.name = "";
+        /** @type {Any} — Entry's value */
+        this.value = null;
+    }
+}
+/**
+ * person_contact.js
+ */
+
+/**
+ * Person contact
+ * @extends {BaseReferenceEntry}
+ */
+class Contact extends BaseReferenceEntry {
+
+    constructor() {
+        super();
+
+        this.displayedText = "";
+    }
+
+    isContact() {
+        return true;
+    }
+}
 /**
  * shop.js
  */
@@ -3923,298 +4245,6 @@ class ShopsProviderScript extends ShopsProvider {
     test() {
         console.log("ShopsProviderScript.select() -> Collection: ", this.select());
         console.log("ShopsProviderScript.shops() -> Collection: ", this.shops());
-    }
-
-
-}
-/**
- * CommunicationWay.js
- */
-
-
-/**
- * Communication way model.
- * @extends BaseModel
- */
-class CommunicationWay extends BaseModel {
-
-    constructor() {
-        super();
-
-        this._id = 0;
-        this._active = false;
-        this._popular = false;
-        this._name = "";
-        this._type = "";
-        this._platform = "";
-        this._link = "";
-        this._linktext = "";
-        this._summary = "";
-        this.country = new Country();
-        this.city = new City();
-    }
-
-    /**
-     * Create new communication way
-     * @return {CommunicationWay} New communication way
-     */
-    new() {
-        return this;
-    }
-
-    /**
-     * Get id
-     * @return {Number} Name
-     */
-    get id() {
-        return this._id;
-    }
-
-    /**
-     * Set id
-     * @param {Number} value - New value
-     */
-    set id(value) {
-        if (value) {  // !TODO: check id type - MUST be integer
-            this._id = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get name
-     * @return {string} Name
-     */
-    get name() {
-        return this._name;
-    }
-
-    /**
-     * Set name
-     * @param {string} value - new name
-     */
-    set name(value) {
-        if (value) {
-            this._name = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get type
-     * @returns {string} Type
-     */
-    get type() {
-        return this._type
-    }
-
-    /**
-     * Set type
-     * @param {string} value - new type
-     */
-    set type(value) {
-        if (value) {
-            this._type = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get platform
-     * @returns {string} Platform
-     */
-    get platform() {
-        return this._platform;
-    }
-
-    /**
-     * Set platform
-     * @param {string} value - New value
-     */
-    set platform(value) {
-        if (value) {
-            this._platform = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get link
-     * @returns {string} Link
-     */
-    get link() {
-        return this._link;
-    }
-
-    /**
-     * Set link
-     * @param {string} value - New value
-     */
-    set link(value) {
-        if (value) {
-            this._link = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get link text
-     * @returns {string} Link
-     */
-    get link() {
-        return this._linktext;
-    }
-
-    /**
-     * Set link text
-     * @param {string} value - New value
-     */
-    set link(value) {
-        if (value) {
-            this._linktext = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    /**
-     * Get summary
-     * @returns {string} Summary
-     */
-    get summary() {
-        return this._summary;
-    }
-
-    /**
-     * Set summary
-     * @param {string} value - New value
-     */
-    set summary(value) {
-        if (value) {
-            this._summary = value;
-        }
-        else {
-            // do nothing
-        }
-    }
-}
-/**
- * communication_provider.js
- */
-
-class CommunicationProvider {  // !TODO extends DataProvider
-
-    /**
-     * Constructor
-     * @param {DataSource} datasource
-     */
-    constructor(datasource) {
-        this.datasource = datasource;
-    }
-
-    /**
-     * 
-     * @param {CommunicationProvider} datasource 
-     * @returns {CommunicationProvider} New CommunicationProvider instance
-     */
-    new(datasource) {
-        if (datasource) {
-            this.datasource = datasource;
-            return this;
-        }
-        else {
-            // do nothing
-        }
-    }
-
-    select() {
-        return this.datasource.select();
-    }
-
-    communications() {
-        return this.datasource.communications();
-    }
-}
-
-/**
- * communication_provider_script.js
- */
-
-
-/**
- * Communications - provided by in-app javascript file
- * @extends CommunicationProvider
- */
-class CommunicationProviderScript extends CommunicationProvider {
-
-    constructor() {
-        super();
-        this.data = data;  // Connecting to JS file
-        //this.test();  // Debugging purpose
-    }
-
-    select() {
-        let rawData = this.data.communications;
-        let collection = new Collection();
-
-        for (let item in rawData) {
-            let way = new CommunicationWay();
-            way.id = rawData[item].id;
-            way.active = rawData[item].is_active;
-            way.popular = rawData[item].is_popular;
-            way.name = rawData[item].name;
-            way.type = rawData[item].metadata.type;
-            way.platform = rawData[item].metadata.channel_type;
-            way.link = rawData[item].metadata.link;
-            way.summary = rawData[item].metadata.summary;
-            if (rawData[item].metadata.location.country) {
-                way.country.code = rawData[item].metadata.location.country.code;
-            }
-            if (rawData[item].metadata.location.city) {
-                way.city.code = rawData[item].metadata.location.city.code;
-            }
-            collection.add(way);
-        }
-
-        return collection;
-    }
-
-    communications() {
-        let collection = this.select();
-
-        collection.filter((item) => {
-            if (item.city) {
-                if (item.city.code == app.city) {
-                    return true;
-                }
-            }
-            if (item.country.code) {  // !TODO == app.country
-                return true
-            }
-            else {
-                return false;
-            };
-        }).filter((item) => {
-            return item.active == true;
-        });
-
-        return collection;
-    }
-
-    test() {
-        console.log("select() -> Collection: ", this.select());
-        console.log("communications() -> Collection: ", this.communications());
     }
 
 

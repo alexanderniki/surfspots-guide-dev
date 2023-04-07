@@ -168,3 +168,7 @@ footer {
     max-width: 960px;
     padding: var(--space-300);
 }
+
+#pros-cons-layout {
+    flex: 1 1 288px;
+}

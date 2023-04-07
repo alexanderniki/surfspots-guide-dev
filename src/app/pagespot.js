@@ -162,7 +162,7 @@ class SpotPage extends Page {
     }
 
 
-    async weather() {
+    async weather2() {
         let weatherProvider = new WeatherProvider(this.spotCode);
         let result = await weatherProvider.fetchWeather();
     
@@ -205,6 +205,36 @@ class SpotPage extends Page {
             forecastCard.appendChild(windElement);
             forecastCard.appendChild(temperatureElement);
             weatherForecast.appendChild(forecastCard);
+        }
+    }
+
+    async weather() {
+        let weatherProvider = new WeatherProvider(this.spotCode);
+        let result = await weatherProvider.fetchWeather();
+    
+        let time = result.daily.time;
+        let winddirection = result.daily.winddirection_10m_dominant;
+        let windspeed = result.daily.windspeed_10m_max;
+        let mintemp = result.daily.temperature_2m_min;
+        let maxtemp = result.daily.temperature_2m_max;
+    
+        // Container
+        let uicontainer = document.getElementById("weather-data-card");
+    
+        for (let i = 0; i < time.length; i++) {
+            // Prepare data
+            let parcedDate = Date.parse(time[i]);  // Unix time
+            let newDate = new Date(parcedDate);
+            let weekday = DateUtils.weekday(newDate.getDay());
+            let strdate = `${weekday}, ${newDate.getDate()}`;
+            let strwind = `${Math.round(windspeed[i])} м/с • ${Math.round(winddirection[i])}° • ${WeatherUtils.windDirection(winddirection[i])}`;
+            let strtemperarure = `${WeatherUtils.temperatureSign(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} ${Math.round(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} °C`;
+
+            let uilistitem = new UIListItem();
+            uilistitem.primaryText = strwind;
+            uilistitem.overline = strdate + ", " + strtemperarure;
+
+            uicontainer.appendChild(uilistitem);
         }
     }
 

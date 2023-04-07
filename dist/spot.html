@@ -87,16 +87,30 @@
                 <section class="uix-tabview--tabcontent uix-tabview--tabcontent--default uix-layout--vbox" id="tab-spot-overview">
 
                     <!-- Weather forecast -->
-                    <div class="uix-layout--hbox--wrapped">
+                    <!--<div class="uix-layout--hbox--wrapped">
                         <div class="uix-card--weather--forecast">
                             <div class="uix-layout--hbox--wrapped" id="weather-data"></div>
                         </div>
                     </div>
-                    <script>page.weather();</script>
+                    <script>page.weather();</script> -->
                     <!-- / Weather forecast -->
 
                     <!-- Overview -->
                     <div class="uix-layout--hbox--wrapped">
+                    
+                    <!-- Weather forecast -->
+                    <div class="uix-card--spot--description-item">
+                        <div id="spot--properties--header">
+                            <span class="caption-accent">Прогноз</span>
+                        </div>
+                        <div>
+                            <ul class="uix-card--list" id="weather-data-card">
+                                <script>page.weather2();</script>
+                            </ul>
+                        </div>
+                    </div>
+                    <script>page.weather();</script>
+                    <!-- / Weather forecast -->
                     
                     <div class="uix-card--spot--description-item">
                         <span class="caption-accent">Описание</span>
@@ -104,40 +118,44 @@
                             <script>page.description();</script>
                         </div>
                     </div>
-                    
-                    <div class="uix-card--spot--description-item">
-                        <div id="spot--properties--header">
-                            <span class="caption-accent">Характеристики</span>
-                            <button class="uix-button--circle--s uix-button--card--inline uix-card--link--overall" onclick="location.href='reference-spots.html'">?</button>
-                        </div>
-                        <div>
-                            <ul class="uix-card--list" id="collection-specification">
-                                <script>page.specification();</script>
-                            </ul>
-                        </div>
                     </div>
 
-                    <!-- Pros and Cons -->
-                <div class="uix-layout--vbox">
-                    <div class="uix-card--spot--description-item--compact">
-                        <div id="spot--properties--header">
-                            <span class="caption-accent">Плюсы</span>
+                    <div class="uix-layout--hbox--wrapped">
+                        <!-- Specification -->
+                        <div class="uix-card--spot--description-item">
+                            <div id="spot--properties--header">
+                                <span class="caption-accent">Характеристики</span>
+                                <button class="uix-button--circle--s uix-button--card--inline uix-card--link--overall" onclick="location.href='reference-spots.html'">?</button>
+                            </div>
+                            <div>
+                                <ul class="uix-card--list" id="collection-specification">
+                                    <script>page.specification();</script>
+                                </ul>
+                            </div>
                         </div>
-                        <div id="collection-pros">
-                            <script>page.pros();</script>
+                        <!-- / Specification -->
+
+                        <!-- Pros and Cons -->
+                        <div class="uix-layout--vbox" id="pros-cons-layout">
+                            <div class="uix-card--spot--description-item--compact">
+                                <div id="spot--properties--header">
+                                    <span class="caption-accent">Плюсы</span>
+                                </div>
+                                <div id="collection-pros">
+                                    <script>page.pros();</script>
+                                </div>
+                            </div>
+                            <div class="uix-card--spot--description-item--compact">
+                                <div id="spot--properties--header">
+                                    <span class="caption-accent">Минусы</span>
+                                </div>
+                                <div  id="collection-cons">
+                                    <script>page.cons();</script>
+                                </div>
+                            </div>
                         </div>
+                        <!-- / Pros and Cons -->
                     </div>
-                    <div class="uix-card--spot--description-item--compact">
-                        <div id="spot--properties--header">
-                            <span class="caption-accent">Минусы</span>
-                        </div>
-                        <div  id="collection-cons">
-                            <script>page.cons();</script>
-                        </div>
-                    </div>
-                </div>
-                <!-- / Pros and Cons -->
-                </div>
 
                 <div class="uix-layout--hbox--wrapped" id="">
                     <div class="uix-card--spot--description-item" id="card--gallery">

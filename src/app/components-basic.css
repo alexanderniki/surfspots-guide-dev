@@ -159,6 +159,8 @@
     flex-direction: column;
     /*justify-content: space-between;*/
     gap: var(--space-200);
+    flex-grow: 1;
+    flex-wrap: wrap;
     
     min-height: 288px;
 
@@ -176,12 +178,13 @@
 
 .uix-card--spot--description-item--compact {
     display: flex;
-    flex: 1 1 192px;
+    flex: 1 1 288px;
     flex-direction: column;
     /*justify-content: space-between;*/
     gap: var(--space-200);
+    flex-wrap: wrap;
     
-    /*min-height: 192px;*/
+    min-height: 192px;
 
     border: 1px;
     border-radius: var(--space-100);
