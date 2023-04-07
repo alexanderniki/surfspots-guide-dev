@@ -25,7 +25,7 @@ class IndexPage extends Page {
             // !TODO
         }
 
-        this._parseurl();
+        //this._parseurl();
 
         //this.collection = new Collection();
         console.log("SECTION CODE (PAGE CONSTRUCTOR)", this.sectioncode);
