@@ -159,7 +159,6 @@
     flex-direction: column;
     /*justify-content: space-between;*/
     gap: var(--space-200);
-    flex-grow: 1;
     flex-wrap: wrap;
     
     min-height: 288px;
@@ -169,6 +168,7 @@
     border-color: var(--color-helper-2);
     border-style: solid;
     box-sizing: border-box;
+    overflow: hidden;
 
     padding: var(--space-300);
 
@@ -459,4 +459,8 @@
     display: flex;
     justify-content: center;
     flex-grow: 1;
+}
+
+.card-fullarea {
+    padding: 0px;
 }

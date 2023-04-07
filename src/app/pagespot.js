@@ -161,53 +161,6 @@ class SpotPage extends Page {
         }
     }
 
-
-    async weather2() {
-        let weatherProvider = new WeatherProvider(this.spotCode);
-        let result = await weatherProvider.fetchWeather();
-    
-        let time = result.daily.time;
-        let winddirection = result.daily.winddirection_10m_dominant;
-        let windspeed = result.daily.windspeed_10m_max;
-        let mintemp = result.daily.temperature_2m_min;
-        let maxtemp = result.daily.temperature_2m_max;
-    
-        // Container
-        let weatherForecast = document.getElementById("weather-data");
-    
-        for (let i = 0; i < time.length; i++) {
-            // Prepare data
-            let parcedDate = Date.parse(time[i]);  // Unix time
-            let newDate = new Date(parcedDate);
-            let weekday = DateUtils.weekday(newDate.getDay());
-            let strdate = `${weekday}, ${newDate.getDate()}`;
-            let strwind = `${Math.round(windspeed[i])} м/с • ${Math.round(winddirection[i])}° • ${WeatherUtils.windDirection(winddirection[i])}`;
-            let strtemperarure = `${WeatherUtils.temperatureSign(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} ${Math.round(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} °C`;
-    
-            // Card
-            let forecastCard = document.createElement("div");
-            forecastCard.classList.add("uix-layout--vbox-compact");
-            forecastCard.classList.add("uix-card--weather--day");
-    
-            // Items
-            let dateElement = document.createElement("span");
-            dateElement.innerHTML = strdate;
-    
-            let windElement = document.createElement("span");
-            windElement.classList.add("body-2");
-            windElement.innerHTML = strwind;
-    
-            let temperatureElement = document.createElement("span");
-            temperatureElement.innerHTML = strtemperarure;
-            
-            // Layout
-            forecastCard.appendChild(dateElement);
-            forecastCard.appendChild(windElement);
-            forecastCard.appendChild(temperatureElement);
-            weatherForecast.appendChild(forecastCard);
-        }
-    }
-
     async weather() {
         let weatherProvider = new WeatherProvider(this.spotCode);
         let result = await weatherProvider.fetchWeather();
@@ -287,16 +240,27 @@ class SpotPage extends Page {
 
     transport() {
         let uicontainer = document.getElementById("collection-transport");
-        let uilistcontainer = document.createElement("ul");
+        //let uilistcontainer = document.createElement("ul");
+
+        let coordinates = new UIListItem();
+        coordinates.overline = "Координаты";
+        coordinates.primaryText = this.currentSpot.metadata.location.coordinates;
+        uicontainer.appendChild(coordinates);
+
+        let listHeader = new UIListItem();
+        listHeader.overline = "Как добраться:";
+        uicontainer.appendChild(listHeader);
 
         let transport = this.currentSpot.metadata.transport;
         for (let item in transport) {
+            let listitem = new UIListItem();
+            listitem.primaryText = transport[item];
             let uiitem = document.createElement("li");
             uiitem.innerText = transport[item];
-            uilistcontainer.appendChild(uiitem);
+            uicontainer.appendChild(listitem);
         }
 
-        uicontainer.appendChild(uilistcontainer);
+        //uicontainer.appendChild(uilistcontainer);
     }
 
     description() {
@@ -345,10 +309,10 @@ class SpotPage extends Page {
         uicontainer.appendChild(uilistcontainer);
     }
 
-    location() {
+    /*location() {
         let uicontainer = document.getElementById("spot-location");
         uicontainer.innerText = this.currentSpot.metadata.location.coordinates;
-    }
+    }*/
 
     mapCode() {
         let uicontainer = document.getElementById("spot-map");
