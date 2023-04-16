@@ -32,22 +32,25 @@ class IndexPage extends Page {
         
     }
 
-    _parseurl() {
+    /* _parseurl() {
         let currentURL = window.location.href;
         let suffix = currentURL.split("#");
         if (suffix.length == 1) {  // If there is no #code in URL
-            window.location.href = "index.html";  // Go to index page
+            window.location.href = "index.html#spots";  // Go to index page
+            // NEW:
+            instanceState.sectioncode = "spots";
+            this.sectioncode = "spots";
         }
         /* else if (suffix == "") {  // Go to index page
             window.location.href = "index.html";
         } */
-        else {
+        /*else {
             let sectioncode = suffix[suffix.length - 1];  // Take code
             instanceState.sectioncode = sectioncode;
             this.sectioncode = sectioncode;
         }
         
-    }
+    } */
 
     /* 
      * Group surf spots

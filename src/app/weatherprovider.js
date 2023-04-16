@@ -17,8 +17,17 @@ class WeatherProvider {
             windspeed_unit: "ms",
             timezone: "Europe/Moscow",
         }
+
+        this.waveParams = {
+            latitude: this.getPlaceGeo()[0],
+            longitude: this.getPlaceGeo()[1],
+            timezone: "Europe/Moscow",
+            daily: "wave_height_max",
+            //past_days: 7,
+        }
         
         //this.fetchWeather();
+        //this.fetchWaveData();
     }
 
 
@@ -73,6 +82,28 @@ class WeatherProvider {
         }
         return coordinates;
     }
-    
 
+    async fetchWaveData() {
+        /**
+         * Fetching wave height from API
+         */
+
+        let request = "https://marine-api.open-meteo.com/v1/marine";
+        let paramCounter = 0;
+
+        for (let param = 0; param < Object.keys(this.waveParams).length; param++) {
+            let tmp = Object.keys(this.waveParams)[param] + "=" + Object.values(this.waveParams)[param];
+            if (paramCounter == 0) {
+                request += "?" + tmp;
+            }
+            else {
+                request += "&" + tmp;
+            }
+            paramCounter += 1;
+        }
+
+        let response = await fetch(request);
+        let json = await response.json();
+        return json;
+    }
 }

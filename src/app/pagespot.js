@@ -164,12 +164,14 @@ class SpotPage extends Page {
     async weather() {
         let weatherProvider = new WeatherProvider(this.spotCode);
         let result = await weatherProvider.fetchWeather();
+        let wavedata = await weatherProvider.fetchWaveData();
     
         let time = result.daily.time;
         let winddirection = result.daily.winddirection_10m_dominant;
         let windspeed = result.daily.windspeed_10m_max;
         let mintemp = result.daily.temperature_2m_min;
         let maxtemp = result.daily.temperature_2m_max;
+        let waveheight = wavedata.daily.wave_height_max;
     
         // Container
         let uicontainer = document.getElementById("weather-data-card");
@@ -182,10 +184,12 @@ class SpotPage extends Page {
             let strdate = `${weekday}, ${newDate.getDate()}`;
             let strwind = `${Math.round(windspeed[i])} м/с • ${Math.round(winddirection[i])}° • ${WeatherUtils.windDirection(winddirection[i])}`;
             let strtemperarure = `${WeatherUtils.temperatureSign(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} ${Math.round(WeatherUtils.avgTemp(mintemp[i], maxtemp[i]))} °C`;
+            let strWaveHeightMax = `${waveheight[i]} м`;
 
             let uilistitem = new UIListItem();
             uilistitem.primaryText = strwind;
             uilistitem.overline = strdate + ", " + strtemperarure;
+            uilistitem.secondaryText = `Волна: ${strWaveHeightMax}`;
 
             uicontainer.appendChild(uilistitem);
         }

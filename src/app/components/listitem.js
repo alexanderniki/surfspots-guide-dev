@@ -64,13 +64,14 @@ class UIListItem extends HTMLElement {
             <li class="ui-list--item">
                 <div class="ui-list--item--overline caption">${this.overline}</div>
                 <div class="ui-list--item--primary-text">${this.primaryText}</div>
+                <div class="ui-list--item--secondary-text body-2">${this.secondaryText}</div>
             </li>
         `;
     }
 
     connectedCallback() {
         this._getAttributes();
-        console.log("UIListItem connected");
+        //console.log("UIListItem connected");
         this.render();
     }
 }
